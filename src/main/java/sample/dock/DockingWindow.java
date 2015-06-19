@@ -9,6 +9,9 @@ import javax.swing.JMenuBar;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.extension.gui.dock.theme.eclipse.stack.tab.RectGradientPainter;
+
+import bibliothek.gui.dock.ScreenDockStation;
+import bibliothek.gui.dock.StackDockStation;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CGrid;
 import bibliothek.gui.dock.common.event.CVetoFocusListener;
@@ -16,8 +19,10 @@ import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.gui.dock.common.layout.FullLockConflictResolver;
 import bibliothek.gui.dock.common.menu.CLookAndFeelMenuPiece;
 import bibliothek.gui.dock.common.menu.CThemeMenuPiece;
-import bibliothek.gui.dock.common.theme.CEclipseTheme;
+import bibliothek.gui.dock.common.theme.ThemeMap;
 import bibliothek.gui.dock.facile.menu.RootMenuPiece;
+import bibliothek.gui.dock.station.screen.window.WindowConfiguration;
+import bibliothek.gui.dock.station.stack.tab.DefaultTabContentFilter;
 
 /**
  * Docking Window sample with JavaFX chart
@@ -44,9 +49,6 @@ public class DockingWindow
 		frame.setIconImage( icon.getImage() );
 		final CControl control = new CControl( frame );
 		control.putProperty( CControl.RESIZE_LOCK_CONFLICT_RESOLVER, new FullLockConflictResolver() );
-
-		control.getController().setTheme( new CEclipseTheme( control ) );
-		control.getController().getProperties().set( EclipseTheme.TAB_PAINTER, RectGradientPainter.FACTORY );
 
 		// TODO: menu items are replaced by necessary structure
 		RootMenuPiece laf = new RootMenuPiece( "Look And Feel", false, new CLookAndFeelMenuPiece( control, null ));
@@ -81,6 +83,18 @@ public class DockingWindow
 				grid.add( i, j, 1, 1, f );
 			}
 		}
+
+		ThemeMap themes = control.getThemes();
+		themes.select(ThemeMap.KEY_ECLIPSE_THEME);
+
+		control.putProperty( EclipseTheme.TAB_PAINTER, RectGradientPainter.FACTORY );
+		control.putProperty( EclipseTheme.PAINT_ICONS_WHEN_DESELECTED, true );
+		control.putProperty( StackDockStation.TAB_CONTENT_FILTER, new DefaultTabContentFilter( DefaultTabContentFilter.Behavior.ALL) );
+		control.putProperty( ScreenDockStation.WINDOW_CONFIGURATION, ( station, dockable ) -> {
+			WindowConfiguration config = new WindowConfiguration();
+			config.setMoveOnTitleGrab( true );
+			return config;
+		} );
 
 		control.getContentArea().deploy( grid );
 
