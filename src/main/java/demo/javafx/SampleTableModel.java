@@ -1,4 +1,4 @@
-package sample.javafx;
+package demo.javafx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

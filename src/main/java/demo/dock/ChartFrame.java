@@ -1,8 +1,8 @@
-package sample.dock;
+package demo.dock;
 
 import bibliothek.gui.dock.common.DefaultMultipleCDockable;
 import bibliothek.gui.dock.common.EmptyMultipleCDockableFactory;
-import sample.javafx.SwingInterop;
+import demo.javafx.SwingInterop;
 
 import javax.swing.JApplet;
 

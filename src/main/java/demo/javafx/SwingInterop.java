@@ -1,4 +1,4 @@
-package sample.javafx;
+package demo.javafx;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
