@@ -8,11 +8,13 @@ import bibliothek.gui.dock.common.MultipleCDockableLayout;
 import bibliothek.gui.dock.common.event.CDockableAdapter;
 import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.util.xml.XElement;
+
 import model.HalcyonNode;
 import model.HalcyonNodeRepository;
 import model.HalcyonNodeRepositoryListener;
-import window.ConfigWindow;
+
 import window.ConsoleWindow;
+import window.FxConfigWindow;
 import window.ToolbarWindow;
 
 import java.io.DataInputStream;
@@ -23,14 +25,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by moon on 7/13/15.
+ * ViewManager class for managing Windows
  */
 public class ViewManager
 {
 	/** the controller of the whole framework */
 	private CControl control;
 
-	private ConfigWindow configWindow;
+	private FxConfigWindow configWindow;
 
 	private ToolbarWindow toolbarWindow;
 
@@ -64,7 +66,7 @@ public class ViewManager
 		toolbarWindow.setLocation( CLocation.base().normalWest( 0.3 ).north( 0.5 ) );
 		toolbarWindow.setVisible( true );
 
-		configWindow = new ConfigWindow( this );
+		configWindow = new FxConfigWindow( this );
 		control.addDockable( configWindow );
 		configWindow.setLocation( CLocation.base().normalWest( 0.3 ).south( 0.5 ) );
 		configWindow.setVisible( true );
