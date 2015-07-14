@@ -158,15 +158,19 @@ public class ConfigWindow extends ControlType
 		{
 			public void nodeAdded( HalcyonNode node )
 			{
+				DefaultMutableTreeNode nodeNew = new DefaultMutableTreeNode( node );
+
 				switch (node.getType())
 				{
 					case Camera:
-						camera.add( new DefaultMutableTreeNode( node ) );
+						camera.add( nodeNew );
+						model.reload( camera );
 						tree.expandPath( rootPath.pathByAddingChild( camera ) );
 						node.setIndex( camera.getChildCount() - 1 );
 						break;
 					case Laser:
-						laser.add( new DefaultMutableTreeNode( node ) );
+						laser.add( nodeNew );
+						model.reload( laser );
 						tree.expandPath( rootPath.pathByAddingChild( laser ) );
 						node.setIndex( laser.getChildCount() - 1 );
 						break;
