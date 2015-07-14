@@ -1,5 +1,6 @@
 package window;
 
+import model.FxChartHalcyonNode;
 import model.HalcyonNode;
 import model.HalcyonNodeRepository;
 import view.ViewManager;
@@ -22,7 +23,7 @@ public class ToolbarWindow extends ControlType
 
 	public ToolbarWindow( final ViewManager manager )
 	{
-		super("ToolbarDockable");
+		super( "ToolbarDockable" );
 
 		nodes = manager.getNodes();
 
@@ -39,10 +40,10 @@ public class ToolbarWindow extends ControlType
 			HalcyonNode n = new HalcyonNode( "Camera-1", HalcyonNode.Type.Camera );
 			JPanel cameraPanel = new JPanel( new FlowLayout() );
 
-			cameraPanel.add( new JButton( "Test Button 1" ));
-			cameraPanel.add( new JButton( "Test Button 2" ));
-			cameraPanel.add( new JButton( "Test Button 3" ));
-			cameraPanel.add( new JButton( "Test Button 4" ));
+			cameraPanel.add( new JButton( "Test Button 1" ) );
+			cameraPanel.add( new JButton( "Test Button 2" ) );
+			cameraPanel.add( new JButton( "Test Button 3" ) );
+			cameraPanel.add( new JButton( "Test Button 4" ) );
 
 			n.setPanel( cameraPanel );
 
@@ -54,20 +55,27 @@ public class ToolbarWindow extends ControlType
 		btn = new JButton( "Add Laser-1" );
 		btn.addActionListener( e -> {
 			HalcyonNode n = new HalcyonNode( "Laser-1", HalcyonNode.Type.Laser );
-			JPanel cameraPanel = new JPanel( new FlowLayout() );
+			JPanel laserPanel = new JPanel( new FlowLayout() );
 
-			cameraPanel.add( new JLabel("Label1"));
-			cameraPanel.add( new JTextField("TextField1"));
-			cameraPanel.add( new JLabel("Label2"));
-			cameraPanel.add( new JTextField("TextField2"));
+			laserPanel.add( new JLabel( "Label1" ) );
+			laserPanel.add( new JTextField( "TextField1" ) );
+			laserPanel.add( new JLabel( "Label2" ) );
+			laserPanel.add( new JTextField( "TextField2" ) );
 
-			n.setPanel( cameraPanel );
+			n.setPanel( laserPanel );
 
 			nodes.add( n );
 		} );
 
 		panel.add( btn );
 
+		btn = new JButton( "Add Laser-2" );
+		btn.addActionListener( e -> {
+			HalcyonNode n = new FxChartHalcyonNode( "Laser-2", HalcyonNode.Type.Laser );
+			nodes.add( n );
+		} );
+
+		panel.add( btn );
 
 		setLayout( new BorderLayout() );
 		add( new JScrollPane( panel ), BorderLayout.CENTER );
