@@ -15,7 +15,6 @@ import bibliothek.gui.dock.facile.menu.RootMenuPiece;
 import bibliothek.gui.dock.facile.menu.SubmenuPiece;
 import bibliothek.gui.dock.station.stack.tab.DefaultTabContentFilter;
 import bibliothek.gui.dock.support.menu.SeparatingMenuPiece;
-import demo.dock.DockingWindow;
 import model.HalcyonNodeRepository;
 import view.ViewManager;
 
@@ -45,7 +44,7 @@ public class HalcyonDemo
 	 * Creates a new core, containing global resources.
 	 */
 	public HalcyonDemo(){
-		icon = new ImageIcon( DockingWindow.class.getResource( "/icon.png" ));
+		icon = new ImageIcon( HalcyonDemo.class.getResource( "/icon.png" ));
 	}
 
 	/**
@@ -128,7 +127,7 @@ public class HalcyonDemo
 	}
 
 	public static void main( String[] args ) {
-		DockingWindow core = new DockingWindow();
+		HalcyonDemo core = new HalcyonDemo();
 		core.startup( );
 	}
 }
