@@ -14,7 +14,7 @@ public class ConsoleWindow extends ControlType
 		super("ConsoleDockable");
 
 		setTitleText( "Console" );
-		setCloseable( true );
+		setCloseable( false );
 		setMinimizable( true );
 		setMaximizable( true );
 
