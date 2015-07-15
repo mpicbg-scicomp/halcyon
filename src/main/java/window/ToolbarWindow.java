@@ -3,6 +3,7 @@ package window;
 import model.FxChartHalcyonNode;
 import model.HalcyonNode;
 import model.HalcyonNodeRepository;
+import model.HalcyonNodeType;
 import view.ViewManager;
 
 import javax.swing.BoxLayout;
@@ -37,7 +38,7 @@ public class ToolbarWindow extends ControlType
 
 		JButton btn = new JButton( "Add Camera-1" );
 		btn.addActionListener( e -> {
-			HalcyonNode n = new HalcyonNode( "Camera-1", HalcyonNode.Type.Camera );
+			HalcyonNode n = new HalcyonNode( "Camera-1", HalcyonNodeType.Camera );
 			JPanel cameraPanel = new JPanel( new FlowLayout() );
 
 			cameraPanel.add( new JButton( "Test Button 1" ) );
@@ -54,7 +55,7 @@ public class ToolbarWindow extends ControlType
 
 		btn = new JButton( "Add Laser-1" );
 		btn.addActionListener( e -> {
-			HalcyonNode n = new HalcyonNode( "Laser-1", HalcyonNode.Type.Laser );
+			HalcyonNode n = new HalcyonNode( "Laser-1", HalcyonNodeType.Laser );
 			JPanel laserPanel = new JPanel( new FlowLayout() );
 
 			laserPanel.add( new JLabel( "Label1" ) );
@@ -71,8 +72,32 @@ public class ToolbarWindow extends ControlType
 
 		btn = new JButton( "Add Laser-2" );
 		btn.addActionListener( e -> {
-			HalcyonNode n = new FxChartHalcyonNode( "Laser-2", HalcyonNode.Type.Laser );
+			HalcyonNode n = new FxChartHalcyonNode( "Laser-2", HalcyonNodeType.Laser );
 			nodes.add( n );
+		} );
+
+		panel.add( btn );
+
+		btn = new JButton( "Test Std Out" );
+		btn.addActionListener( e -> {
+
+			for(int i = 0; i < 2000; i++)
+			{
+				System.out.println("" + i + " " + "Console Test");
+			}
+
+		} );
+
+		panel.add( btn );
+
+		btn = new JButton( "Test Std Err" );
+		btn.addActionListener( e -> {
+
+			for(int i = 0; i < 2000; i++)
+			{
+				System.err.println("" + i + " " + "Console Test");
+			}
+
 		} );
 
 		panel.add( btn );
