@@ -1,7 +1,7 @@
 package window.demo;
 
 import org.junit.Test;
-import window.ConsoleWindow;
+import window.StdOutputCaptureConsole;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -10,9 +10,9 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 /**
- * ConsoleWindow Demo
+ * StdOutputCaptureConsole Demo
  */
-public class ConsoleWindowDemo
+public class StdOutputCaptureConsoleDemo
 {
 	@Test
 	public void ConsoleWindowTest()
@@ -30,7 +30,7 @@ public class ConsoleWindowDemo
 			} catch (UnsupportedLookAndFeelException ex)
 			{
 			}
-			ConsoleWindow consoleWindow = new ConsoleWindow();
+			StdOutputCaptureConsole consoleWindow = new StdOutputCaptureConsole();
 
 			JFrame frame = new JFrame();
 			frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -47,6 +47,6 @@ public class ConsoleWindowDemo
 	}
 
 	public static void main(String[] args) {
-		new ConsoleWindowDemo().ConsoleWindowTest();
+		new StdOutputCaptureConsoleDemo().ConsoleWindowTest();
 	}
 }

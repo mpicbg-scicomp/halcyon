@@ -2,31 +2,28 @@ package window;
 
 import model.JPanelProvider;
 
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.text.AbstractDocument;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.text.AbstractDocument;
-
 /**
- * Control type Console Window
- *
- * Capturing stdout / stderr
+ * Standard Output and Error capture console
  */
-public class ConsoleWindow extends ControlType implements JPanelProvider
+public class StdOutputCaptureConsole extends ConsoleBase implements JPanelProvider
 {
 	static final int cMaxNumberOfLines = 500_000;
 
 	private final ConsolePane consolePane;
 
-	public ConsoleWindow()
+	public StdOutputCaptureConsole()
 	{
-		super( "ConsoleDockable" );
+		super( "StdOutputCaptureConsole" );
 
 		consolePane = new ConsolePane();
 
