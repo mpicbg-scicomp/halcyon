@@ -8,15 +8,15 @@ import java.util.List;
  */
 public class HalcyonNodeRepository
 {
-	/** observers of this repository, will be informed whenever pictures are added or removed */
-	private List<HalcyonNodeRepositoryListener> listeners = new ArrayList<HalcyonNodeRepositoryListener>();
+	/** observers of this repository, will be informed whenever nodes are added or removed */
+	private List<HalcyonNodeRepositoryListener> listeners = new ArrayList<>();
 
-	/** the pictures in this repository*/
-	private List<HalcyonNode> nodes = new ArrayList<HalcyonNode>();
+	/** the nodes in this repository*/
+	private List<HalcyonNodeInterface> nodes = new ArrayList<>();
 
 	/**
 	 * Adds an observer to this repository. The observer will be informed whenever
-	 * a picture is added or removed from this repository.
+	 * a nodes is added or removed from this repository.
 	 * @param listener the new observer
 	 */
 	public void addListener( HalcyonNodeRepositoryListener listener ){
@@ -32,50 +32,50 @@ public class HalcyonNodeRepository
 	}
 
 	/**
-	 * Adds a picture to the list of pictures.
-	 * @param picture the new picture
+	 * Adds a node to the list of Halcyon nodes.
+	 * @param node the new node
 	 */
-	public void add( HalcyonNode picture ){
-		nodes.add( picture );
+	public void add( HalcyonNodeInterface node ){
+		nodes.add( node );
 		for( HalcyonNodeRepositoryListener listener : listeners.toArray( new HalcyonNodeRepositoryListener[ listeners.size() ] ) )
-			listener.nodeAdded( picture );
+			listener.nodeAdded( node );
 	}
 
 	/**
-	 * Removes a picture from the list of pictures.
-	 * @param picture the picture to remove
+	 * Removes a node from the list of Halcyon node.
+	 * @param node the node to remove
 	 */
-	public void remove( HalcyonNode picture ){
-		if( nodes.remove( picture )){
+	public void remove( HalcyonNodeInterface node ){
+		if( nodes.remove( node )){
 			for( HalcyonNodeRepositoryListener listener : listeners.toArray( new HalcyonNodeRepositoryListener[ listeners.size() ] ) )
-				listener.nodeRemoved( picture );
+				listener.nodeRemoved( node );
 		}
 	}
 
 	/**
-	 * Gets the number of pictures which are stored in this repository.
-	 * @return the number of pictures
+	 * Gets the number of nodes which are stored in this repository.
+	 * @return the number of nodes
 	 */
 	public int getNodeCount(){
 		return nodes.size();
 	}
 
 	/**
-	 * Gets the index'th picture of this repository.
-	 * @param index the location of the picture
-	 * @return the picture
+	 * Gets the index'th node of this repository.
+	 * @param index the location of the node
+	 * @return the node
 	 */
-	public HalcyonNode getNode( int index ){
+	public HalcyonNodeInterface getNode( int index ){
 		return nodes.get( index );
 	}
 
 	/**
 	 * Gets the first node with the {@link HalcyonNode#getName() name} <code>name</code>.
-	 * @param name the name of the picture
-	 * @return a picture or <code>null</code>
+	 * @param name the name of the node
+	 * @return a node or <code>null</code>
 	 */
-	public HalcyonNode getNode( String name ){
-		for( HalcyonNode node : nodes )
+	public HalcyonNodeInterface getNode( String name ){
+		for( HalcyonNodeInterface node : nodes )
 			if( node.getName().equals( name ))
 				return node;
 
