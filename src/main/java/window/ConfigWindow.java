@@ -41,10 +41,12 @@ public class ConfigWindow extends ControlWindowBase
 	private DefaultMutableTreeNode root;
 	private DefaultMutableTreeNode camera;
 	private DefaultMutableTreeNode laser;
+	private DefaultMutableTreeNode stage;
 
 	private Icon rootIcon;
 	private Icon cameraIcon;
 	private Icon laserIcon;
+	private Icon stageIcon;
 
 	private CButton camearaNew;
 
@@ -68,6 +70,7 @@ public class ConfigWindow extends ControlWindowBase
 			rootIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/microscope_16.png" ) ) );
 			cameraIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/camera_16.png" ) ) );
 			laserIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/laser_16.png" ) ) );
+			stageIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/stage_16.png" ) ) );
 		} catch (IOException ex)
 		{
 			ex.printStackTrace();
@@ -113,10 +116,12 @@ public class ConfigWindow extends ControlWindowBase
 		root = new DefaultMutableTreeNode( new DeviceNode( "Devices", rootIcon ) );
 		camera = new DefaultMutableTreeNode( new DeviceNode( "Cameras", cameraIcon ) );
 		laser = new DefaultMutableTreeNode( new DeviceNode( "Lasers", laserIcon ) );
+		stage = new DefaultMutableTreeNode( new DeviceNode( "Stages", stageIcon ) );
 
 		TreePath rootPath = new TreePath( root );
 		root.add( camera );
 		root.add( laser );
+		root.add( stage );
 
 		model = new DefaultTreeModel( root );
 		tree.setModel( model );
@@ -178,6 +183,10 @@ public class ConfigWindow extends ControlWindowBase
 						model.reload( laser );
 						tree.expandPath( rootPath.pathByAddingChild( laser ) );
 						break;
+					case Stage:
+						stage.add( nodeNew );
+						model.reload( stage );
+						tree.expandPath( rootPath.pathByAddingChild( stage ) );
 				}
 			}
 
@@ -192,6 +201,9 @@ public class ConfigWindow extends ControlWindowBase
 						break;
 					case Laser:
 						laser.remove( nodeDeleted );
+						break;
+					case Stage:
+						stage.remove( nodeDeleted );
 						break;
 				}
 
