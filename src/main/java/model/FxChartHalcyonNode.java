@@ -26,7 +26,7 @@ import java.text.DecimalFormat;
 /**
  * Chart Halcyon Node for Java FX
  */
-public class FxChartHalcyonNode extends HalcyonNode
+public class FxChartHalcyonNode extends HalcyonNode implements JFXPanelProvider
 {
 	private static final int PANEL_WIDTH_INT = 600;
 	private static final int PANEL_HEIGHT_INT = 400;
@@ -34,7 +34,7 @@ public class FxChartHalcyonNode extends HalcyonNode
 	private JFXPanel chartFxPanel;
 	private SampleTableModel tableModel;
 
-	public FxChartHalcyonNode( String name, Type type )
+	public FxChartHalcyonNode( String name, HalcyonNodeType type )
 	{
 		super( name, type );
 
@@ -117,6 +117,11 @@ public class FxChartHalcyonNode extends HalcyonNode
 			}
 		} );
 		return chart;
+	}
+
+	@Override public JFXPanel getJFXPanel()
+	{
+		return chartFxPanel;
 	}
 
 	public static class DecimalFormatRenderer extends DefaultTableCellRenderer

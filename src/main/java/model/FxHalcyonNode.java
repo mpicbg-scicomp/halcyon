@@ -12,12 +12,12 @@ import java.awt.BorderLayout;
 /**
  * HalcyonNode for JavaFX
  */
-public class FxHalcyonNode extends HalcyonNode
+public class FxHalcyonNode extends HalcyonNode implements JFXPanelProvider
 {
 	private JFXPanel fxPanel;
 	private Node node;
 
-	public FxHalcyonNode( String name, Type type, Node node )
+	public FxHalcyonNode( String name, HalcyonNodeType type, Node node )
 	{
 		super(name, type);
 		this.node = node;
@@ -33,6 +33,11 @@ public class FxHalcyonNode extends HalcyonNode
 		setPanel( panel );
 
 		Platform.runLater( this::start );
+	}
+
+	@Override public JFXPanel getJFXPanel()
+	{
+		return fxPanel;
 	}
 
 	protected void start()

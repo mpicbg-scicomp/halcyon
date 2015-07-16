@@ -2,8 +2,10 @@ package window;
 
 import bibliothek.gui.dock.common.action.CButton;
 import model.HalcyonNode;
+import model.HalcyonNodeInterface;
 import model.HalcyonNodeRepository;
 import model.HalcyonNodeRepositoryListener;
+import model.HalcyonNodeType;
 import view.ViewManager;
 
 import javax.imageio.ImageIO;
@@ -23,11 +25,12 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Device Config Window
  */
-public class ConfigWindow extends ControlType
+public class ConfigWindow extends ControlWindowBase
 {
 	final private HalcyonNodeRepository nodes;
 
@@ -46,6 +49,8 @@ public class ConfigWindow extends ControlType
 	private CButton camearaNew;
 
 	private CButton laserNew;
+
+	private HashMap<HalcyonNodeInterface, DefaultMutableTreeNode> nodeMap = new HashMap<>();
 
 	public ConfigWindow( final ViewManager manager )
 	{
@@ -124,7 +129,7 @@ public class ConfigWindow extends ControlType
 				String name = askForName();
 				if (name != null)
 				{
-					HalcyonNode n = new HalcyonNode( name, HalcyonNode.Type.Camera );
+					HalcyonNode n = new HalcyonNode( name, HalcyonNodeType.Camera );
 
 					nodes.add( n );
 				}
@@ -142,7 +147,7 @@ public class ConfigWindow extends ControlType
 				String name = askForName();
 				if (name != null)
 				{
-					nodes.add( new HalcyonNode( name, HalcyonNode.Type.Laser ) );
+					nodes.add( new HalcyonNode( name, HalcyonNodeType.Laser ) );
 				}
 			}
 		};
@@ -156,9 +161,10 @@ public class ConfigWindow extends ControlType
 
 		nodes.addListener( new HalcyonNodeRepositoryListener()
 		{
-			public void nodeAdded( HalcyonNode node )
+			public void nodeAdded( HalcyonNodeInterface node )
 			{
 				DefaultMutableTreeNode nodeNew = new DefaultMutableTreeNode( node );
+				nodeMap.put( node, nodeNew );
 
 				switch (node.getType())
 				{
@@ -166,28 +172,30 @@ public class ConfigWindow extends ControlType
 						camera.add( nodeNew );
 						model.reload( camera );
 						tree.expandPath( rootPath.pathByAddingChild( camera ) );
-						node.setIndex( camera.getChildCount() - 1 );
 						break;
 					case Laser:
 						laser.add( nodeNew );
 						model.reload( laser );
 						tree.expandPath( rootPath.pathByAddingChild( laser ) );
-						node.setIndex( laser.getChildCount() - 1 );
 						break;
 				}
 			}
 
-			public void nodeRemoved( HalcyonNode node )
+			public void nodeRemoved( HalcyonNodeInterface node )
 			{
+				DefaultMutableTreeNode nodeDeleted = nodeMap.get( node );
+
 				switch (node.getType())
 				{
 					case Camera:
-						camera.remove( node.getIndex() );
+						camera.remove( nodeDeleted );
 						break;
 					case Laser:
-						laser.remove( node.getIndex() );
+						laser.remove( nodeDeleted );
 						break;
 				}
+
+				nodeMap.remove( node );
 			}
 		} );
 	}
