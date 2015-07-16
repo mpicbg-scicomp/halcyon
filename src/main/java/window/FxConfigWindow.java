@@ -2,8 +2,10 @@ package window;
 
 import javafx.embed.swing.JFXPanel;
 import model.HalcyonNode;
+import model.HalcyonNodeInterface;
 import model.HalcyonNodeRepository;
 import model.HalcyonNodeRepositoryListener;
+import model.JFXPanelProvider;
 import view.ViewManager;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -17,7 +19,7 @@ import javafx.scene.layout.StackPane;
 /**
  * Device Config JavaFX Window
  */
-public class FxConfigWindow extends ControlType
+public class FxConfigWindow extends ControlWindowBase implements JFXPanelProvider
 {
 	final private HalcyonNodeRepository nodes;
 	JFXPanel fxPanel;
@@ -63,7 +65,7 @@ public class FxConfigWindow extends ControlType
 
 		nodes.addListener( new HalcyonNodeRepositoryListener()
 		{
-			@Override public void nodeAdded( HalcyonNode node )
+			@Override public void nodeAdded( HalcyonNodeInterface node )
 			{
 				TreeItem<TreeNode> item = new TreeItem<>( new TreeNode( node.getName(), node ) );
 
@@ -78,7 +80,7 @@ public class FxConfigWindow extends ControlType
 				}
 			}
 
-			@Override public void nodeRemoved( HalcyonNode node )
+			@Override public void nodeRemoved( HalcyonNodeInterface node )
 			{
 				switch (node.getType())
 				{
@@ -107,6 +109,11 @@ public class FxConfigWindow extends ControlType
 		Platform.runLater( () -> start( tree ) );
 	}
 
+	@Override public JFXPanel getJFXPanel()
+	{
+		return fxPanel;
+	}
+
 	public void start( TreeView<TreeNode> tree )
 	{
 		StackPane root = new StackPane();
@@ -119,14 +126,14 @@ public class FxConfigWindow extends ControlType
 	{
 		private String name;
 
-		private HalcyonNode node;
+		private HalcyonNodeInterface node;
 
 		public TreeNode( String name )
 		{
 			this.name = name;
 		}
 
-		public TreeNode( String name, HalcyonNode node )
+		public TreeNode( String name, HalcyonNodeInterface node )
 		{
 			this.name = name;
 			this.node = node;
@@ -142,7 +149,7 @@ public class FxConfigWindow extends ControlType
 			this.name = name;
 		}
 
-		public HalcyonNode getNode()
+		public HalcyonNodeInterface getNode()
 		{
 			return node;
 		}
