@@ -3,6 +3,7 @@ package view;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.CWorkingArea;
+import bibliothek.gui.dock.common.DefaultSingleCDockable;
 import bibliothek.gui.dock.common.MultipleCDockableFactory;
 import bibliothek.gui.dock.common.MultipleCDockableLayout;
 import bibliothek.gui.dock.common.event.CDockableAdapter;
@@ -10,12 +11,16 @@ import bibliothek.gui.dock.common.intern.CDockable;
 import bibliothek.util.xml.XElement;
 
 import model.HalcyonNode;
+import model.HalcyonNodeInterface;
 import model.HalcyonNodeRepository;
 import model.HalcyonNodeRepositoryListener;
 
-import window.ConsoleWindow;
+import model.ObservableCollection;
+import model.ObservableCollectionListener;
+import window.ConfigWindow;
+import window.ConsoleInterface;
 import window.FxConfigWindow;
-import window.ToolbarWindow;
+import window.ToolInterface;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -32,14 +37,8 @@ public class ViewManager
 	/** the controller of the whole framework */
 	private CControl control;
 
-	private FxConfigWindow configWindow;
-
-	private ToolbarWindow toolbarWindow;
-
-	private ConsoleWindow consoleWindow;
-
 	/** the {@link bibliothek.gui.dock.common.intern.CDockable}s showing some {@link HalcyonNode}s */
-	private List<HalcyonNodeDockable> pages = new LinkedList<HalcyonNodeDockable>();
+	private List<HalcyonNodeDockable> pages = new LinkedList<>();
 
 	/** the factory which creates new {@link HalcyonNodeFactory}s */
 	private HalcyonNodeFactory pageFactory;
@@ -50,7 +49,8 @@ public class ViewManager
 	/** the area on which the {@link HalcyonNode}s are shown */
 	private CWorkingArea workingArea;
 
-	public ViewManager( CControl control, HalcyonNodeRepository nodes ){
+	public ViewManager( CControl control, HalcyonNodeRepository nodes, HalcyonFrame.GUIBackend backend,
+			ObservableCollection<ConsoleInterface> consoles, ObservableCollection<ToolInterface> toolbars ){
 		this.control = control;
 		this.nodes = nodes;
 
@@ -61,26 +61,57 @@ public class ViewManager
 		workingArea.setLocation( CLocation.base().normalRectangle( 0, 0, 1, 1 ) );
 		workingArea.setVisible( true );
 
-		toolbarWindow = new ToolbarWindow( this );
-		control.addDockable( toolbarWindow );
-		toolbarWindow.setLocation( CLocation.base().normalWest( 0.3 ).north( 0.5 ) );
-		toolbarWindow.setVisible( true );
+		if(backend == HalcyonFrame.GUIBackend.JavaFX)
+		{
+			FxConfigWindow configWindow = new FxConfigWindow( this );
+			control.addDockable( configWindow );
+			configWindow.setLocation( CLocation.base().normalWest( 0.3 ).south( 0.5 ) );
+			configWindow.setVisible( true );
+		}
+		else if(backend == HalcyonFrame.GUIBackend.Swing)
+		{
+			ConfigWindow configWindow = new ConfigWindow( this );
+			control.addDockable( configWindow );
+			configWindow.setLocation( CLocation.base().normalWest( 0.3 ).south( 0.5 ) );
+			configWindow.setVisible( true );
+		}
 
-		configWindow = new FxConfigWindow( this );
-		control.addDockable( configWindow );
-		configWindow.setLocation( CLocation.base().normalWest( 0.3 ).south( 0.5 ) );
-		configWindow.setVisible( true );
+		toolbars.addListener( new ObservableCollectionListener<ToolInterface>()
+		{
+			@Override public void itemAdded( ToolInterface item )
+			{
+				control.addDockable( (DefaultSingleCDockable) item );
+				((DefaultSingleCDockable)item).setLocation( CLocation.base().normalWest( 0.3 ).north( 0.5 ) );
+				((DefaultSingleCDockable)item).setVisible( true );
+			}
 
-		consoleWindow = new ConsoleWindow();
-		control.addDockable( consoleWindow );
-		consoleWindow.setLocation( CLocation.base().normalEast( 0.7 ).south( 0.3 ) );
-		consoleWindow.setVisible( true );
+			@Override public void itemRemoved( ToolInterface item )
+			{
+
+			}
+		} );
+
+		consoles.addListener( new ObservableCollectionListener<ConsoleInterface>()
+		{
+			@Override public void itemAdded( ConsoleInterface item )
+			{
+				control.addDockable( (DefaultSingleCDockable) item );
+				((DefaultSingleCDockable)item).setLocation( CLocation.base().normalEast( 0.7 ).south( 0.3 ) );
+				((DefaultSingleCDockable)item).setVisible( true );
+			}
+
+			@Override public void itemRemoved( ConsoleInterface item )
+			{
+
+			}
+		} );
+
 
 		nodes.addListener( new HalcyonNodeRepositoryListener(){
-			public void nodeAdded( HalcyonNode node ){
+			public void nodeAdded( HalcyonNodeInterface node ){
 				open( node );
 			}
-			public void nodeRemoved( HalcyonNode node ){
+			public void nodeRemoved( HalcyonNodeInterface node ){
 				closeAll( node );
 			}
 		});
@@ -99,7 +130,7 @@ public class ViewManager
 		return workingArea;
 	}
 
-	public void open( HalcyonNode node ){
+	public void open( HalcyonNodeInterface node ){
 
 		for(HalcyonNodeDockable n: pages)
 		{
@@ -126,7 +157,7 @@ public class ViewManager
 		page.setVisible( true );
 	}
 
-	public void closeAll( HalcyonNode node ){
+	public void closeAll( HalcyonNodeInterface node ){
 		for( HalcyonNodeDockable page : pages.toArray( new HalcyonNodeDockable[ pages.size() ] )){
 			if( page.getNode()  == node ){
 				page.setVisible( false );
@@ -147,7 +178,7 @@ public class ViewManager
 
 		public HalcyonNodeDockable read( HalcyonNodeLayout layout ) {
 			String name = layout.getName();
-			HalcyonNode node = nodes.getNode( name );
+			HalcyonNodeInterface node = nodes.getNode( name );
 			if( node == null )
 				return null;
 			final HalcyonNodeDockable page = new HalcyonNodeDockable( this );

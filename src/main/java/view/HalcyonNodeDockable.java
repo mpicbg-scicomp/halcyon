@@ -5,8 +5,10 @@ import bibliothek.gui.dock.common.MultipleCDockableFactory;
 import bibliothek.gui.dock.common.event.CDockableAdapter;
 import bibliothek.gui.dock.common.intern.CDockable;
 
-import model.HalcyonNode;
+import model.HalcyonNodeInterface;
 import model.HalcyonNodeListener;
+import model.JFXPanelProvider;
+import model.JPanelProvider;
 
 /**
  * Dockable Window for Halcyon Node
@@ -14,7 +16,7 @@ import model.HalcyonNodeListener;
 public class HalcyonNodeDockable extends DefaultMultipleCDockable
 {
 	/** the current node */
-	private HalcyonNode node;
+	private HalcyonNodeInterface node;
 
 	private HalcyonNodeListener listener = () -> {
 
@@ -34,7 +36,7 @@ public class HalcyonNodeDockable extends DefaultMultipleCDockable
 		addCDockableStateListener( new CDockableAdapter(){
 			@Override
 			public void visibilityChanged( CDockable dockable ){
-				HalcyonNode node = getNode();
+				HalcyonNodeInterface node = getNode();
 				if( node != null ){
 					if( isVisible() ){
 						node.addListener( listener );
@@ -48,16 +50,21 @@ public class HalcyonNodeDockable extends DefaultMultipleCDockable
 		});
 	}
 
-	public void setNode( HalcyonNode node ){
+	public void setNode( HalcyonNodeInterface node ){
 		if( isVisible() && getNode() != null )
 			getNode().removeListener( listener );
 
 		this.node = node;
 
-		if( node.getPanel() != null)
+		if( node instanceof JPanelProvider )
 		{
 			getContentPane().removeAll();
-			getContentPane().add( node.getPanel() );
+			getContentPane().add( ((JPanelProvider) node).getJPanel() );
+		}
+		else if( node instanceof JFXPanelProvider )
+		{
+			getContentPane().removeAll();
+			getContentPane().add( ((JFXPanelProvider) node).getJFXPanel() );
 		}
 
 		setTitleText( node == null ? "" : node.getName() );
@@ -66,7 +73,7 @@ public class HalcyonNodeDockable extends DefaultMultipleCDockable
 			node.addListener( listener );
 	}
 
-	public HalcyonNode getNode() {
+	public HalcyonNodeInterface getNode() {
 		return node;
 	}
 }
