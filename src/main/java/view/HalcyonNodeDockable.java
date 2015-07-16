@@ -28,7 +28,7 @@ public class HalcyonNodeDockable extends DefaultMultipleCDockable
 		setCloseable( true );
 		setMinimizable( true );
 		setMaximizable( true );
-		setExternalizable( false );
+		setExternalizable( true );
 		setRemoveOnClose( true );
 
 		addCDockableStateListener( new CDockableAdapter(){
