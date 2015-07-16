@@ -36,7 +36,7 @@ public class HalcyonAPIDemo
 		lHalcyonFrame.addNode( lLaser1 );
 		lHalcyonFrame.addNode( lLaser2 );
 		lHalcyonFrame.addNode( lCamera );
-		//lHalcyonFrame.addNode( lStage1 );
+		lHalcyonFrame.addNode(lStage1);
 
 		lHalcyonFrame.addToolbar( new DemoToolbarWindow( lHalcyonFrame.getViewManager() ) );
 		lHalcyonFrame.addToolbar( new MicroscopeStartStopToolbar() );
