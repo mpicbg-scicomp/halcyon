@@ -13,7 +13,7 @@ import model.HalcyonNodeInterface;
 import model.HalcyonNodeRepository;
 import model.ObservableCollection;
 import window.ConsoleInterface;
-import window.ToolBarInterface;
+import window.ToolbarInterface;
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.extension.gui.dock.theme.eclipse.stack.tab.RectGradientPainter;
 import bibliothek.gui.DockController;
@@ -56,7 +56,7 @@ public class HalcyonFrame extends JFrame implements Closeable
 
 	final private ObservableCollection<ConsoleInterface> consoleWindows = new ObservableCollection<>();
 
-	final private ObservableCollection<ToolBarInterface> toolbarWindows = new ObservableCollection<>();
+	final private ObservableCollection<ToolbarInterface> toolbarWindows = new ObservableCollection<>();
 
 	public HalcyonFrame(GUIBackend backend)
 	{
@@ -73,7 +73,7 @@ public class HalcyonFrame extends JFrame implements Closeable
 		nodes.add( node );
 	}
 
-	public void addToolbar(ToolBarInterface toolbar)
+	public void addToolbar( ToolbarInterface toolbar)
 	{
 		toolbarWindows.add( toolbar );
 	}
@@ -101,7 +101,7 @@ public class HalcyonFrame extends JFrame implements Closeable
 		menubar.add( settings.getMenu() );
 		menubar.add( layout.getMenu() );
 
-		setJMenuBar(menubar);
+		setJMenuBar( menubar );
 	}
 
 
@@ -109,8 +109,8 @@ public class HalcyonFrame extends JFrame implements Closeable
 	 * Creates the main frame and all {@link bibliothek.gui.DockStation}s.
 	 */
 	private void buildContent(){
-		setTitle("Hacyon");
-		setIconImage(icon.getImage());
+		setTitle( "Hacyon" );
+		setIconImage( icon.getImage() );
 
 		DockController.disableCoreWarning();
 		control = new CControl(this);
@@ -129,16 +129,17 @@ public class HalcyonFrame extends JFrame implements Closeable
 
 		view.getWorkingArea().setVisible( true );
 
-		setBounds(20, 20, 800, 600);
-		setTitle("Halcyon");
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter()
+		setBounds( 20, 20, 800, 600 );
+		setTitle( "Halcyon" );
+		setDefaultCloseOperation( WindowConstants.DO_NOTHING_ON_CLOSE );
+		addWindowListener( new WindowAdapter()
 		{
 			@Override
-			public void windowClosing( WindowEvent e ){
+			public void windowClosing( WindowEvent e )
+			{
 				close();
 			}
-		});
+		} );
 	}
 
 	/**

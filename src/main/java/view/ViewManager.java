@@ -15,7 +15,7 @@ import model.ObservableCollectionListener;
 import window.ConfigWindow;
 import window.ConsoleInterface;
 import window.FxConfigWindow;
-import window.ToolBarInterface;
+import window.ToolbarInterface;
 import bibliothek.gui.dock.common.CControl;
 import bibliothek.gui.dock.common.CLocation;
 import bibliothek.gui.dock.common.CWorkingArea;
@@ -48,7 +48,7 @@ public class ViewManager
 
 	public ViewManager( CControl control, HalcyonNodeRepository nodes, HalcyonFrame.GUIBackend backend,
 											ObservableCollection<ConsoleInterface> consoles,
-											ObservableCollection<ToolBarInterface> toolbars)
+											ObservableCollection<ToolbarInterface> toolbars)
 	{
 		this.control = control;
 		this.nodes = nodes;
@@ -75,10 +75,10 @@ public class ViewManager
 			configWindow.setVisible( true );
 		}
 
-		toolbars.addListener(new ObservableCollectionListener<ToolBarInterface>()
+		toolbars.addListener(new ObservableCollectionListener<ToolbarInterface>()
 		{
 			@Override
-			public void itemAdded(ToolBarInterface item)
+			public void itemAdded( ToolbarInterface item)
 			{
 				control.addDockable( (DefaultSingleCDockable) item );
 				((DefaultSingleCDockable)item).setLocation( CLocation.base().normalWest( 0.3 ).north( 0.5 ) );
@@ -86,7 +86,7 @@ public class ViewManager
 			}
 
 			@Override
-			public void itemRemoved(ToolBarInterface item)
+			public void itemRemoved( ToolbarInterface item)
 			{
 
 			}

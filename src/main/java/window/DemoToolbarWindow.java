@@ -20,7 +20,7 @@ import view.ViewManager;
  * Control type Toolbar window
  */
 public class DemoToolbarWindow extends ControlWindowBase implements
-																												ToolBarInterface
+		ToolbarInterface
 {
 	final private HalcyonNodeRepository nodes;
 
