@@ -1,5 +1,18 @@
 package view;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.WindowConstants;
+
+import model.HalcyonNodeInterface;
+import model.HalcyonNodeRepository;
+import model.ObservableCollection;
+import window.ConsoleInterface;
+import window.ToolBarInterface;
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.extension.gui.dock.theme.eclipse.stack.tab.RectGradientPainter;
 import bibliothek.gui.DockController;
@@ -15,18 +28,6 @@ import bibliothek.gui.dock.facile.menu.RootMenuPiece;
 import bibliothek.gui.dock.facile.menu.SubmenuPiece;
 import bibliothek.gui.dock.station.stack.tab.DefaultTabContentFilter;
 import bibliothek.gui.dock.support.menu.SeparatingMenuPiece;
-import model.HalcyonNodeInterface;
-import model.HalcyonNodeRepository;
-import model.ObservableCollection;
-import window.ConsoleInterface;
-import window.ToolbarInterface;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.WindowConstants;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 /**
  * Halcyon Main Frame
@@ -38,7 +39,7 @@ public class HalcyonFrame
 	final private GUIBackend backend;
 
 	/** the icon of the application */
-	private ImageIcon icon;
+	private final ImageIcon icon;
 
 	private CControl control;
 
@@ -52,11 +53,11 @@ public class HalcyonFrame
 
 	private ViewManager view;
 
-	private HalcyonNodeRepository nodes;
+	private final HalcyonNodeRepository nodes;
 
 	final private ObservableCollection<ConsoleInterface> consoleWindows = new ObservableCollection<>();
 
-	final private ObservableCollection<ToolbarInterface> toolbarWindows = new ObservableCollection<>();
+	final private ObservableCollection<ToolBarInterface> toolbarWindows = new ObservableCollection<>();
 
 	public HalcyonFrame(GUIBackend backend)
 	{
@@ -73,7 +74,7 @@ public class HalcyonFrame
 		nodes.add( node );
 	}
 
-	public void addToolbar( ToolbarInterface toolbar )
+	public void addToolbar(ToolBarInterface toolbar)
 	{
 		toolbarWindows.add( toolbar );
 	}
@@ -96,16 +97,16 @@ public class HalcyonFrame
 	 */
 	private void buildMenu(){
 
-		RootMenuPiece settings = new RootMenuPiece( "View", false );
+		final RootMenuPiece settings = new RootMenuPiece( "View", false );
 		settings.add( new SingleCDockableListMenuPiece( control ));
 		settings.add( new SeparatingMenuPiece( new CLayoutChoiceMenuPiece( control, false ), true, false, false ));
 
-		RootMenuPiece layout = new RootMenuPiece( "Layout", false );
+		final RootMenuPiece layout = new RootMenuPiece( "Layout", false );
 		layout.add( new SubmenuPiece( "LookAndFeel", true, new CLookAndFeelMenuPiece( control )));
 		layout.add( new SubmenuPiece( "Layout", true, new CThemeMenuPiece( control )));
 		layout.add( CPreferenceMenuPiece.setup( control ));
 
-		JMenuBar menubar = new JMenuBar();
+		final JMenuBar menubar = new JMenuBar();
 		menubar.add( settings.getMenu() );
 		menubar.add( layout.getMenu() );
 
@@ -124,7 +125,7 @@ public class HalcyonFrame
 		DockController.disableCoreWarning();
 		control = new CControl( frame );
 
-		ThemeMap themes = control.getThemes();
+		final ThemeMap themes = control.getThemes();
 		themes.select( ThemeMap.KEY_ECLIPSE_THEME );
 
 		control.putProperty( EclipseTheme.TAB_PAINTER, RectGradientPainter.FACTORY );
