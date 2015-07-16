@@ -15,12 +15,11 @@ import bibliothek.gui.dock.facile.menu.RootMenuPiece;
 import bibliothek.gui.dock.facile.menu.SubmenuPiece;
 import bibliothek.gui.dock.station.stack.tab.DefaultTabContentFilter;
 import bibliothek.gui.dock.support.menu.SeparatingMenuPiece;
-import javafx.beans.value.ObservableObjectValue;
 import model.HalcyonNodeInterface;
 import model.HalcyonNodeRepository;
 import model.ObservableCollection;
 import window.ConsoleInterface;
-import window.ToolbarInterface;
+import window.ToolInterface;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -28,8 +27,6 @@ import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Halcyon Main Frame
@@ -59,7 +56,7 @@ public class HalcyonFrame
 
 	final private ObservableCollection<ConsoleInterface> consoleWindows = new ObservableCollection<>();
 
-	final private ObservableCollection<ToolbarInterface> toolbarWindows = new ObservableCollection<>();
+	final private ObservableCollection<ToolInterface> toolbarWindows = new ObservableCollection<>();
 
 	public HalcyonFrame(GUIBackend backend)
 	{
@@ -76,7 +73,7 @@ public class HalcyonFrame
 		nodes.add( node );
 	}
 
-	public void addToolbar( ToolbarInterface toolbar )
+	public void addToolbar( ToolInterface toolbar )
 	{
 		toolbarWindows.add( toolbar );
 	}

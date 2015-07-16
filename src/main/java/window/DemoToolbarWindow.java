@@ -18,17 +18,17 @@ import java.awt.FlowLayout;
 /**
  * Control type Toolbar window
  */
-public class ToolbarWindow extends ControlType
+public class DemoToolbarWindow extends ControlWindowBase implements ToolInterface
 {
 	final private HalcyonNodeRepository nodes;
 
-	public ToolbarWindow( final ViewManager manager )
+	public DemoToolbarWindow( final ViewManager manager )
 	{
 		super( "ToolbarDockable" );
 
 		nodes = manager.getNodes();
 
-		setTitleText( "ToolBar" );
+		setTitleText( "Demo Toolbar" );
 		setCloseable( false );
 		setMinimizable( false );
 		setMaximizable( false );
