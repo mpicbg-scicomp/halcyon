@@ -1,22 +1,26 @@
 package demo;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import model.FxChartHalcyonNode;
 import model.HalcyonNode;
 import model.HalcyonNodeType;
-import view.HalcyonFrame;
 
+import org.junit.Test;
+
+import view.HalcyonFrame;
 import window.DemoToolbarWindow;
 import window.MicroscopeStartStopToolbar;
 import window.StdOutputCaptureConsole;
 
-import org.junit.Test;
-
 public class HalcyonAPIDemo
 {
 	@Test
-	public void demo()
+	public void demo() throws InvocationTargetException,
+										InterruptedException
 	{
 		// TODO: support other type of devices
 		final HalcyonFrame lHalcyonFrame = new HalcyonFrame( HalcyonFrame.GUIBackend.Swing );
@@ -38,10 +42,20 @@ public class HalcyonAPIDemo
 		lHalcyonFrame.addToolbar( new MicroscopeStartStopToolbar() );
 		lHalcyonFrame.addConsole( new StdOutputCaptureConsole() );
 
-		lHalcyonFrame.show();
+		SwingUtilities.invokeAndWait(() -> {
+			lHalcyonFrame.setVisible(true);
+		});
+
+
+		while (lHalcyonFrame.isVisible())
+		{
+			Thread.sleep(100);
+		}
+		
 	}
 
-	public static void main( String[] args )
+	public static void main(String[] args) throws InvocationTargetException,
+																				InterruptedException
 	{
 		new HalcyonAPIDemo().demo();
 	}

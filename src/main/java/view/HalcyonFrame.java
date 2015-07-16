@@ -2,6 +2,7 @@ package view;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Closeable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -32,7 +33,7 @@ import bibliothek.gui.dock.support.menu.SeparatingMenuPiece;
 /**
  * Halcyon Main Frame
  */
-public class HalcyonFrame
+public class HalcyonFrame extends JFrame implements Closeable
 {
 	public enum GUIBackend { Swing, JavaFX }
 
@@ -43,8 +44,6 @@ public class HalcyonFrame
 
 	private CControl control;
 
-	/** the applications main frame */
-	private JFrame frame;
 
 	public ViewManager getViewManager()
 	{
@@ -85,14 +84,6 @@ public class HalcyonFrame
 	}
 
 	/**
-	 * show the frame
-	 */
-	public void show()
-	{
-		frame.setVisible( true );
-	}
-
-	/**
 	 * Builds the menubar and adds it to {@link #frame}
 	 */
 	private void buildMenu(){
@@ -110,7 +101,7 @@ public class HalcyonFrame
 		menubar.add( settings.getMenu() );
 		menubar.add( layout.getMenu() );
 
-		frame.setJMenuBar( menubar );
+		setJMenuBar(menubar);
 	}
 
 
@@ -118,12 +109,11 @@ public class HalcyonFrame
 	 * Creates the main frame and all {@link bibliothek.gui.DockStation}s.
 	 */
 	private void buildContent(){
-		frame = new JFrame();
-		frame.setTitle( "Hacyon" );
-		frame.setIconImage( icon.getImage() );
+		setTitle("Hacyon");
+		setIconImage(icon.getImage());
 
 		DockController.disableCoreWarning();
-		control = new CControl( frame );
+		control = new CControl(this);
 
 		final ThemeMap themes = control.getThemes();
 		themes.select( ThemeMap.KEY_ECLIPSE_THEME );
@@ -133,19 +123,20 @@ public class HalcyonFrame
 		control.putProperty( StackDockStation.TAB_CONTENT_FILTER,
 				new DefaultTabContentFilter( DefaultTabContentFilter.Behavior.ALL ) );
 
-		frame.getContentPane().add( control.getContentArea() );
+		getContentPane().add(control.getContentArea());
 
 		view = new ViewManager( control, nodes, backend, consoleWindows, toolbarWindows );
 
 		view.getWorkingArea().setVisible( true );
 
-		frame.setBounds( 20, 20, 800, 600 );
-		frame.setTitle( "Halcyon" );
-		frame.setDefaultCloseOperation( WindowConstants.DO_NOTHING_ON_CLOSE );
-		frame.addWindowListener( new WindowAdapter(){
+		setBounds(20, 20, 800, 600);
+		setTitle("Halcyon");
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter()
+		{
 			@Override
 			public void windowClosing( WindowEvent e ){
-				shutdown();
+				close();
 			}
 		});
 	}
@@ -153,8 +144,10 @@ public class HalcyonFrame
 	/**
 	 * Closes the graphical user interface and frees resources.
 	 */
-	public void shutdown(){
-		frame.dispose();
+	@Override
+	public void close()
+	{
+		dispose();
 		control.destroy();
 	}
 }
