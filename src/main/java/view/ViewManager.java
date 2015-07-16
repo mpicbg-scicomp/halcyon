@@ -20,7 +20,7 @@ import model.ObservableCollectionListener;
 import window.ConfigWindow;
 import window.ConsoleInterface;
 import window.FxConfigWindow;
-import window.ToolInterface;
+import window.ToolbarInterface;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -50,7 +50,7 @@ public class ViewManager
 	private CWorkingArea workingArea;
 
 	public ViewManager( CControl control, HalcyonNodeRepository nodes, HalcyonFrame.GUIBackend backend,
-			ObservableCollection<ConsoleInterface> consoles, ObservableCollection<ToolInterface> toolbars ){
+			ObservableCollection<ConsoleInterface> consoles, ObservableCollection<ToolbarInterface> toolbars ){
 		this.control = control;
 		this.nodes = nodes;
 
@@ -76,16 +76,16 @@ public class ViewManager
 			configWindow.setVisible( true );
 		}
 
-		toolbars.addListener( new ObservableCollectionListener<ToolInterface>()
+		toolbars.addListener( new ObservableCollectionListener<ToolbarInterface>()
 		{
-			@Override public void itemAdded( ToolInterface item )
+			@Override public void itemAdded( ToolbarInterface item )
 			{
 				control.addDockable( (DefaultSingleCDockable) item );
 				((DefaultSingleCDockable)item).setLocation( CLocation.base().normalWest( 0.3 ).north( 0.5 ) );
 				((DefaultSingleCDockable)item).setVisible( true );
 			}
 
-			@Override public void itemRemoved( ToolInterface item )
+			@Override public void itemRemoved( ToolbarInterface item )
 			{
 
 			}

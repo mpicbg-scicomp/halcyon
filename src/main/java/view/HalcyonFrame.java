@@ -19,7 +19,7 @@ import model.HalcyonNodeInterface;
 import model.HalcyonNodeRepository;
 import model.ObservableCollection;
 import window.ConsoleInterface;
-import window.ToolInterface;
+import window.ToolbarInterface;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -56,7 +56,7 @@ public class HalcyonFrame
 
 	final private ObservableCollection<ConsoleInterface> consoleWindows = new ObservableCollection<>();
 
-	final private ObservableCollection<ToolInterface> toolbarWindows = new ObservableCollection<>();
+	final private ObservableCollection<ToolbarInterface> toolbarWindows = new ObservableCollection<>();
 
 	public HalcyonFrame(GUIBackend backend)
 	{
@@ -73,7 +73,7 @@ public class HalcyonFrame
 		nodes.add( node );
 	}
 
-	public void addToolbar( ToolInterface toolbar )
+	public void addToolbar( ToolbarInterface toolbar )
 	{
 		toolbarWindows.add( toolbar );
 	}

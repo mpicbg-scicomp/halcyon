@@ -18,7 +18,7 @@ import java.awt.FlowLayout;
 /**
  * Control type Toolbar window
  */
-public class DemoToolbarWindow extends ControlWindowBase implements ToolInterface
+public class DemoToolbarWindow extends ControlWindowBase implements ToolbarInterface
 {
 	final private HalcyonNodeRepository nodes;
 
