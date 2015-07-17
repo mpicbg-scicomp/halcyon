@@ -1,4 +1,4 @@
-package window;
+package window.control;
 
 import bibliothek.gui.dock.common.DefaultSingleCDockable;
 

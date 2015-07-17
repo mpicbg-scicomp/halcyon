@@ -1,7 +1,7 @@
 package window.demo;
 
 import org.junit.Test;
-import window.StdOutputCaptureConsole;
+import window.console.StdOutputCaptureConsole;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;

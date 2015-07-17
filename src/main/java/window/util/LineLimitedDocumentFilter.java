@@ -1,4 +1,4 @@
-package window;
+package window.util;
 
 import javax.swing.JTextArea;
 import javax.swing.text.AttributeSet;

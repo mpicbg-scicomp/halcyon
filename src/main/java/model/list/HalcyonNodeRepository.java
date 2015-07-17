@@ -1,10 +1,12 @@
-package model;
+package model.list;
+
+import model.node.HalcyonNodeInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A modifiable set of {@link model.HalcyonNode}s.
+ * A modifiable set of {@link model.node.HalcyonNode}s.
  */
 public class HalcyonNodeRepository
 {
@@ -70,7 +72,7 @@ public class HalcyonNodeRepository
 	}
 
 	/**
-	 * Gets the first node with the {@link HalcyonNode#getName() name} <code>name</code>.
+	 * Gets the first node with the {@link model.node.HalcyonNode#getName() name} <code>name</code>.
 	 * @param name the name of the node
 	 * @return a node or <code>null</code>
 	 */

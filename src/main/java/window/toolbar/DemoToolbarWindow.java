@@ -1,4 +1,4 @@
-package window;
+package window.toolbar;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -10,11 +10,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import model.FxChartHalcyonNode;
-import model.HalcyonNode;
-import model.HalcyonNodeRepository;
-import model.HalcyonNodeType;
+import model.javafx.FxChartHalcyonNode;
+import model.node.HalcyonNode;
+import model.list.HalcyonNodeRepository;
+import model.node.HalcyonNodeType;
 import view.ViewManager;
+import window.control.ControlWindowBase;
 
 /**
  * Control type Toolbar window

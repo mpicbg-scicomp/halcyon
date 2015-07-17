@@ -5,16 +5,16 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import model.FxChartHalcyonNode;
-import model.HalcyonNode;
-import model.HalcyonNodeType;
+import model.javafx.FxChartHalcyonNode;
+import model.node.HalcyonNode;
+import model.node.HalcyonNodeType;
 
 import org.junit.Test;
 
 import view.HalcyonFrame;
-import window.DemoToolbarWindow;
-import window.MicroscopeStartStopToolbar;
-import window.StdOutputCaptureConsole;
+import window.toolbar.DemoToolbarWindow;
+import window.toolbar.MicroscopeStartStopToolbar;
+import window.console.StdOutputCaptureConsole;
 
 public class HalcyonAPIDemo
 {
@@ -52,9 +52,9 @@ public class HalcyonAPIDemo
 		lHalcyonFrame.addToolbar( new MicroscopeStartStopToolbar() );
 		lHalcyonFrame.addConsole( new StdOutputCaptureConsole() );
 
-		SwingUtilities.invokeAndWait(() -> {
-			lHalcyonFrame.setVisible(true);
-		});
+		SwingUtilities.invokeAndWait( () -> {
+			lHalcyonFrame.setVisible( true );
+		} );
 
 
 		while (lHalcyonFrame.isVisible())

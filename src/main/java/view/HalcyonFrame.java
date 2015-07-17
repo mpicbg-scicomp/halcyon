@@ -9,11 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
-import model.HalcyonNodeInterface;
-import model.HalcyonNodeRepository;
-import model.ObservableCollection;
-import window.ConsoleInterface;
-import window.ToolbarInterface;
+import model.node.HalcyonNodeInterface;
+import model.list.HalcyonNodeRepository;
+import model.list.ObservableCollection;
+import window.console.ConsoleInterface;
+import window.toolbar.ToolbarInterface;
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.extension.gui.dock.theme.eclipse.stack.tab.RectGradientPainter;
 import bibliothek.gui.DockController;

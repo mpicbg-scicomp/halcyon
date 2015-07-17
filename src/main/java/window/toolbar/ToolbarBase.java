@@ -1,4 +1,6 @@
-package window;
+package window.toolbar;
+
+import window.control.ControlWindowBase;
 
 /**
  * Toolbar base class

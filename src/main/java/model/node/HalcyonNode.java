@@ -1,4 +1,4 @@
-package model;
+package model.node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import model.property.PanelProperty;
+import model.provider.JPanelProvider;
 
 import javax.swing.JPanel;
 

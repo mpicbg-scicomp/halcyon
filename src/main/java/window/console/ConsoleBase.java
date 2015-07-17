@@ -1,4 +1,6 @@
-package window;
+package window.console;
+
+import window.control.ControlWindowBase;
 
 /**
  * Console Base class

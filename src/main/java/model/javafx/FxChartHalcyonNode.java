@@ -1,4 +1,4 @@
-package model;
+package model.javafx;
 
 import demo.javafx.SampleTableModel;
 import javafx.application.Platform;
@@ -9,6 +9,9 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import model.node.HalcyonNode;
+import model.node.HalcyonNodeType;
+import model.provider.JFXPanelProvider;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;

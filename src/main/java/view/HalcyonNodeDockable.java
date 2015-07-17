@@ -5,10 +5,10 @@ import bibliothek.gui.dock.common.MultipleCDockableFactory;
 import bibliothek.gui.dock.common.event.CDockableAdapter;
 import bibliothek.gui.dock.common.intern.CDockable;
 
-import model.HalcyonNodeInterface;
-import model.HalcyonNodeListener;
-import model.JFXPanelProvider;
-import model.JPanelProvider;
+import model.node.HalcyonNodeInterface;
+import model.node.HalcyonNodeListener;
+import model.provider.JFXPanelProvider;
+import model.provider.JPanelProvider;
 
 /**
  * Dockable Window for Halcyon Node

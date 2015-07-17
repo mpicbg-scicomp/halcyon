@@ -1,4 +1,4 @@
-package model;
+package model.provider;
 
 import javax.swing.JPanel;
 

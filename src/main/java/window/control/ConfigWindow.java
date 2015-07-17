@@ -1,11 +1,11 @@
-package window;
+package window.control;
 
 import bibliothek.gui.dock.common.action.CButton;
-import model.HalcyonNode;
-import model.HalcyonNodeInterface;
-import model.HalcyonNodeRepository;
-import model.HalcyonNodeRepositoryListener;
-import model.HalcyonNodeType;
+import model.node.HalcyonNode;
+import model.node.HalcyonNodeInterface;
+import model.list.HalcyonNodeRepository;
+import model.list.HalcyonNodeRepositoryListener;
+import model.node.HalcyonNodeType;
 import view.ViewManager;
 
 import javax.imageio.ImageIO;

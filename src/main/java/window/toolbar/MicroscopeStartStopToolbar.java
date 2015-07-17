@@ -1,4 +1,6 @@
-package window;
+package window.toolbar;
+
+import window.toolbar.ToolbarBase;
 
 import java.awt.BorderLayout;
 
@@ -21,9 +23,9 @@ public class MicroscopeStartStopToolbar extends ToolbarBase
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
 		JButton btn = new JButton("Start");
-		btn.addActionListener((e) -> {
-			System.out.println("START");
-		});
+		btn.addActionListener( ( e ) -> {
+			System.out.println( "START" );
+		} );
 
 		panel.add(btn);
 
@@ -34,7 +36,7 @@ public class MicroscopeStartStopToolbar extends ToolbarBase
 
 		panel.add(btn);
 
-		setLayout(new BorderLayout());
+		setLayout( new BorderLayout() );
 		add(new JScrollPane(panel), BorderLayout.CENTER);
 	}
 }

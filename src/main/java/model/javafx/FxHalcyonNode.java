@@ -1,10 +1,13 @@
-package model;
+package model.javafx;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import model.node.HalcyonNode;
+import model.node.HalcyonNodeType;
+import model.provider.JFXPanelProvider;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;

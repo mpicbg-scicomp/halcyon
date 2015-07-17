@@ -1,11 +1,11 @@
 package window;
 
 import javafx.embed.swing.JFXPanel;
-import model.HalcyonNode;
-import model.HalcyonNodeInterface;
-import model.HalcyonNodeRepository;
-import model.HalcyonNodeRepositoryListener;
-import model.JFXPanelProvider;
+import model.node.HalcyonNode;
+import model.node.HalcyonNodeInterface;
+import model.list.HalcyonNodeRepository;
+import model.list.HalcyonNodeRepositoryListener;
+import model.provider.JFXPanelProvider;
 import view.ViewManager;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -15,6 +15,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import window.control.ControlWindowBase;
 
 /**
  * Device Config JavaFX Window

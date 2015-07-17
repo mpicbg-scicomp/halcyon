@@ -1,4 +1,4 @@
-package model;
+package model.property;
 
 import com.sun.javafx.binding.ExpressionHelper;
 import javafx.beans.InvalidationListener;

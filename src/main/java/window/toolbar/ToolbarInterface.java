@@ -1,4 +1,4 @@
-package window;
+package window.toolbar;
 
 /**
  * Toolbar Interface

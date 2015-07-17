@@ -1,4 +1,4 @@
-package model;
+package model.node;
 
 /**
  * Halcyon Node Interface

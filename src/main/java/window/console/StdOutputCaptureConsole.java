@@ -1,6 +1,7 @@
-package window;
+package window.console;
 
-import model.JPanelProvider;
+import model.provider.JPanelProvider;
+import window.util.LineLimitedDocumentFilter;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

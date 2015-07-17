@@ -15,7 +15,7 @@ import bibliothek.gui.dock.facile.menu.RootMenuPiece;
 import bibliothek.gui.dock.facile.menu.SubmenuPiece;
 import bibliothek.gui.dock.station.stack.tab.DefaultTabContentFilter;
 import bibliothek.gui.dock.support.menu.SeparatingMenuPiece;
-import model.HalcyonNodeRepository;
+import model.list.HalcyonNodeRepository;
 import view.ViewManager;
 
 import javax.swing.ImageIcon;

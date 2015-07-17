@@ -1,7 +1,7 @@
-package model;
+package model.node;
 
 /**
- * An observer of a {@link model.HalcyonNode}.
+ * An observer of a {@link HalcyonNode}.
  */
 public interface HalcyonNodeListener
 {

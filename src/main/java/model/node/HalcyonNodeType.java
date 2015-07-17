@@ -1,4 +1,4 @@
-package model;
+package model.node;
 
 /**
  * HalcyonNode Type enumeration
