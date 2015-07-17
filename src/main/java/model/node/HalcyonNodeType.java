@@ -5,5 +5,5 @@ package model.node;
  */
 public enum HalcyonNodeType
 {
-	Camera, Laser, LightSheet, Stage, FilterWheel, AdaptiveOptics
+	Camera, Laser, LightSheet, Stage, FilterWheel, AdaptiveOptics, Other
 }

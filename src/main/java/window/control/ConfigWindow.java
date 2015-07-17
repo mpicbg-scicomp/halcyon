@@ -46,6 +46,7 @@ public class ConfigWindow extends ControlWindowBase
 	private DefaultMutableTreeNode lightsheet;
 	private DefaultMutableTreeNode filterWheel;
 	private DefaultMutableTreeNode adaptiveOptics;
+	private DefaultMutableTreeNode other;
 
 	private Icon rootIcon;
 	private Icon cameraIcon;
@@ -54,6 +55,7 @@ public class ConfigWindow extends ControlWindowBase
 	private Icon lightsheetIcon;
 	private Icon filterWheelIcon;
 	private Icon adaptiveOpticsIcon;
+	private Icon otherIcon;
 
 	private CButton camearaNew;
 
@@ -81,6 +83,7 @@ public class ConfigWindow extends ControlWindowBase
 			lightsheetIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/lightsheet_16.png" ) ) );
 			filterWheelIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/filterwheel_16.png" ) ) );
 			adaptiveOpticsIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/adaptiveoptics_16.png" ) ) );
+			otherIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/other_16.png" ) ) );
 		} catch (IOException ex)
 		{
 			ex.printStackTrace();
@@ -130,6 +133,7 @@ public class ConfigWindow extends ControlWindowBase
 		lightsheet = new DefaultMutableTreeNode( new DeviceNode( "Lighsheets", lightsheetIcon ) );
 		filterWheel = new DefaultMutableTreeNode( new DeviceNode( "Filter Wheels", filterWheelIcon ) );
 		adaptiveOptics = new DefaultMutableTreeNode( new DeviceNode( "Adaptive Optics", adaptiveOpticsIcon ) );
+		other = new DefaultMutableTreeNode( new DeviceNode( "Others", otherIcon ) );
 
 		TreePath rootPath = new TreePath( root );
 		root.add( camera );
@@ -138,6 +142,7 @@ public class ConfigWindow extends ControlWindowBase
 		root.add( lightsheet );
 		root.add( filterWheel );
 		root.add( adaptiveOptics );
+		root.add( other );
 
 		model = new DefaultTreeModel( root );
 		tree.setModel( model );
@@ -219,6 +224,11 @@ public class ConfigWindow extends ControlWindowBase
 						model.reload( adaptiveOptics );
 						tree.expandPath( rootPath.pathByAddingChild( adaptiveOptics ) );
 						break;
+					case Other:
+						other.add( nodeNew );
+						model.reload( other );
+						tree.expandPath( rootPath.pathByAddingChild( other ) );
+						break;
 				}
 			}
 
@@ -245,6 +255,9 @@ public class ConfigWindow extends ControlWindowBase
 						break;
 					case AdaptiveOptics:
 						adaptiveOptics.remove( nodeDeleted );
+						break;
+					case Other:
+						other.remove( nodeDeleted );
 						break;
 				}
 

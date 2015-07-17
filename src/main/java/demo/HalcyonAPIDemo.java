@@ -39,6 +39,8 @@ public class HalcyonAPIDemo
 
 		final HalcyonNode lAdaptiveOptics1 = HalcyonNode.wrap( "AdaptiveOptics-1", HalcyonNodeType.AdaptiveOptics, new JPanel() );
 
+		final HalcyonNode lOther1 = HalcyonNode.wrap( "Other-1", HalcyonNodeType.Other, new JPanel() );
+
 		lHalcyonFrame.addNode( lLaser1 );
 		lHalcyonFrame.addNode( lLaser2 );
 		lHalcyonFrame.addNode( lCamera );
@@ -46,6 +48,7 @@ public class HalcyonAPIDemo
 		lHalcyonFrame.addNode( lLightSheet1 );
 		lHalcyonFrame.addNode( lFilterWheel1 );
 		lHalcyonFrame.addNode( lAdaptiveOptics1 );
+		lHalcyonFrame.addNode( lOther1 );
 
 
 		lHalcyonFrame.addToolbar( new DemoToolbarWindow( lHalcyonFrame.getViewManager() ) );
