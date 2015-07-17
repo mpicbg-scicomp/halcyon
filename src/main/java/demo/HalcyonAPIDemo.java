@@ -33,10 +33,20 @@ public class HalcyonAPIDemo
 
 		final HalcyonNode lStage1 = HalcyonNode.wrap( "Stage-1", HalcyonNodeType.Stage, new JPanel() );
 
+		final HalcyonNode lLightSheet1 = HalcyonNode.wrap( "LightSheet-1", HalcyonNodeType.LightSheet, new JPanel() );
+
+		final HalcyonNode lFilterWheel1 = HalcyonNode.wrap( "FilterWheel-1", HalcyonNodeType.FilterWheel, new JPanel() );
+
+		final HalcyonNode lAdaptiveOptics1 = HalcyonNode.wrap( "AdaptiveOptics-1", HalcyonNodeType.AdaptiveOptics, new JPanel() );
+
 		lHalcyonFrame.addNode( lLaser1 );
 		lHalcyonFrame.addNode( lLaser2 );
 		lHalcyonFrame.addNode( lCamera );
-		lHalcyonFrame.addNode(lStage1);
+		lHalcyonFrame.addNode( lStage1 );
+		lHalcyonFrame.addNode( lLightSheet1 );
+		lHalcyonFrame.addNode( lFilterWheel1 );
+		lHalcyonFrame.addNode( lAdaptiveOptics1 );
+
 
 		lHalcyonFrame.addToolbar( new DemoToolbarWindow( lHalcyonFrame.getViewManager() ) );
 		lHalcyonFrame.addToolbar( new MicroscopeStartStopToolbar() );

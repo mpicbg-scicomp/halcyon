@@ -39,14 +39,21 @@ public class ConfigWindow extends ControlWindowBase
 
 	private DefaultTreeModel model;
 	private DefaultMutableTreeNode root;
+
 	private DefaultMutableTreeNode camera;
 	private DefaultMutableTreeNode laser;
 	private DefaultMutableTreeNode stage;
+	private DefaultMutableTreeNode lightsheet;
+	private DefaultMutableTreeNode filterWheel;
+	private DefaultMutableTreeNode adaptiveOptics;
 
 	private Icon rootIcon;
 	private Icon cameraIcon;
 	private Icon laserIcon;
 	private Icon stageIcon;
+	private Icon lightsheetIcon;
+	private Icon filterWheelIcon;
+	private Icon adaptiveOpticsIcon;
 
 	private CButton camearaNew;
 
@@ -71,6 +78,9 @@ public class ConfigWindow extends ControlWindowBase
 			cameraIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/camera_16.png" ) ) );
 			laserIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/laser_16.png" ) ) );
 			stageIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/stage_16.png" ) ) );
+			lightsheetIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/lightsheet_16.png" ) ) );
+			filterWheelIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/filterwheel_16.png" ) ) );
+			adaptiveOpticsIcon = new ImageIcon( ImageIO.read( getClass().getResourceAsStream( "/adaptiveoptics_16.png" ) ) );
 		} catch (IOException ex)
 		{
 			ex.printStackTrace();
@@ -117,11 +127,17 @@ public class ConfigWindow extends ControlWindowBase
 		camera = new DefaultMutableTreeNode( new DeviceNode( "Cameras", cameraIcon ) );
 		laser = new DefaultMutableTreeNode( new DeviceNode( "Lasers", laserIcon ) );
 		stage = new DefaultMutableTreeNode( new DeviceNode( "Stages", stageIcon ) );
+		lightsheet = new DefaultMutableTreeNode( new DeviceNode( "Lighsheets", lightsheetIcon ) );
+		filterWheel = new DefaultMutableTreeNode( new DeviceNode( "Filter Wheels", filterWheelIcon ) );
+		adaptiveOptics = new DefaultMutableTreeNode( new DeviceNode( "Adaptive Optics", adaptiveOpticsIcon ) );
 
 		TreePath rootPath = new TreePath( root );
 		root.add( camera );
 		root.add( laser );
 		root.add( stage );
+		root.add( lightsheet );
+		root.add( filterWheel );
+		root.add( adaptiveOptics );
 
 		model = new DefaultTreeModel( root );
 		tree.setModel( model );
@@ -187,6 +203,22 @@ public class ConfigWindow extends ControlWindowBase
 						stage.add( nodeNew );
 						model.reload( stage );
 						tree.expandPath( rootPath.pathByAddingChild( stage ) );
+						break;
+					case LightSheet:
+						lightsheet.add( nodeNew );
+						model.reload( lightsheet );
+						tree.expandPath( rootPath.pathByAddingChild( lightsheet ) );
+						break;
+					case FilterWheel:
+						filterWheel.add( nodeNew );
+						model.reload( filterWheel );
+						tree.expandPath( rootPath.pathByAddingChild( filterWheel ) );
+						break;
+					case AdaptiveOptics:
+						adaptiveOptics.add( nodeNew );
+						model.reload( adaptiveOptics );
+						tree.expandPath( rootPath.pathByAddingChild( adaptiveOptics ) );
+						break;
 				}
 			}
 
@@ -204,6 +236,15 @@ public class ConfigWindow extends ControlWindowBase
 						break;
 					case Stage:
 						stage.remove( nodeDeleted );
+						break;
+					case LightSheet:
+						lightsheet.remove( nodeDeleted );
+						break;
+					case FilterWheel:
+						filterWheel.remove( nodeDeleted );
+						break;
+					case AdaptiveOptics:
+						adaptiveOptics.remove( nodeDeleted );
 						break;
 				}
 
