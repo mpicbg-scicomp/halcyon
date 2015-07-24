@@ -1,4 +1,4 @@
-package window.toolbar;
+package window.demo;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -10,12 +10,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import model.javafx.FxChartHalcyonNode;
 import model.node.HalcyonNode;
 import model.list.HalcyonNodeRepository;
 import model.node.HalcyonNodeType;
 import view.ViewManager;
 import window.control.ControlWindowBase;
+import window.toolbar.ToolbarInterface;
 
 /**
  * Control type Toolbar window
@@ -75,7 +75,7 @@ public class DemoToolbarWindow extends ControlWindowBase implements
 
 		btn = new JButton( "Add Laser-2" );
 		btn.addActionListener( e -> {
-			final HalcyonNode n = new FxChartHalcyonNode( "Laser-2", HalcyonNodeType.Laser );
+			final HalcyonNode n = HalcyonNode.wrap( "Laser-2", HalcyonNodeType.Laser, new JPanel() );
 			nodes.add( n );
 		} );
 
