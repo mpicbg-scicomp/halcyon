@@ -56,12 +56,12 @@ public class HalcyonNodeDockable extends DefaultMultipleCDockable
 
 		this.node = node;
 
-		if( node instanceof JPanelProvider )
+		if( node instanceof JPanelProvider && null != ((JPanelProvider) node).getJPanel())
 		{
 			getContentPane().removeAll();
 			getContentPane().add( ((JPanelProvider) node).getJPanel() );
 		}
-		else if( node instanceof JFXPanelProvider )
+		else if( node instanceof JFXPanelProvider && null != ((JFXPanelProvider) node).getJFXPanel())
 		{
 			getContentPane().removeAll();
 			getContentPane().add( ((JFXPanelProvider) node).getJFXPanel() );
