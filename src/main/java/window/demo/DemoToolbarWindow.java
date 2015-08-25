@@ -1,6 +1,7 @@
 package window.demo;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.BoxLayout;
@@ -16,6 +17,7 @@ import model.node.HalcyonNodeType;
 import view.ViewManager;
 import window.control.ControlWindowBase;
 import window.toolbar.ToolbarInterface;
+import window.util.WavelengthColors;
 
 /**
  * Control type Toolbar window
@@ -103,6 +105,11 @@ public class DemoToolbarWindow extends ControlWindowBase implements
 
 		} );
 
+		panel.add( btn );
+
+		// Wavelength color check
+		btn = new JButton( "488" );
+		btn.setForeground( WavelengthColors.getWavelengthColor( "488" ) );
 		panel.add( btn );
 
 		setLayout( new BorderLayout() );
