@@ -7,6 +7,11 @@ import java.awt.Color;
  */
 public class WavelengthColors
 {
+	public static String getWebColorString( String wavelength )
+	{
+		return Resources.getString( wavelength );
+	}
+
 	public static Color getWavelengthColor( String wavelength )
 	{
 		return Color.decode( Resources.getString( wavelength ) );
