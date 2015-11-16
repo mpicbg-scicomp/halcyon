@@ -95,7 +95,7 @@ if (JavaVersion.current().isJava8Compatible()) {
 
 
 group = 'net.halcyon'
-version = '0.1.0'
+version = '0.1.1'
 
 artifacts
 {
@@ -129,13 +129,13 @@ if(hasProperty('bintray_user') && hasProperty('bintray_key') )
 			userOrg = 'rtlib' //An optional organization name when the repo belongs to one of the user's orgs
 			name = 'Halcyon'
 			desc = 'Halcyon'
-			websiteUrl = 'https://github.com/RTlib/CoreMem'
-			issueTrackerUrl = 'https://github.com/RTlib/CoreMem/issues'
-			vcsUrl = 'https://github.com/RTlib/CoreMem.git'
-			//licenses = ['Apache-2.0']
+			websiteUrl = 'https://github.com/RTlib/Halcyon'
+			issueTrackerUrl = 'https://github.com/RTlib/Halcyon/issues'
+			vcsUrl = 'https://github.com/RTlib/Halcyon.git'
+			licenses = ['GPL-3.0']
 			labels = [
+				'Halcyon',
 				'GUI',
-				'Multiple Document Interface',
 				'Microscope',
 				'Devices'
 			]
@@ -146,7 +146,7 @@ if(hasProperty('bintray_user') && hasProperty('bintray_key') )
 				name = project.version //Bintray logical version name
 				desc = '.'
 				released  = new java.util.Date()
-				vcsTag = project.version
+				vcsTag = 'v' + project.version
 				/*attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin'] //Optional version-level attributes
 				 gpg {
 				 sign = false //Determines whether to GPG sign the files. The default is false
