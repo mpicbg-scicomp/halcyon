@@ -66,9 +66,58 @@ public class HalcyonAPIDemo
 		
 	}
 
+	@Test
+	public void demoJFX() throws InvocationTargetException,
+			InterruptedException
+	{
+		// TODO: support other type of devices
+		final HalcyonFrame lHalcyonFrame = new HalcyonFrame( HalcyonFrame.GUIBackend.JavaFX );
+
+		final HalcyonNode lLaser1 = HalcyonNode.wrap( "Laser-1", HalcyonNodeType.Laser, null );
+
+		final HalcyonNode lLaser2 = HalcyonNode.wrap( "Laser-2", HalcyonNodeType.Laser, null );
+
+		final HalcyonNode lCamera = HalcyonNode.wrap( "Camera-1", HalcyonNodeType.Camera, null );
+
+		final HalcyonNode lStage1 = HalcyonNode.wrap( "Stage-1", HalcyonNodeType.Stage, null );
+
+		final HalcyonNode lLightSheet1 = HalcyonNode.wrap( "LightSheet-1", HalcyonNodeType.LightSheet, null );
+
+		final HalcyonNode lFilterWheel1 = HalcyonNode.wrap( "FilterWheel-1", HalcyonNodeType.FilterWheel, null );
+
+		final HalcyonNode lAdaptiveOptics1 = HalcyonNode.wrap( "AdaptiveOptics-1", HalcyonNodeType.AdaptiveOptics, null );
+
+		final HalcyonNode lOther1 = HalcyonNode.wrap( "Other-1", HalcyonNodeType.Other, new JPanel() );
+
+		lHalcyonFrame.addNode( lLaser1 );
+		lHalcyonFrame.addNode( lLaser2 );
+		lHalcyonFrame.addNode( lCamera );
+		lHalcyonFrame.addNode( lStage1 );
+		lHalcyonFrame.addNode( lLightSheet1 );
+		lHalcyonFrame.addNode( lFilterWheel1 );
+		lHalcyonFrame.addNode( lAdaptiveOptics1 );
+		lHalcyonFrame.addNode( lOther1 );
+
+
+		lHalcyonFrame.addToolbar( new DemoToolbarWindow( lHalcyonFrame.getViewManager() ) );
+		lHalcyonFrame.addToolbar( new MicroscopeStartStopToolbar() );
+		lHalcyonFrame.addConsole( new StdOutputCaptureConsole() );
+
+		SwingUtilities.invokeAndWait( () -> {
+			lHalcyonFrame.setVisible( true );
+		} );
+
+
+		while (lHalcyonFrame.isVisible())
+		{
+			Thread.sleep(100);
+		}
+
+	}
+
 	public static void main(String[] args) throws InvocationTargetException,
 																				InterruptedException
 	{
-		new HalcyonAPIDemo().demo();
+		new HalcyonAPIDemo().demoJFX();
 	}
 }
