@@ -5,6 +5,7 @@ import model.node.HalcyonNode;
 import model.node.HalcyonNodeInterface;
 import model.list.HalcyonNodeRepository;
 import model.list.HalcyonNodeRepositoryListener;
+import model.node.HalcyonNodeType;
 import model.provider.JFXPanelProvider;
 import view.ViewManager;
 import javafx.application.Platform;
@@ -16,25 +17,22 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import window.control.ControlWindowBase;
+import window.util.Resources;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.HashMap;
 
 /**
  * Device Config JavaFX Window
  */
 public class FxConfigWindow extends ControlWindowBase implements JFXPanelProvider
 {
+	final private HashMap<String, TreeItem<TreeNode>> subNodes = new HashMap<>();
 	final private HalcyonNodeRepository nodes;
 	JFXPanel fxPanel;
 
 	private final Node rootIcon = new ImageView(
 			new Image( getClass().getResourceAsStream( "/microscope_16.png" ) )
-	);
-
-	private final Node cameraIcon = new ImageView(
-			new Image( getClass().getResourceAsStream( "/camera_16.png" ) )
-	);
-
-	private final Node laserIcon = new ImageView(
-			new Image( getClass().getResourceAsStream( "/laser_16.png" ) )
 	);
 
 	public FxConfigWindow( final ViewManager manager )
@@ -56,42 +54,28 @@ public class FxConfigWindow extends ControlWindowBase implements JFXPanelProvide
 		TreeItem<TreeNode> rootItem = new TreeItem<>( new TreeNode( "Microscopy" ), rootIcon );
 		rootItem.setExpanded( true );
 
-		TreeItem<TreeNode> camera = new TreeItem<>( new TreeNode( "Camera" ), cameraIcon );
-		camera.setExpanded( true );
-		TreeItem<TreeNode> laser = new TreeItem<>( new TreeNode( "Laser" ), laserIcon );
-		laser.setExpanded( true );
+		for (HalcyonNodeType type : HalcyonNodeType.values())
+		{
+			String iconName = Resources.getString( type.name().toLowerCase() + ".icon" );
+			Node icon = new ImageView( new Image( getClass().getResourceAsStream( iconName )));
 
-		rootItem.getChildren().add( camera );
-		rootItem.getChildren().add( laser );
+			TreeItem<TreeNode> node = new TreeItem<>( new TreeNode( type.name() ), icon );
+			node.setExpanded( true );
+			subNodes.put( type.name(), node);
+			rootItem.getChildren().add( node );
+		}
 
 		nodes.addListener( new HalcyonNodeRepositoryListener()
 		{
 			@Override public void nodeAdded( HalcyonNodeInterface node )
 			{
 				TreeItem<TreeNode> item = new TreeItem<>( new TreeNode( node.getName(), node ) );
-
-				switch (node.getType())
-				{
-					case Camera:
-						camera.getChildren().add( item );
-						break;
-					case Laser:
-						laser.getChildren().add( item );
-						break;
-				}
+				subNodes.get(node.getType().name()).getChildren().add( item );
 			}
 
 			@Override public void nodeRemoved( HalcyonNodeInterface node )
 			{
-				switch (node.getType())
-				{
-					case Camera:
-						camera.getChildren().remove( node.getName() );
-						break;
-					case Laser:
-						laser.getChildren().remove( node.getName() );
-						break;
-				}
+				subNodes.get(node.getType().name()).getChildren().remove( node.getName() );
 			}
 		} );
 
