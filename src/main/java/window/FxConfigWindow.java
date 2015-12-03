@@ -32,7 +32,7 @@ public class FxConfigWindow extends ControlWindowBase implements JFXPanelProvide
 	JFXPanel fxPanel;
 
 	private final Node rootIcon = new ImageView(
-			new Image( getClass().getResourceAsStream( "/microscope_16.png" ) )
+			new Image( getClass().getResourceAsStream( Resources.getString( "root.icon" ) ) )
 	);
 
 	public FxConfigWindow( final ViewManager manager )
