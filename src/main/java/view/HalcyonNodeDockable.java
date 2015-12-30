@@ -1,19 +1,13 @@
 package view;
 
-import bibliothek.gui.dock.common.DefaultMultipleCDockable;
-import bibliothek.gui.dock.common.MultipleCDockableFactory;
-import bibliothek.gui.dock.common.event.CDockableAdapter;
-import bibliothek.gui.dock.common.intern.CDockable;
-
 import model.node.HalcyonNodeInterface;
 import model.node.HalcyonNodeListener;
-import model.provider.JFXPanelProvider;
-import model.provider.JPanelProvider;
+import org.dockfx.DockNode;
 
 /**
  * Dockable Window for Halcyon Node
  */
-public class HalcyonNodeDockable extends DefaultMultipleCDockable
+public class HalcyonNodeDockable extends DockNode
 {
 	/** the current node */
 	private HalcyonNodeInterface node;
@@ -22,32 +16,20 @@ public class HalcyonNodeDockable extends DefaultMultipleCDockable
 
 	};
 
-	public HalcyonNodeDockable( MultipleCDockableFactory<HalcyonNodeDockable,?> factory)
+	public HalcyonNodeDockable( HalcyonNodeInterface node )
 	{
-		super( factory );
+		super( node.getPanel() );
+		getDockTitleBar().setVisible( false );
 
-		setTitleText( "Page" );
-		setCloseable( true );
-		setMinimizable( true );
-		setMaximizable( true );
-		setExternalizable( true );
-		setRemoveOnClose( true );
+		if( isVisible() && getNode() != null )
+			getNode().removeListener( listener );
 
-		addCDockableStateListener( new CDockableAdapter(){
-			@Override
-			public void visibilityChanged( CDockable dockable ){
-				HalcyonNodeInterface node = getNode();
-				if( node != null ){
-					if( isVisible() ){
-						node.addListener( listener );
-						listener.nodeChanged();
-					}
-					else{
-						node.removeListener( listener );
-					}
-				}
-			}
-		});
+		this.node = node;
+
+		this.setTitle( node == null ? "" : node.getName() );
+
+		if( isVisible() && node != null )
+			node.addListener( listener );
 	}
 
 	public void setNode( HalcyonNodeInterface node ){
@@ -56,18 +38,9 @@ public class HalcyonNodeDockable extends DefaultMultipleCDockable
 
 		this.node = node;
 
-		if( node instanceof JPanelProvider && null != ((JPanelProvider) node).getJPanel())
-		{
-			getContentPane().removeAll();
-			getContentPane().add( ((JPanelProvider) node).getJPanel() );
-		}
-		else if( node instanceof JFXPanelProvider && null != ((JFXPanelProvider) node).getJFXPanel())
-		{
-			getContentPane().removeAll();
-			getContentPane().add( ((JFXPanelProvider) node).getJFXPanel() );
-		}
+		this.setContents( node.getPanel() );
 
-		setTitleText( node == null ? "" : node.getName() );
+		this.setTitle( node == null ? "" : node.getName() );
 
 		if( isVisible() && node != null )
 			node.addListener( listener );

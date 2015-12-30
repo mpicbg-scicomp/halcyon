@@ -6,10 +6,8 @@ import java.util.List;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import model.property.PanelProperty;
-import model.provider.JPanelProvider;
-
-import javax.swing.JPanel;
+import javafx.scene.Node;
+import model.property.NodeProperty;
 
 /**
  * Halcyon Node
@@ -17,10 +15,10 @@ import javax.swing.JPanel;
  * TODO: this should in interface, rename HalcyonNodeBase TODO: add static
  * methdos to quickly wrap panels.
  */
-public class HalcyonNode implements HalcyonNodeInterface, JPanelProvider
+public class HalcyonNode implements HalcyonNodeInterface
 {
 	// TODO: finish.
-	public static HalcyonNode wrap(final String name, final HalcyonNodeType type, final JPanel panel )
+	public static HalcyonNode wrap(final String name, final HalcyonNodeType type, final Node panel )
 	{
 		return new HalcyonNode( name, type, panel );
 	}
@@ -36,27 +34,27 @@ public class HalcyonNode implements HalcyonNodeInterface, JPanelProvider
 	private final StringProperty name = new SimpleStringProperty();
 
 	@Override
-	public JPanel getJPanel()
+	public Node getPanel()
 	{
 		if(panel == null) return null;
 
 		return panel.get();
 	}
 
-	public PanelProperty panelProperty()
+	public NodeProperty panelProperty()
 	{
 		return panel;
 	}
 
-	public void setPanel( JPanel panel )
+	public void setPanel( Node panel )
 	{
 		if(this.panel == null)
-			this.panel = new PanelProperty( null, "JPanel" );
+			this.panel = new NodeProperty( null, "Content" );
 
 		this.panel.set( panel );
 	}
 
-	private PanelProperty panel = null;
+	private NodeProperty panel = null;
 
 	private final ReadOnlyBooleanWrapper existPanel = new ReadOnlyBooleanWrapper();
 
@@ -79,7 +77,7 @@ public class HalcyonNode implements HalcyonNodeInterface, JPanelProvider
 		this.type = type;
 	}
 
-	public HalcyonNode( String name, HalcyonNodeType type, JPanel panel )
+	public HalcyonNode( String name, HalcyonNodeType type, Node panel )
 	{
 		this.name.setValue( name );
 		this.type = type;

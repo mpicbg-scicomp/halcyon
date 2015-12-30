@@ -1,13 +1,7 @@
 package window.toolbar;
 
-import window.toolbar.ToolbarBase;
-
-import java.awt.BorderLayout;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 
 /**
  * Microscope Start/Stop toolbar
@@ -16,27 +10,27 @@ public class MicroscopeStartStopToolbar extends ToolbarBase
 {
 	public MicroscopeStartStopToolbar()
 	{
-		super("StartStopToolbar");
-		setTitleText("Start/Stop");
+		super( new VBox() );
+		getDockTitleBar().setVisible( false );
 
-		final JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		setTitle( "Start/Stop" );
 
-		JButton btn = new JButton("Start");
-		btn.addActionListener( ( e ) -> {
+		final VBox panel = (VBox) getContents();
+
+		Button btn = new Button("Start");
+		btn.setOnAction( ( e ) -> {
 			System.out.println( "START" );
 		} );
 
-		panel.add(btn);
+		panel.getChildren().add( btn );
 
-		btn = new JButton("Stop");
-		btn.addActionListener((e) -> {
-			System.out.println("START");
-		});
+		btn = new Button("Stop");
+		btn.setOnAction( ( e ) -> {
+			System.out.println( "STOP" );
+		} );
 
-		panel.add(btn);
+		panel.getChildren().add( btn );
 
-		setLayout( new BorderLayout() );
-		add(new JScrollPane(panel), BorderLayout.CENTER);
+		setContents( panel );
 	}
 }

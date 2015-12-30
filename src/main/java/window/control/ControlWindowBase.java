@@ -1,20 +1,16 @@
 package window.control;
 
-import bibliothek.gui.dock.common.DefaultSingleCDockable;
+import javafx.scene.Node;
+import org.dockfx.DockNode;
 
 /**
  * Basic Control type Window for tools, which will be overridden by inherited
  * class
  */
-public abstract class ControlWindowBase extends DefaultSingleCDockable implements ControlWindowInterface
+public abstract class ControlWindowBase extends DockNode implements ControlWindowInterface
 {
-	public ControlWindowBase( String name )
+	public ControlWindowBase( Node n )
 	{
-		super( name );
-	}
-
-	@Override public String toString()
-	{
-		return this.getUniqueId();
+		super( n );
 	}
 }

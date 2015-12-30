@@ -1,5 +1,7 @@
 package model.node;
 
+import javafx.scene.Node;
+
 /**
  * Halcyon Node Interface
  */
@@ -20,4 +22,11 @@ public interface HalcyonNodeInterface
 	 * @param listener the listener to remove
 	 */
 	public void removeListener( HalcyonNodeListener listener );
+
+	/**
+	 * Gets JavaFX panel.
+	 *
+	 * @return the JavaFX panel
+	 */
+	public Node getPanel();
 }

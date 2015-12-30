@@ -10,34 +10,34 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WritableObjectValue;
+import javafx.scene.Node;
 
-import javax.swing.JPanel;
 import java.lang.ref.WeakReference;
 
 /**
- * PanelProperty for holding panel
+ * PanelProperty for holding node
  */
-public class PanelProperty implements ObservableObjectValue< JPanel >, WritableObjectValue< JPanel >, Property< JPanel >
+public class NodeProperty implements ObservableObjectValue< Node >, WritableObjectValue< Node >, Property< Node >
 {
 	private static final Object DEFAULT_BEAN = null;
 	private static final String DEFAULT_NAME = "";
 
-	private JPanel panel;
+	private Node node;
 	private final Object bean;
 	private final String name;
 
-	private ObservableValue< ? extends JPanel > observable = null;
+	private ObservableValue< ? extends Node > observable = null;
 	private InvalidationListener listener = null;
 	private boolean valid = true;
-	private ExpressionHelper< JPanel > helper = null;
+	private ExpressionHelper< Node > helper = null;
 
-	public PanelProperty( Object bean, String name )
+	public NodeProperty( Object bean, String name )
 	{
 		this.bean = bean;
 		this.name = ( name == null ) ? DEFAULT_NAME : name;
 	}
 
-	@Override public void bind( ObservableValue< ? extends JPanel > newObservable )
+	@Override public void bind( ObservableValue< ? extends Node > newObservable )
 	{
 		if ( newObservable == null )
 		{
@@ -60,7 +60,7 @@ public class PanelProperty implements ObservableObjectValue< JPanel >, WritableO
 	{
 		if ( observable != null )
 		{
-			panel = observable.getValue();
+			node = observable.getValue();
 			observable.removeListener( listener );
 			observable = null;
 		}
@@ -71,12 +71,12 @@ public class PanelProperty implements ObservableObjectValue< JPanel >, WritableO
 		return observable != null;
 	}
 
-	@Override public void bindBidirectional( Property< JPanel > other )
+	@Override public void bindBidirectional( Property< Node > other )
 	{
 		Bindings.bindBidirectional( this, other );
 	}
 
-	@Override public void unbindBidirectional( Property< JPanel > other )
+	@Override public void unbindBidirectional( Property< Node > other )
 	{
 		Bindings.unbindBidirectional( this, other );
 	}
@@ -91,22 +91,22 @@ public class PanelProperty implements ObservableObjectValue< JPanel >, WritableO
 		return name;
 	}
 
-	@Override public void addListener( ChangeListener< ? super JPanel > listener )
+	@Override public void addListener( ChangeListener< ? super Node > listener )
 	{
 		helper = ExpressionHelper.addListener( helper, this, listener );
 	}
 
-	@Override public void removeListener( ChangeListener< ? super JPanel > listener )
+	@Override public void removeListener( ChangeListener< ? super Node > listener )
 	{
 		helper = ExpressionHelper.removeListener( helper, listener );
 	}
 
-	@Override public JPanel getValue()
+	@Override public Node getValue()
 	{
 		return get();
 	}
 
-	@Override public void setValue( JPanel newValue )
+	@Override public void setValue( Node newValue )
 	{
 		set( newValue );
 	}
@@ -127,7 +127,7 @@ public class PanelProperty implements ObservableObjectValue< JPanel >, WritableO
 		final Object bean = getBean();
 		final String name = getName();
 		final StringBuilder result = new StringBuilder(
-				"StringProperty [" );
+				"NodeProperty [" );
 		if ( bean != null )
 		{
 			result.append( "bean: " ).append( bean ).append( ", " );
@@ -160,28 +160,28 @@ public class PanelProperty implements ObservableObjectValue< JPanel >, WritableO
 
 	}
 
-	@Override public JPanel get()
+	@Override public Node get()
 	{
 		valid = true;
-		return observable == null ? panel : observable.getValue();
+		return observable == null ? node : observable.getValue();
 	}
 
-	@Override public void set( JPanel newValue )
+	@Override public void set( Node newValue )
 	{
 		if ( isBound() )
 		{
 			throw new java.lang.RuntimeException( "A bound value cannot be set." );
 		}
-		if ( ( panel == null ) ? newValue != null : !panel.equals( newValue ) )
+		if ( ( node == null ) ? newValue != null : !node.equals( newValue ) )
 		{
-			panel = newValue;
+			node = newValue;
 			markInvalid();
 		}
 	}
 
 	public BooleanBinding isNotEmpty()
 	{
-		PanelProperty currentPanel = this;
+		NodeProperty currentPanel = this;
 
 		return new BooleanBinding()
 		{
@@ -195,9 +195,9 @@ public class PanelProperty implements ObservableObjectValue< JPanel >, WritableO
 	private static class Listener implements InvalidationListener
 	{
 
-		private final WeakReference< PanelProperty > wref;
+		private final WeakReference<NodeProperty> wref;
 
-		public Listener( PanelProperty ref )
+		public Listener( NodeProperty ref )
 		{
 			this.wref = new WeakReference<>( ref );
 		}
@@ -205,7 +205,7 @@ public class PanelProperty implements ObservableObjectValue< JPanel >, WritableO
 		@Override
 		public void invalidated( Observable observable )
 		{
-			PanelProperty ref = wref.get();
+			NodeProperty ref = wref.get();
 			if ( ref == null )
 			{
 				observable.removeListener( this );

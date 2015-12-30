@@ -1,5 +1,6 @@
 package window.toolbar;
 
+import javafx.scene.Node;
 import window.control.ControlWindowBase;
 
 /**
@@ -8,8 +9,8 @@ import window.control.ControlWindowBase;
 public abstract class ToolbarBase extends ControlWindowBase implements
 		ToolbarInterface
 {
-	public ToolbarBase( String name )
+	public ToolbarBase( Node node )
 	{
-		super( name );
+		super( node );
 	}
 }

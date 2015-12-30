@@ -1,20 +1,16 @@
 package window.demo;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 import model.node.HalcyonNode;
 import model.list.HalcyonNodeRepository;
 import model.node.HalcyonNodeType;
+
 import view.ViewManager;
+
 import window.control.ControlWindowBase;
 import window.toolbar.ToolbarInterface;
 import window.util.WavelengthColors;
@@ -29,90 +25,84 @@ public class DemoToolbarWindow extends ControlWindowBase implements
 
 	public DemoToolbarWindow( final ViewManager manager )
 	{
-		super( "ToolbarDockable" );
+		super( new VBox() );
+		getDockTitleBar().setVisible( false );
 
 		nodes = manager.getNodes();
 
-		setTitleText( "Demo Toolbar" );
-		setCloseable( false );
-		setMinimizable( false );
-		setMaximizable( false );
+		setTitle( "Demo Toolbar" );
 
-		final JPanel panel = new JPanel();
-		panel.setLayout( new BoxLayout( panel, BoxLayout.PAGE_AXIS ) );
+		final VBox box = (VBox) getContents();
 
-		JButton btn = new JButton( "Add Camera-1" );
-		btn.addActionListener( e -> {
+		Button btn = new Button( "Add Camera-1" );
+		btn.setOnAction( e -> {
 			final HalcyonNode n = new HalcyonNode( "Camera-1", HalcyonNodeType.Camera );
-			final JPanel cameraPanel = new JPanel( new FlowLayout() );
+			final VBox cameraPanel = new VBox();
 
-			cameraPanel.add( new JButton( "Test Button 1" ) );
-			cameraPanel.add( new JButton( "Test Button 2" ) );
-			cameraPanel.add( new JButton( "Test Button 3" ) );
-			cameraPanel.add( new JButton( "Test Button 4" ) );
+			cameraPanel.getChildren().add( new Button( "Test Button 1" ) );
+			cameraPanel.getChildren().add( new Button( "Test Button 2" ) );
+			cameraPanel.getChildren().add( new Button( "Test Button 3" ) );
+			cameraPanel.getChildren().add( new Button( "Test Button 4" ) );
 
 			n.setPanel( cameraPanel );
 
 			nodes.add( n );
 		} );
 
-		panel.add( btn );
+		box.getChildren().add( btn );
 
-		btn = new JButton( "Add Laser-1" );
-		btn.addActionListener( e -> {
+		btn = new Button( "Add Laser-1" );
+		btn.setOnAction( e -> {
 			final HalcyonNode n = new HalcyonNode( "Laser-1", HalcyonNodeType.Laser );
-			final JPanel laserPanel = new JPanel( new FlowLayout() );
+			final VBox laserPanel = new VBox();
 
-			laserPanel.add( new JLabel( "Label1" ) );
-			laserPanel.add( new JTextField( "TextField1" ) );
-			laserPanel.add( new JLabel( "Label2" ) );
-			laserPanel.add( new JTextField( "TextField2" ) );
+			laserPanel.getChildren().add( new Label( "Label1" ) );
+			laserPanel.getChildren().add( new TextField( "TextField1" ) );
+			laserPanel.getChildren().add( new Label( "Label2" ) );
+			laserPanel.getChildren().add( new TextField( "TextField2" ) );
 
 			n.setPanel( laserPanel );
 
 			nodes.add( n );
 		} );
 
-		panel.add( btn );
+		box.getChildren().add( btn );
 
-		btn = new JButton( "Add Laser-2" );
-		btn.addActionListener( e -> {
-			final HalcyonNode n = HalcyonNode.wrap( "Laser-2", HalcyonNodeType.Laser, new JPanel() );
+		btn = new Button( "Add Laser-2" );
+		btn.setOnAction( e -> {
+			final HalcyonNode n = HalcyonNode.wrap( "Laser-2", HalcyonNodeType.Laser, new VBox(  ) );
 			nodes.add( n );
 		} );
 
-		panel.add( btn );
+		box.getChildren().add( btn );
 
-		btn = new JButton( "Test Std Out" );
-		btn.addActionListener( e -> {
+		btn = new Button( "Test Std Out" );
+		btn.setOnAction( e -> {
 
-			for(int i = 0; i < 2000; i++)
+			for (int i = 0; i < 2000; i++)
 			{
-				System.out.println("" + i + " " + "Console Test");
+				System.out.println( "" + i + " " + "Console Test" );
 			}
 
 		} );
 
-		panel.add( btn );
+		box.getChildren().add( btn );
 
-		btn = new JButton( "Test Std Err" );
-		btn.addActionListener( e -> {
+		btn = new Button( "Test Std Err" );
+		btn.setOnAction( e -> {
 
-			for(int i = 0; i < 2000; i++)
+			for (int i = 0; i < 2000; i++)
 			{
-				System.err.println("" + i + " " + "Console Test");
+				System.err.println( "" + i + " " + "Console Test" );
 			}
 
 		} );
 
-		panel.add( btn );
+		box.getChildren().add( btn );
 
 		// Wavelength color check
-		btn = new JButton( "488" );
-		btn.setForeground( WavelengthColors.getWavelengthColor( "488" ) );
-		panel.add( btn );
-
-		setLayout( new BorderLayout() );
-		add( new JScrollPane( panel ), BorderLayout.CENTER );
+		btn = new Button( "488" );
+		btn.setStyle( "-fx-background-color: " + WavelengthColors.getWebColorString( "488" ) );
+		box.getChildren().add( btn );
 	}
 }

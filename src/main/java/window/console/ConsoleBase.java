@@ -1,5 +1,6 @@
 package window.console;
 
+import javafx.scene.Node;
 import window.control.ControlWindowBase;
 
 /**
@@ -7,8 +8,8 @@ import window.control.ControlWindowBase;
  */
 public abstract class ConsoleBase extends ControlWindowBase implements ConsoleInterface
 {
-	public ConsoleBase( String name )
+	public ConsoleBase( Node n )
 	{
-		super( name );
+		super( n );
 	}
 }
