@@ -88,7 +88,18 @@ public class HalcyonNode implements HalcyonNodeInterface
 	@Override
 	public String toString() { return name.getValue().toString(); }
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		return this.name.getValue() == ((HalcyonNode) obj).getName();
+	}
 
+	@Override
+	public int hashCode() {
+		return this.name.getValue().hashCode();
+	}
 
 	/**
 	 * Adds an observer to this Halcyon node.

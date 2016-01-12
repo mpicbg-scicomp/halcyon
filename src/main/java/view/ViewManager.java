@@ -3,6 +3,7 @@ package view;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -50,22 +51,32 @@ public class ViewManager
 		this.dockPane = dockPane;
 		this.nodes = nodes;
 
-		final ConfigWindow configWindow = new ConfigWindow( this );
-		configWindow.dock( dockPane, DockPos.CENTER );
+		dockPane.setPrefSize( 800, 600 );
 
-		Image toolbarDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
-		DockNode toolbarTabsDock = new DockNode(toolbarTabs, "Tools", new ImageView(toolbarDockImage));
-		toolbarTabsDock.dock(dockPane, DockPos.TOP, configWindow);
+		final ConfigWindow configWindow = new ConfigWindow( this );
+		configWindow.setPrefSize( 200, 300 );
+		configWindow.dock( dockPane, DockPos.LEFT );
 
 
 		Image consoleDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
 		DockNode consoleTabsDock = new DockNode(consoleTabs, "Consoles", new ImageView(consoleDockImage));
+		consoleTabsDock.setPrefSize( 600, 200 );
 		consoleTabsDock.dock(dockPane, DockPos.RIGHT, configWindow);
 
 
 		Image deviceDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
 		DockNode deviceTabsDock = new DockNode(deviceTabs, "Devices", new ImageView(deviceDockImage));
+		deviceTabsDock.setPrefSize( 600, 400 );
 		deviceTabsDock.dock(dockPane, DockPos.TOP, consoleTabsDock);
+
+
+		Image toolbarDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
+		DockNode toolbarTabsDock = new DockNode(toolbarTabs, "Tools", new ImageView(toolbarDockImage));
+		toolbarTabsDock.setPrefSize( 200, 300 );
+		toolbarTabsDock.dock(dockPane, DockPos.TOP, configWindow);
+
+		SplitPane split = (SplitPane) dockPane.getChildren().get( 0 );
+		split.setDividerPositions( 0.3 );
 
 		toolbars.addListener(new ObservableCollectionListener<ToolbarInterface>()
 		{
@@ -101,9 +112,7 @@ public class ViewManager
 
 		nodes.addListener( new HalcyonNodeRepositoryListener(){
 			@Override
-			public void nodeAdded( HalcyonNodeInterface node ){
-				open( node );
-			}
+			public void nodeAdded( HalcyonNodeInterface node ) { open( node );}
 			@Override
 			public void nodeRemoved( HalcyonNodeInterface node ){
 				closeAll( node );
@@ -124,7 +133,11 @@ public class ViewManager
 		}
 
 		final HalcyonNodeDockable page = new HalcyonNodeDockable( node );
-		deviceTabs.getTabs().add(new Tab(page.getTitle(), page));
+		Tab newTab = new Tab(page.getTitle(), page);
+		newTab.setOnClosed( event -> pages.remove( page ) );
+
+		deviceTabs.getTabs().add(newTab);
+		pages.add( page );
 //		page.dock( dockPane, DockPos.RIGHT );
 	}
 

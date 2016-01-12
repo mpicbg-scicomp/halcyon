@@ -38,6 +38,11 @@ public class HalcyonNodeRepository
 	 * @param node the new node
 	 */
 	public void add( HalcyonNodeInterface node ){
+		if(nodes.contains( node ))
+		{
+			System.err.println( node.getName() + " is not unique in the collection. Please, use different name");
+			return;
+		}
 		nodes.add( node );
 		for( HalcyonNodeRepositoryListener listener : listeners.toArray( new HalcyonNodeRepositoryListener[ listeners.size() ] ) )
 			listener.nodeAdded( node );

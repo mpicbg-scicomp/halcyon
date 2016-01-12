@@ -59,7 +59,7 @@ public class FxFrame extends Application
 
 		view = new ViewManager( dockPane, nodes, consoleWindows, toolbarWindows );
 
-		primaryStage.setScene(new Scene(dockPane, 800, 500));
+		primaryStage.setScene(new Scene(dockPane, 800, 600));
 		primaryStage.sizeToScene();
 
 		primaryStage.show();

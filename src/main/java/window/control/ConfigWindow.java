@@ -76,15 +76,18 @@ public class ConfigWindow extends ControlWindowBase
 			if (event.getClickCount() == 2)
 			{
 				TreeItem<TreeNode> item = tree.getSelectionModel().getSelectedItem();
-				TreeNode node = item.getValue();
-				if (node.getNode() != null)
-					manager.open( node.getNode() );
+				if(item != null)
+				{
+					TreeNode node = item.getValue();
+					if (node.getNode() != null)
+					{
+						manager.open( node.getNode() );
+					}
+				}
 			}
 		} );
 
 		setContents( tree );
-
-//		Platform.runLater( () -> start( tree ) );
 	}
 
 	public void start( TreeView<TreeNode> tree )
