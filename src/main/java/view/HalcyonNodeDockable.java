@@ -1,8 +1,12 @@
 package view;
 
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import model.node.HalcyonNodeInterface;
 import model.node.HalcyonNodeListener;
 import org.dockfx.DockNode;
+import org.dockfx.demo.DockFX;
 
 /**
  * Dockable Window for Halcyon Node
@@ -18,15 +22,16 @@ public class HalcyonNodeDockable extends DockNode
 
 	public HalcyonNodeDockable( HalcyonNodeInterface node )
 	{
-		super( node.getPanel() );
-		getDockTitleBar().setVisible( false );
+		super( node.getPanel(), node.getName(),  new ImageView( new Image(DockFX.class.getResource("docknode.png").toExternalForm())));
+
+		//getDockTitleBar().setVisible( false );
 
 		if( isVisible() && getNode() != null )
 			getNode().removeListener( listener );
 
 		this.node = node;
 
-		this.setTitle( node == null ? "" : node.getName() );
+		this.setTitle(node == null ? "" : node.getName());
 
 		if( isVisible() && node != null )
 			node.addListener( listener );

@@ -9,6 +9,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import javafx.scene.layout.VBox;
 import model.node.HalcyonNode;
 import model.node.HalcyonNodeInterface;
 import model.list.HalcyonNodeRepository;
@@ -22,8 +23,10 @@ import org.dockfx.DockPos;
 import org.dockfx.demo.DockFX;
 
 import window.console.ConsoleInterface;
+import window.console.StdOutputCaptureConsole;
 import window.control.ConfigWindow;
 import window.control.ControlWindowBase;
+import window.toolbar.MicroscopeStartStopToolbar;
 import window.toolbar.ToolbarInterface;
 
 /**
@@ -38,11 +41,13 @@ public class ViewManager
 
 	private final DockPane dockPane;
 
-	private final TabPane toolbarTabs = new TabPane();
+	private final ConfigWindow configWindow;
 
-	private final TabPane consoleTabs = new TabPane();
+	private final StdOutputCaptureConsole console;
 
-	private final TabPane deviceTabs = new TabPane();
+	private final MicroscopeStartStopToolbar toolbar;
+
+	private DockNode deviceTabsDock;
 
 	public ViewManager( DockPane dockPane, HalcyonNodeRepository nodes,
 			ObservableCollection<ConsoleInterface> consoles,
@@ -51,29 +56,29 @@ public class ViewManager
 		this.dockPane = dockPane;
 		this.nodes = nodes;
 
-		dockPane.setPrefSize( 800, 600 );
+		this.dockPane.setPrefSize( 800, 600 );
 
-		final ConfigWindow configWindow = new ConfigWindow( this );
+		configWindow = new ConfigWindow( this );
 		configWindow.setPrefSize( 200, 300 );
-		configWindow.dock( dockPane, DockPos.LEFT );
+		configWindow.dock( this.dockPane, DockPos.LEFT );
 
 
-		Image consoleDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
-		DockNode consoleTabsDock = new DockNode(consoleTabs, "Consoles", new ImageView(consoleDockImage));
-		consoleTabsDock.setPrefSize( 600, 200 );
-		consoleTabsDock.dock(dockPane, DockPos.RIGHT, configWindow);
+		console = new StdOutputCaptureConsole();
+		console.setPrefSize( 600, 200 );
+		console.dock( this.dockPane, DockPos.RIGHT, configWindow );
+		consoles.add( console );
 
 
-		Image deviceDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
-		DockNode deviceTabsDock = new DockNode(deviceTabs, "Devices", new ImageView(deviceDockImage));
-		deviceTabsDock.setPrefSize( 600, 400 );
-		deviceTabsDock.dock(dockPane, DockPos.TOP, consoleTabsDock);
+//		Image deviceDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
+//		deviceTabsDock = new DockNode(new VBox(), "Device", new ImageView(deviceDockImage));
+//		deviceTabsDock.setPrefSize( 600, 400 );
+//		deviceTabsDock.dock( this.dockPane, DockPos.TOP, console );
 
 
-		Image toolbarDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
-		DockNode toolbarTabsDock = new DockNode(toolbarTabs, "Tools", new ImageView(toolbarDockImage));
-		toolbarTabsDock.setPrefSize( 200, 300 );
-		toolbarTabsDock.dock(dockPane, DockPos.TOP, configWindow);
+		toolbar = new MicroscopeStartStopToolbar();
+		toolbar.setPrefSize( 200, 300 );
+		toolbar.dock( this.dockPane, DockPos.TOP, configWindow );
+		toolbars.add( toolbar );
 
 		SplitPane split = (SplitPane) dockPane.getChildren().get( 0 );
 		split.setDividerPositions( 0.3 );
@@ -83,9 +88,7 @@ public class ViewManager
 			@Override
 			public void itemAdded( ToolbarInterface item)
 			{
-//				((ControlWindowBase)item).dock( dockPane, DockPos.TOP );
-				ControlWindowBase node = (ControlWindowBase) item;
-				toolbarTabs.getTabs().add( new Tab(node.getTitle(), node));
+				((ControlWindowBase)item).dock( dockPane, DockPos.CENTER, toolbar );
 			}
 
 			@Override
@@ -99,9 +102,7 @@ public class ViewManager
 		{
 			@Override public void itemAdded( ConsoleInterface item )
 			{
-//				((ControlWindowBase)item).dock( dockPane, DockPos.BOTTOM );
-				ControlWindowBase node = (ControlWindowBase) item;
-				consoleTabs.getTabs().add( new Tab(node.getTitle(), node));
+				((ControlWindowBase)item).dock(dockPane, DockPos.CENTER, console);
 			}
 
 			@Override public void itemRemoved( ConsoleInterface item )
@@ -129,16 +130,31 @@ public class ViewManager
 
 		for(final HalcyonNodeDockable n: pages)
 		{
-			if(n.getNode() == node) return;
+			if(n.getNode() == node) {
+				if(deviceTabsDock.isDocked())
+				{
+					n.dock(dockPane, DockPos.CENTER, deviceTabsDock);
+				}
+				else
+				{
+					deviceTabsDock = n;
+					n.dock( this.dockPane, DockPos.TOP, console );
+				}
+				return;
+			}
 		}
 
 		final HalcyonNodeDockable page = new HalcyonNodeDockable( node );
-		Tab newTab = new Tab(page.getTitle(), page);
-		newTab.setOnClosed( event -> pages.remove( page ) );
-
-		deviceTabs.getTabs().add(newTab);
-		pages.add( page );
-//		page.dock( dockPane, DockPos.RIGHT );
+		if(pages.size() == 0)
+		{
+			deviceTabsDock = page;
+			page.dock( this.dockPane, DockPos.TOP, console );
+		}
+		else
+		{
+			page.dock(dockPane, DockPos.CENTER, deviceTabsDock);
+		}
+		pages.add(page);
 	}
 
 	public void closeAll( HalcyonNodeInterface node ){
