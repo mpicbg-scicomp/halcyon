@@ -131,7 +131,6 @@ public class StdOutputCaptureConsole extends ConsoleBase
 	{
 		super( new ConsolePane() );
 		setTitle( "Console" );
-		getDockTitleBar().setVisible( false );
 
 		consolePane = (ConsolePane) getContents();
 
