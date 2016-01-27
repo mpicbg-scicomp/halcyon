@@ -4,12 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import javafx.scene.layout.VBox;
 import model.node.HalcyonNode;
 import model.node.HalcyonNodeInterface;
 import model.list.HalcyonNodeRepository;
@@ -20,7 +15,6 @@ import model.list.ObservableCollectionListener;
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 import org.dockfx.DockPos;
-import org.dockfx.demo.DockFX;
 
 import window.console.ConsoleInterface;
 import window.console.StdOutputCaptureConsole;
