@@ -6,18 +6,18 @@
 
     <groupId>net.halcyon</groupId>
     <artifactId>Halcyon</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
 
     <dependencies>
         <dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
-            <version>8.40.9</version>
+            <version>8.40.10</version>
         </dependency>
         <dependency>
             <groupId>org.dockfx</groupId>
-            <artifactId>dockfx</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <artifactId>DockFX</artifactId>
+            <version>0.1.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -50,6 +50,15 @@
             </releases>
             <snapshots>
                 <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>bintray-rtlib-Halcyon</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/rtlib/Halcyon</url>
+            <snapshots>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
 

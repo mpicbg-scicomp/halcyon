@@ -45,11 +45,8 @@ dependencies
 {
 
 	compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.9'
-	compile group: 'org.dockingframes', name: 'docking-frames-common', version: '1.1.2-SNAPSHOT'
-	compile group: 'org.dockingframes', name: 'docking-frames-core', version: '1.1.2-SNAPSHOT'
-	compile group: 'org.dockingframes', name: 'docking-frames-ext-toolbar', version: '1.1.2-SNAPSHOT'
-	compile group: 'org.dockingframes', name: 'docking-frames-ext-toolbar-common', version: '1.1.2-SNAPSHOT'
-	
+    compile 'org.dockfx:DockFX:0.1.1'
+
 	compile group: 'commons-collections', name: 'commons-collections', version: '3.2.1'
 	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
 	compile group: 'commons-io', name: 'commons-io', version: '2.4'
@@ -67,8 +64,8 @@ dependencies
 repositories
 {
 	mavenCentral()
-	maven
-	{ url "http://oss.sonatype.org/content/groups/public" }
+	maven { url  "http://oss.sonatype.org/content/groups/public"  }
+    maven { url  "http://dl.bintray.com/rtlib/Halcyon"  }
 }
 
 
