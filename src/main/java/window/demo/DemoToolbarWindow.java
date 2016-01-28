@@ -1,5 +1,7 @@
 package window.demo;
 
+import demo.DemoType;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -7,7 +9,6 @@ import javafx.scene.layout.VBox;
 
 import model.node.HalcyonNode;
 import model.list.HalcyonNodeRepository;
-import model.node.HalcyonNodeType;
 
 import view.ViewManager;
 
@@ -36,7 +37,7 @@ public class DemoToolbarWindow extends ControlWindowBase implements
 
 		Button btn = new Button( "Add Camera-1" );
 		btn.setOnAction( e -> {
-			final HalcyonNode n = new HalcyonNode( "Camera-1", HalcyonNodeType.Camera );
+			final HalcyonNode n = new HalcyonNode( "Camera-1", DemoType.ONE );
 			final VBox cameraPanel = new VBox();
 
 			cameraPanel.getChildren().add( new Button( "Test Button 1" ) );
@@ -53,7 +54,7 @@ public class DemoToolbarWindow extends ControlWindowBase implements
 
 		btn = new Button( "Add Laser-1" );
 		btn.setOnAction( e -> {
-			final HalcyonNode n = new HalcyonNode( "Laser-1", HalcyonNodeType.Laser );
+			final HalcyonNode n = new HalcyonNode( "Laser-1", DemoType.TWO );
 			final VBox laserPanel = new VBox();
 
 			laserPanel.getChildren().add( new Label( "Label1" ) );
@@ -70,7 +71,7 @@ public class DemoToolbarWindow extends ControlWindowBase implements
 
 		btn = new Button( "Add Laser-2" );
 		btn.setOnAction( e -> {
-			final HalcyonNode n = HalcyonNode.wrap( "Laser-2", HalcyonNodeType.Laser, new VBox(  ) );
+			final HalcyonNode n = HalcyonNode.wrap( "Laser-2", DemoType.ONE, new VBox(  ) );
 			nodes.add( n );
 		} );
 

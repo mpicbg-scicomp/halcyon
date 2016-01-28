@@ -18,7 +18,6 @@ import org.dockfx.DockPos;
 
 import window.console.ConsoleInterface;
 import window.console.StdOutputCaptureConsole;
-import window.control.ConfigWindow;
 import window.control.ControlWindowBase;
 import window.toolbar.MicroscopeStartStopToolbar;
 import window.toolbar.ToolbarInterface;
@@ -35,7 +34,7 @@ public class ViewManager
 
 	private final DockPane dockPane;
 
-	private final ConfigWindow configWindow;
+	private final ControlWindowBase controlWindow;
 
 	private final StdOutputCaptureConsole console;
 
@@ -43,7 +42,7 @@ public class ViewManager
 
 	private DockNode deviceTabsDock;
 
-	public ViewManager( DockPane dockPane, HalcyonNodeRepository nodes,
+	public ViewManager( DockPane dockPane, ControlWindowBase config, HalcyonNodeRepository nodes,
 			ObservableCollection<ConsoleInterface> consoles,
 			ObservableCollection<ToolbarInterface> toolbars)
 	{
@@ -52,26 +51,26 @@ public class ViewManager
 
 		this.dockPane.setPrefSize( 800, 600 );
 
-		configWindow = new ConfigWindow( this );
-		configWindow.setPrefSize( 200, 300 );
-		configWindow.dock( this.dockPane, DockPos.LEFT );
+		controlWindow = config;
+		controlWindow.setPrefSize( 200, 300 );
+		controlWindow.dock( this.dockPane, DockPos.LEFT );
 
 
 		console = new StdOutputCaptureConsole();
 		console.setPrefSize( 600, 200 );
-		console.dock( this.dockPane, DockPos.RIGHT, configWindow );
+		console.dock( this.dockPane, DockPos.RIGHT, controlWindow );
 		consoles.add( console );
 
 
-//		Image deviceDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
-//		deviceTabsDock = new DockNode(new VBox(), "Device", new ImageView(deviceDockImage));
-//		deviceTabsDock.setPrefSize( 600, 400 );
-//		deviceTabsDock.dock( this.dockPane, DockPos.TOP, console );
+		//		Image deviceDockImage = new Image(DockFX.class.getResource("docknode.png").toExternalForm());
+		//		deviceTabsDock = new DockNode(new VBox(), "Device", new ImageView(deviceDockImage));
+		//		deviceTabsDock.setPrefSize( 600, 400 );
+		//		deviceTabsDock.dock( this.dockPane, DockPos.TOP, console );
 
 
 		toolbar = new MicroscopeStartStopToolbar();
 		toolbar.setPrefSize( 200, 300 );
-		toolbar.dock( this.dockPane, DockPos.TOP, configWindow );
+		toolbar.dock( this.dockPane, DockPos.TOP, controlWindow );
 		toolbars.add( toolbar );
 
 		SplitPane split = (SplitPane) dockPane.getChildren().get( 0 );

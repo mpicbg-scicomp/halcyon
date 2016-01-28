@@ -10,6 +10,7 @@ import model.list.ObservableCollection;
 import model.node.HalcyonNodeInterface;
 import org.dockfx.DockPane;
 import window.console.ConsoleInterface;
+import window.control.ControlWindowBase;
 import window.toolbar.ToolbarInterface;
 
 /**
@@ -23,6 +24,8 @@ public class FxFrame extends Application
 
 	final private ObservableCollection<ToolbarInterface> toolbarWindows = new ObservableCollection<>();
 
+	final private ControlWindowBase controlWindow;
+
 	public ViewManager getViewManager()
 	{
 		return view;
@@ -30,9 +33,11 @@ public class FxFrame extends Application
 
 	private ViewManager view;
 
-	public FxFrame()
+	public FxFrame( ControlWindowBase controlWindow )
 	{
 		this.nodes = new HalcyonNodeRepository();
+		this.controlWindow = controlWindow;
+		this.controlWindow.setNodes( nodes );
 	}
 
 	public void addNode( HalcyonNodeInterface node )
@@ -57,7 +62,7 @@ public class FxFrame extends Application
 		// create a dock pane that will manage our dock nodes and handle the layout
 		DockPane dockPane = new DockPane();
 
-		view = new ViewManager( dockPane, nodes, consoleWindows, toolbarWindows );
+		view = new ViewManager( dockPane, controlWindow, nodes, consoleWindows, toolbarWindows );
 
 		primaryStage.setScene(new Scene(dockPane, 800, 600));
 		primaryStage.sizeToScene();

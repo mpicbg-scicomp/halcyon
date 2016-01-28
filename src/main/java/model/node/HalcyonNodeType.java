@@ -3,7 +3,8 @@ package model.node;
 /**
  * HalcyonNode Type enumeration
  */
-public enum HalcyonNodeType
+public interface HalcyonNodeType
 {
-	Camera, Laser, LightSheet, Stage, FilterWheel, AdaptiveOptics, Other
+//	Camera, Laser, LightSheet, Stage, FilterWheel, AdaptiveOptics, Other
+	String name();
 }

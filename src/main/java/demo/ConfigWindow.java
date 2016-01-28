@@ -1,4 +1,4 @@
-package window.control;
+package demo;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -10,12 +10,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import model.node.HalcyonNode;
-import model.node.HalcyonNodeInterface;
 import model.list.HalcyonNodeRepository;
 import model.list.HalcyonNodeRepositoryListener;
+import model.node.HalcyonNode;
+import model.node.HalcyonNodeInterface;
 import model.node.HalcyonNodeType;
+
 import view.ViewManager;
+import window.control.ControlWindowBase;
 import window.util.Resources;
 
 import java.util.HashMap;
@@ -26,26 +28,24 @@ import java.util.HashMap;
 public class ConfigWindow extends ControlWindowBase
 {
 	final private HashMap<String, TreeItem<TreeNode>> subNodes = new HashMap<>();
-	final private HalcyonNodeRepository nodes;
+	final TreeView<TreeNode> tree;
 	JFXPanel fxPanel;
 
 	private final Node rootIcon = new ImageView(
 			new Image( getClass().getResourceAsStream( Resources.getString( "root.icon" ) ) )
 	);
 
-	public ConfigWindow( final ViewManager manager )
+	public ConfigWindow()
 	{
-		super( new VBox() );
+		super( new VBox());
 		setTitle( "Config" );
 
 		Platform.setImplicitExit( false );
 
-		nodes = manager.getNodes();
-
 		TreeItem<TreeNode> rootItem = new TreeItem<>( new TreeNode( "Microscopy" ), rootIcon );
 		rootItem.setExpanded( true );
 
-		for (HalcyonNodeType type : HalcyonNodeType.values())
+		for ( HalcyonNodeType type : DemoType.values())
 		{
 			String iconName = Resources.getString( type.name().toLowerCase() + ".icon" );
 			Node icon = new ImageView( new Image( getClass().getResourceAsStream( iconName )));
@@ -56,7 +56,17 @@ public class ConfigWindow extends ControlWindowBase
 			rootItem.getChildren().add( node );
 		}
 
-		nodes.addListener( new HalcyonNodeRepositoryListener()
+		tree = new TreeView<>( rootItem );
+
+		setContents( tree );
+	}
+
+	@Override
+	public void setNodes( HalcyonNodeRepository nodes )
+	{
+		this.nodes = nodes;
+
+		this.nodes.addListener( new HalcyonNodeRepositoryListener()
 		{
 			@Override public void nodeAdded( HalcyonNodeInterface node )
 			{
@@ -69,9 +79,11 @@ public class ConfigWindow extends ControlWindowBase
 				subNodes.get(node.getType().name()).getChildren().remove( node.getName() );
 			}
 		} );
+	}
 
-		TreeView<TreeNode> tree = new TreeView<>( rootItem );
-
+	@Override
+	public void setViewManager( ViewManager manager )
+	{
 		tree.setOnMouseClicked( event -> {
 			if (event.getClickCount() == 2)
 			{
@@ -86,8 +98,6 @@ public class ConfigWindow extends ControlWindowBase
 				}
 			}
 		} );
-
-		setContents( tree );
 	}
 
 	public void start( TreeView<TreeNode> tree )
@@ -139,6 +149,14 @@ public class ConfigWindow extends ControlWindowBase
 		public String toString()
 		{
 			return this.name;
+		}
+	}
+
+	public static void main(String[] argv)
+	{
+		for ( HalcyonNodeType type : DemoType.values())
+		{
+			System.out.println(	type );
 		}
 	}
 }

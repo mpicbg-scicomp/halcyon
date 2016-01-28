@@ -6,7 +6,7 @@
 
     <groupId>net.halcyon</groupId>
     <artifactId>Halcyon</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.4</version>
 
     <dependencies>
         <dependency>
