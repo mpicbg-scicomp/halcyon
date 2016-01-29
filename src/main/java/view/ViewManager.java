@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.scene.control.SplitPane;
 
+import javafx.stage.StageStyle;
 import model.node.HalcyonNode;
 import model.node.HalcyonNodeInterface;
 import model.list.HalcyonNodeRepository;
@@ -123,10 +124,20 @@ public class ViewManager
 
 		for(final HalcyonNodeDockable n: pages)
 		{
-			if(n.getNode() == node) {
-				if(deviceTabsDock.isDocked())
+			if(n.isDocked())
+			{
+				deviceTabsDock = n;
+				break;
+			}
+		}
+
+		for(final HalcyonNodeDockable n: pages)
+		{
+			if(n.getNode() == node && !n.isDocked()) {
+
+				if ( deviceTabsDock.isDocked() )
 				{
-					n.dock(dockPane, DockPos.CENTER, deviceTabsDock);
+					n.dock( dockPane, DockPos.CENTER, deviceTabsDock );
 				}
 				else
 				{
