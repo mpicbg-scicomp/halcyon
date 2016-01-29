@@ -40,8 +40,6 @@ public class ConfigWindow extends ControlWindowBase
 		super( new VBox());
 		setTitle( "Config" );
 
-		Platform.setImplicitExit( false );
-
 		TreeItem<TreeNode> rootItem = new TreeItem<>( new TreeNode( "Microscopy" ), rootIcon );
 		rootItem.setExpanded( true );
 
