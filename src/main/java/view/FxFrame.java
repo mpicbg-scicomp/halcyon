@@ -63,6 +63,7 @@ public class FxFrame extends Application
 		DockPane dockPane = new DockPane();
 
 		view = new ViewManager( dockPane, controlWindow, nodes, consoleWindows, toolbarWindows );
+		this.controlWindow.setViewManager( view );
 
 		primaryStage.setScene(new Scene(dockPane, 800, 600));
 		primaryStage.sizeToScene();
