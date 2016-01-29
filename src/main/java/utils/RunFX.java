@@ -18,13 +18,16 @@ import model.component.RunnableFX;
 public class RunFX extends Application
 {
 	private RunnableFX ctrl;
-	public RunFX( RunnableFX ctrl )
-	{
-		this.ctrl = ctrl;
-	}
 
-	@Override public void init()
+	@Override public void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException
 	{
+		String className = getParameters().getRaw().get( 0 );
+
+//		System.out.println(className);
+		Class theClass = Class.forName(className, true,
+				Thread.currentThread().getContextClassLoader());
+
+		ctrl = ( RunnableFX ) theClass.newInstance();
 		ctrl.init();
 	}
 
@@ -35,38 +38,33 @@ public class RunFX extends Application
 
 	public static void start( RunnableFX ctrl )
 	{
-		new JFXPanel();
-		Platform.runLater(new Runnable() {
-			public void run() {
-				RunFX fx = new RunFX( ctrl );
-
-				Stage stage = StageBuilder.create()
-						.scene( SceneBuilder.create()
-								.width(320)
-								.height(240)
-								.root( LabelBuilder.create()
-										.font( Font.font( "Arial", 54 ))
-										.text("JavaFX")
-										.build())
-								.build())
-						.onCloseRequest(new EventHandler<WindowEvent >() {
-							@Override
-							public void handle(WindowEvent windowEvent) {
-								System.exit(0);
-							}
-						})
-						.build();
-
-				try
-				{
-					fx.init();
-					fx.start( stage );
-				}
-				catch ( Exception e )
-				{
-					e.printStackTrace();
-				}
-			}
-		});
+		launch( new String[] { ctrl.getClass().getName() } );
+//		JFXPanel panel = new JFXPanel();
+//		Platform.runLater(new Runnable() {
+//			public void run() {
+//				RunFX fx = new RunFX( ctrl );
+//
+//				Stage stage = StageBuilder.create()
+//						.scene( panel.getScene() )
+//						.onCloseRequest(new EventHandler<WindowEvent >() {
+//							@Override
+//							public void handle(WindowEvent windowEvent) {
+//								panel.setVisible( false );
+//								System.exit(0);
+//							}
+//						})
+//						.build();
+//
+//				try
+//				{
+//					fx.init();
+//					fx.start( stage );
+//				}
+//				catch ( Exception e )
+//				{
+//					e.printStackTrace();
+//				}
+//			}
+//		});
 	}
 }
