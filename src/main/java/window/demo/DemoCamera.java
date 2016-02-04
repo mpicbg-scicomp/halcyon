@@ -147,7 +147,13 @@ public class DemoCamera implements RunnableFX
 		hBox.setBackground( null );
 		hBox.setPadding( new Insets( 15, 15, 15, 15 ) );
 		hBox.getChildren().addAll( vBox, canvas );
-		AnchorPane.setLeftAnchor( canvas, 200d );
+
+		AnchorPane.setLeftAnchor( vBox, 3d );
+		AnchorPane.setTopAnchor( vBox, 10d );
+
+		AnchorPane.setLeftAnchor( canvas, 220d );
+		AnchorPane.setTopAnchor( canvas, 10d );
+
 		hBox.setStyle( "-fx-border-style: solid;"
 				+ "-fx-border-width: 1;"
 				+ "-fx-border-color: grey" );
@@ -159,12 +165,12 @@ public class DemoCamera implements RunnableFX
 		{
 			@Override public String toString( Number object )
 			{
-				return Integer.toString( (int) Math.round( object.doubleValue() * 2048 / size ) );
+				return Integer.toString( ( int ) Math.round( object.doubleValue() * 2048 / size ) );
 			}
 
 			@Override public Number fromString( String string )
 			{
-				return Integer.parseInt( string ) * size / 2048;
+				return Double.parseDouble( string ) * size / 2048;
 			}
 		} );
 
@@ -177,7 +183,7 @@ public class DemoCamera implements RunnableFX
 
 			@Override public Number fromString( String string )
 			{
-				return Integer.parseInt( string ) * size / 2048;
+				return Double.parseDouble( string ) * size / 2048;
 			}
 		} );
 
