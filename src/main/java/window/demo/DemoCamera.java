@@ -1,7 +1,11 @@
 package window.demo;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -28,6 +32,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import model.component.RunnableFX;
 import org.controlsfx.control.textfield.TextFields;
 import utils.RunFX;
@@ -40,38 +45,47 @@ import java.util.Arrays;
 public class DemoCamera implements RunnableFX
 {
 	final private int resUnit = 256;
-	private int expectedWidth, expectedHeight;
+	final int size = 300;
+
+	// String properties hold the actual dimension size for the capture resolution
 	private StringProperty widthStringProperty, heightStringProperty;
+
+	// Double properties hold pixel based values for the rectangle's width and height
+	private DoubleProperty widthDoubleProperty, heightDoubleProperty;
+
 	private GridPane gridPane;
-	Rectangle rect = createDraggableRectangle( 140, 135, 20, 30 );
+	Rectangle rect = createDraggableRectangle( 37.5, 37.5 );
 	Line hLine, vLine;
 	Text hText, vText;
 
 	public DemoCamera()
 	{
-
+		// Setting up the double properties with 256x256
+		widthDoubleProperty = new SimpleDoubleProperty( 37.5 );
+		heightDoubleProperty = new SimpleDoubleProperty( 37.5 );
 	}
 
 	@Override public void init()
 	{
 		gridPane = new GridPane();
 
-		for ( int x = 8; x < 12; x++ )
+		for ( int x = 7; x < 11; x++ )
 		{
-			for ( int y = 8; y < 12; y++ )
+			for ( int y = 7; y < 11; y++ )
 			{
-				int width = ( int ) Math.pow( 2, x );
-				int height = ( int ) Math.pow( 2, y );
+				int width = 2 << x;
+				int height = 2 << y;
 
 				Button button = new Button( height + "\n" + width );
 				button.setMaxWidth( Double.MAX_VALUE );
 				button.setOnAction( event -> {
-					expectedWidth = width;
-					expectedHeight = height;
-					widthStringProperty.setValue( Integer.toString( width ) );
-					heightStringProperty.setValue( Integer.toString( height ) );
+					widthDoubleProperty.set( width * size / 2048 );
+					heightDoubleProperty.set( height * size / 2048 );
 
-					System.out.println( "Set width/height: " + width + "/" + height );
+					widthStringProperty.set( Integer.toString( width ) );
+					heightStringProperty.set( Integer.toString( height ) );
+
+//					System.out.println( "Set width/height: " + width + "/" + height );
 				} );
 
 				// Place the button on the GridPane
@@ -83,10 +97,7 @@ public class DemoCamera implements RunnableFX
 	@Override public void start( Stage stage )
 	{
 		Parent pane = getPanel();
-
 		Scene scene = new Scene( pane, Color.WHITE );
-
-		//scene.setFullScreen(true);
 
 		stage.setTitle( "Camera-1" );
 		stage.setScene( scene );
@@ -100,7 +111,6 @@ public class DemoCamera implements RunnableFX
 
 	public Parent getPanel()
 	{
-		int size = 300;
 		Pane canvas = new Pane();
 		canvas.setStyle( "-fx-background-color: green;" );
 		canvas.setPrefSize( size, size );
@@ -111,19 +121,10 @@ public class DemoCamera implements RunnableFX
 		line = new Line( 0, size / 2, size, size / 2 );
 		canvas.getChildren().add( line );
 
-		canvas.getChildren().addAll( rect, hLine, vLine, hText, vText );
-
-//		HBox hBox = new HBox();
-//		hBox.setBackground( null );
-//		hBox.setPadding( new Insets( 15, 15, 15, 15 ) );
-//		hBox.setSpacing( 10 );
-//		hBox.getChildren().addAll( gridPane, canvas );
-//		hBox.setStyle( "-fx-border-style: solid;"
-//				+ "-fx-border-width: 1;"
-//				+ "-fx-border-color: grey" );
+		canvas.getChildren().addAll( rect );
 
 		HBox widthBox = new HBox( 5 );
-		widthBox.setPadding( new Insets(30, 10, 10, 10) );
+		widthBox.setPadding( new Insets( 30, 10, 10, 10 ) );
 		widthBox.setAlignment( Pos.CENTER );
 		widthBox.getChildren().add( new Label( "Width: " ) );
 		TextField width = new TextField();
@@ -151,41 +152,50 @@ public class DemoCamera implements RunnableFX
 				+ "-fx-border-width: 1;"
 				+ "-fx-border-color: grey" );
 
+		widthDoubleProperty.bindBidirectional( rect.widthProperty() );
+		heightDoubleProperty.bindBidirectional( rect.heightProperty() );
+
+		Bindings.bindBidirectional( widthStringProperty, widthDoubleProperty, new StringConverter< Number >()
+		{
+			@Override public String toString( Number object )
+			{
+				return Integer.toString( (int) Math.round( object.doubleValue() * 2048 / size ) );
+			}
+
+			@Override public Number fromString( String string )
+			{
+				return Integer.parseInt( string ) * size / 2048;
+			}
+		} );
+
+		Bindings.bindBidirectional( heightStringProperty, heightDoubleProperty, new StringConverter< Number >()
+		{
+			@Override public String toString( Number object )
+			{
+				return Integer.toString( (int) Math.round( object.doubleValue() * 2048 / size ) );
+			}
+
+			@Override public Number fromString( String string )
+			{
+				return Integer.parseInt( string ) * size / 2048;
+			}
+		} );
+
 		return hBox;
 	}
 
 	private void setDragHandlers(final Line line, final Rectangle rect, final Cursor cursor, Wrapper< Point2D > mouseLocation)
 	{
-		line.setOnMouseEntered(new EventHandler<MouseEvent>()
-		{
-			@Override
-			public void handle(MouseEvent mouseEvent)
-			{
-				line.setCursor( cursor );
-			}
-		});
+		line.setOnMouseEntered( mouseEvent -> line.setCursor( cursor ) );
 
-		line.setOnMouseExited(new EventHandler<MouseEvent >()
-		{
-			@Override
-			public void handle(MouseEvent mouseEvent)
+		line.setOnMouseDragged( event -> {
+			if ( cursor == Cursor.V_RESIZE )
 			{
-				line.setCursor( Cursor.NONE );
+				System.out.println(event.getSceneY());
 			}
-		});
-
-		line.setOnMouseDragged( new EventHandler< MouseEvent >()
-		{
-			@Override public void handle( MouseEvent event )
+			else if ( cursor == Cursor.H_RESIZE )
 			{
-				if ( cursor == Cursor.V_RESIZE )
-				{
-					System.out.println(event.getSceneY());
-				}
-				else if ( cursor == Cursor.H_RESIZE )
-				{
-					System.out.println(event.getSceneX());
-				}
+				System.out.println(event.getSceneX());
 			}
 		} );
 
@@ -195,26 +205,34 @@ public class DemoCamera implements RunnableFX
 
 		line.setOnMouseReleased( event -> {
 			mouseLocation.value = null;
+			line.setCursor( Cursor.NONE );
 		} );
 	}
 
 
-	private Rectangle createDraggableRectangle( double x, double y, double width, double height )
+	private Rectangle createDraggableRectangle( double width, double height )
 	{
-		final double handleRadius = 5;
+		double x = size / 2 - width / 2;
+		double y = size / 2 - height / 2;
 
 		Rectangle rect = new Rectangle( x, y, width, height );
+
+		rect.heightProperty().addListener( ( observable, oldValue, newValue ) -> rect.setY( size / 2 - newValue.intValue() / 2 ) );
+
+		rect.widthProperty().addListener( ( observable, oldValue, newValue ) -> rect.setX( size / 2 - newValue.intValue() / 2 ) );
+
 		rect.setFill( Color.color( 0, 0, 0, 0.50 ) );
 
 		Wrapper< Point2D > mouseLocation = new Wrapper<>();
 
 		hText = new Text();
 		hText.setStroke( Color.WHITE );
-		hText.textProperty().bind( rect.widthProperty().asString( "%.0f px" ) );
-		hText.translateXProperty().bind( rect.xProperty().add( rect.widthProperty().divide( 3 )) );
-		hText.translateYProperty().bind( rect.yProperty().add( rect.heightProperty().add( 13 )));
+		hText.textProperty().bind( rect.widthProperty().multiply( 2048f / size ).asString( "%.0f px" ) );
+		hText.translateXProperty().bind( rect.xProperty().add( rect.widthProperty().divide( 2.5 ) ) );
+		hText.translateYProperty().bind( rect.yProperty().add( rect.heightProperty().subtract( 13 ) ) );
 
 		hLine = new Line( x, y, x + width, y);
+		hLine.setStrokeWidth( 5 );
 		hLine.setStroke( Color.WHITE );
 		setDragHandlers( hLine, rect, Cursor.V_RESIZE, mouseLocation );
 
@@ -229,10 +247,9 @@ public class DemoCamera implements RunnableFX
 				double deltaY = event.getSceneY() - mouseLocation.value.getY();
 				double newMaxY = rect.getY() + rect.getHeight() + deltaY;
 				if ( newMaxY >= rect.getY()
-						&& newMaxY <= rect.getParent().getBoundsInLocal().getHeight() )
+						&& newMaxY <= size )
 				{
-					rect.setY( rect.getY() - ( deltaY / 2 ) );
-					rect.setHeight( rect.getHeight() + deltaY );
+					rect.setHeight( rect.getHeight() + deltaY * 2 );
 				}
 				mouseLocation.value = new Point2D( event.getSceneX(), event.getSceneY() );
 			}
@@ -241,11 +258,12 @@ public class DemoCamera implements RunnableFX
 		vText = new Text();
 		vText.setStroke( Color.WHITE );
 		vText.setTranslateX( 7 );
-		vText.textProperty().bind( rect.heightProperty().asString( "%.0f px" ) );
-		vText.translateXProperty().bind( rect.xProperty().add( rect.widthProperty().add( 10 ) ) );
+		vText.textProperty().bind( rect.heightProperty().multiply( 2048f / size ).asString( "%.0f px" ) );
+		vText.translateXProperty().bind( rect.xProperty().add( rect.widthProperty().subtract( 55 ) ) );
 		vText.translateYProperty().bind( rect.yProperty().add( rect.heightProperty().divide( 2 )));
 
 		vLine = new Line( x + width, y, x + width, y + height);
+		vLine.setStrokeWidth( 5 );
 		vLine.setStroke( Color.WHITE );
 		setDragHandlers( vLine, rect, Cursor.H_RESIZE, mouseLocation );
 
@@ -260,36 +278,17 @@ public class DemoCamera implements RunnableFX
 				double deltaX = event.getSceneX() - mouseLocation.value.getX();
 				double newMaxX = rect.getX() + rect.getWidth() + deltaX;
 				if ( newMaxX >= rect.getX()
-						&& newMaxX <= rect.getParent().getBoundsInLocal().getWidth() )
+						&& newMaxX <= size )
 				{
-					rect.setX( rect.getX() - ( deltaX / 2 ) );
-					rect.setWidth( rect.getWidth() + deltaX );
+					rect.setWidth( rect.getWidth() + deltaX * 2 );
 				}
 				mouseLocation.value = new Point2D( event.getSceneX(), event.getSceneY() );
 			}
 		} );
 
-		// top left resize handle:
-		Circle resizeHandleNW = new Circle( handleRadius, Color.BLUEVIOLET );
-		// bind to top left corner of Rectangle:
-		resizeHandleNW.centerXProperty().bind( rect.xProperty().add( 20 ) );
-		resizeHandleNW.centerYProperty().bind( rect.yProperty() );
-
-		// bottom right resize handle:
-		Circle resizeHandleSE = new Circle( handleRadius, Color.GOLDENROD );
-		// bind to bottom right corner of Rectangle:
-		resizeHandleSE.centerXProperty().bind( rect.xProperty().add( rect.widthProperty() ) );
-		resizeHandleSE.centerYProperty().bind( rect.yProperty().add( rect.heightProperty() ) );
-
-		// move handle:
-		Circle moveHandle = new Circle( handleRadius, Color.CRIMSON );
-		// bind to bottom center of Rectangle:
-		moveHandle.centerXProperty().bind( rect.xProperty() );
-		moveHandle.centerYProperty().bind( rect.yProperty() );
-
-		// force circles to live in same parent as rectangle:
+		// force controls to live in same parent as rectangle:
 		rect.parentProperty().addListener( ( obs, oldParent, newParent ) -> {
-			for ( Circle c : Arrays.asList( resizeHandleNW, resizeHandleSE, moveHandle ) )
+			for ( Node c : Arrays.asList( hLine, vLine, hText, vText ) )
 			{
 				Pane currentParent = ( Pane ) c.getParent();
 				if ( currentParent != null )
@@ -300,95 +299,7 @@ public class DemoCamera implements RunnableFX
 			}
 		} );
 
-		setUpDragging( resizeHandleNW, mouseLocation );
-		setUpDragging( resizeHandleSE, mouseLocation );
-		setUpDragging( moveHandle, mouseLocation );
-
-		resizeHandleNW.setOnMouseDragged( event -> {
-			if ( mouseLocation.value != null )
-			{
-				double deltaX = event.getSceneX() - mouseLocation.value.getX();
-				double deltaY = event.getSceneY() - mouseLocation.value.getY();
-				double newX = rect.getX() + deltaX;
-				if ( newX >= handleRadius
-						&& newX <= rect.getX() + rect.getWidth() - handleRadius )
-				{
-					rect.setX( newX );
-					rect.setWidth( rect.getWidth() - deltaX );
-				}
-				double newY = rect.getY() + deltaY;
-				if ( newY >= handleRadius
-						&& newY <= rect.getY() + rect.getHeight() - handleRadius )
-				{
-					rect.setY( newY );
-					rect.setHeight( rect.getHeight() - deltaY );
-				}
-				mouseLocation.value = new Point2D( event.getSceneX(), event.getSceneY() );
-			}
-		} );
-
-		resizeHandleSE.setOnMouseDragged( event -> {
-			if ( mouseLocation.value != null )
-			{
-				double deltaX = event.getSceneX() - mouseLocation.value.getX();
-				double deltaY = event.getSceneY() - mouseLocation.value.getY();
-				double newMaxX = rect.getX() + rect.getWidth() + deltaX;
-				if ( newMaxX >= rect.getX()
-						&& newMaxX <= rect.getParent().getBoundsInLocal().getWidth() - handleRadius )
-				{
-					rect.setX( rect.getX() - ( deltaX / 2 ) );
-					rect.setWidth( rect.getWidth() + deltaX );
-				}
-				double newMaxY = rect.getY() + rect.getHeight() + deltaY;
-				if ( newMaxY >= rect.getY()
-						&& newMaxY <= rect.getParent().getBoundsInLocal().getHeight() - handleRadius )
-				{
-					rect.setY( rect.getY() - ( deltaY / 2 ) );
-					rect.setHeight( rect.getHeight() + deltaY );
-				}
-				mouseLocation.value = new Point2D( event.getSceneX(), event.getSceneY() );
-			}
-		} );
-
-		moveHandle.setOnMouseDragged( event -> {
-			if ( mouseLocation.value != null )
-			{
-				double deltaX = event.getSceneX() - mouseLocation.value.getX();
-				double deltaY = event.getSceneY() - mouseLocation.value.getY();
-				double newX = rect.getX() + deltaX;
-				double newMaxX = newX + rect.getWidth();
-				if ( newX >= handleRadius
-						&& newMaxX <= rect.getParent().getBoundsInLocal().getWidth() - handleRadius )
-				{
-					rect.setX( newX );
-				}
-				double newY = rect.getY() + deltaY;
-				double newMaxY = newY + rect.getHeight();
-				if ( newY >= handleRadius
-						&& newMaxY <= rect.getParent().getBoundsInLocal().getHeight() - handleRadius )
-				{
-					rect.setY( newY );
-				}
-				mouseLocation.value = new Point2D( event.getSceneX(), event.getSceneY() );
-			}
-
-		} );
-
 		return rect;
-	}
-
-	private void setUpDragging( Circle circle, Wrapper< Point2D > mouseLocation )
-	{
-
-		circle.setOnDragDetected( event -> {
-			circle.getParent().setCursor( Cursor.CLOSED_HAND );
-			mouseLocation.value = new Point2D( event.getSceneX(), event.getSceneY() );
-		} );
-
-		circle.setOnMouseReleased( event -> {
-			circle.getParent().setCursor( Cursor.DEFAULT );
-			mouseLocation.value = null;
-		} );
 	}
 
 	static class Wrapper< T >
