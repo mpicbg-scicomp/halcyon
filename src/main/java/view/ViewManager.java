@@ -133,18 +133,23 @@ public class ViewManager
 
 		for(final HalcyonNodeDockable n: pages)
 		{
-			if(n.getNode() == node && !n.isDocked()) {
+			if(n.getNode() == node) {
 
-				if ( deviceTabsDock.isDocked() )
-				{
-					n.dock( dockPane, DockPos.CENTER, deviceTabsDock );
-				}
+				if(n.isDocked())
+					return;
 				else
 				{
-					deviceTabsDock = n;
-					n.dock( this.dockPane, DockPos.TOP, console );
+					if ( deviceTabsDock.isDocked() )
+					{
+						n.dock( dockPane, DockPos.CENTER, deviceTabsDock );
+					}
+					else
+					{
+						deviceTabsDock = n;
+						n.dock( this.dockPane, DockPos.TOP, console );
+					}
+					return;
 				}
-				return;
 			}
 		}
 
