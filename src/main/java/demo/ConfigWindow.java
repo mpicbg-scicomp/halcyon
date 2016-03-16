@@ -25,7 +25,7 @@ import model.node.HalcyonNodeInterface;
 import model.node.HalcyonNodeType;
 import view.ViewManager;
 import window.control.ControlWindowBase;
-import window.util.Resources;
+import window.demo.Resources;
 
 /**
  * Device Config Window

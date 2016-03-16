@@ -1,4 +1,4 @@
-package window.util;
+package window.demo;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

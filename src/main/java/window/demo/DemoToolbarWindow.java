@@ -9,7 +9,6 @@ import model.node.HalcyonNode;
 import view.ViewManager;
 import window.control.ControlWindowBase;
 import window.toolbar.ToolbarInterface;
-import window.util.WavelengthColors;
 import demo.DemoType;
 
 /**
@@ -101,7 +100,7 @@ public class DemoToolbarWindow extends ControlWindowBase implements
 
 		// Wavelength color check
 		btn = new Button("488");
-		btn.setStyle("-fx-background-color: " + WavelengthColors.getWebColorString("488"));
+		btn.setStyle("-fx-background-color: #0FAFF0");
 		box.getChildren().add(btn);
 	}
 }
