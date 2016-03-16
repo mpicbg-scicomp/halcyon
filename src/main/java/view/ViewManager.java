@@ -110,7 +110,7 @@ public class ViewManager
 			public void nodeAdded( HalcyonNodeInterface node ) { open( node );}
 			@Override
 			public void nodeRemoved( HalcyonNodeInterface node ){
-				closeAll( node );
+				close( node );
 			}
 		});
 	}
@@ -161,15 +161,24 @@ public class ViewManager
 		}
 		else
 		{
-			page.dock(dockPane, DockPos.CENTER, deviceTabsDock);
+			page.dock( dockPane, DockPos.CENTER, deviceTabsDock );
 		}
 		pages.add(page);
 	}
 
-	public void closeAll( HalcyonNodeInterface node ){
+	public void hide( HalcyonNodeInterface node ){
 		for( final HalcyonNodeDockable page : pages.toArray( new HalcyonNodeDockable[ pages.size() ] )){
-			if( page.getNode()  == node ){
+			if( page.getNode() == node ){
 				page.setVisible( false );
+			}
+		}
+	}
+
+	public void close( HalcyonNodeInterface node )
+	{
+		for( final HalcyonNodeDockable page : pages.toArray( new HalcyonNodeDockable[ pages.size() ] )){
+			if( page.getNode() == node ){
+				page.close();
 			}
 		}
 	}
