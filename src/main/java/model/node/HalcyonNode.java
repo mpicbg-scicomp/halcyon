@@ -18,9 +18,11 @@ import model.property.NodeProperty;
 public class HalcyonNode implements HalcyonNodeInterface
 {
 	// TODO: finish.
-	public static HalcyonNode wrap(final String name, final HalcyonNodeType type, final Node panel )
+	public static HalcyonNode wrap(	final String name,
+																	final HalcyonNodeType type,
+																	final Node panel)
 	{
-		return new HalcyonNode( name, type, panel );
+		return new HalcyonNode(name, type, panel);
 	}
 
 	@Override
@@ -36,7 +38,8 @@ public class HalcyonNode implements HalcyonNodeInterface
 	@Override
 	public Node getPanel()
 	{
-		if(panel == null) return null;
+		if (panel == null)
+			return null;
 
 		return panel.get();
 	}
@@ -46,12 +49,12 @@ public class HalcyonNode implements HalcyonNodeInterface
 		return panel;
 	}
 
-	public void setPanel( Node panel )
+	public void setPanel(Node panel)
 	{
-		if(this.panel == null)
-			this.panel = new NodeProperty( null, "Content" );
+		if (this.panel == null)
+			this.panel = new NodeProperty(null, "Content");
 
-		this.panel.set( panel );
+		this.panel.set(panel);
 	}
 
 	private NodeProperty panel = null;
@@ -60,63 +63,73 @@ public class HalcyonNode implements HalcyonNodeInterface
 
 	public HalcyonNode()
 	{
-		existPanel.bind( name.isNotEmpty().and( panel.isNotEmpty() ) );
+		existPanel.bind(name.isNotEmpty().and(panel.isNotEmpty()));
 	}
 
 	/** the observers of this Halcyon node */
 	private final List<HalcyonNodeListener> listeners = new ArrayList<HalcyonNodeListener>();
 
-
-	public HalcyonNode( String name )
+	public HalcyonNode(String name)
 	{
-		this.name.setValue( name );
+		this.name.setValue(name);
 	}
-	public HalcyonNode( String name, HalcyonNodeType type )
+
+	public HalcyonNode(String name, HalcyonNodeType type)
 	{
-		this.name.setValue( name );
+		this.name.setValue(name);
 		this.type = type;
 	}
 
-	public HalcyonNode( String name, HalcyonNodeType type, Node panel )
+	public HalcyonNode(String name, HalcyonNodeType type, Node panel)
 	{
-		this.name.setValue( name );
+		this.name.setValue(name);
 		this.type = type;
-		this.setPanel( panel );
+		this.setPanel(panel);
 	}
 
+	@Override
+	public String toString()
+	{
+		return name.getValue().toString();
+	}
 
 	@Override
-	public String toString() { return name.getValue().toString(); }
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null || getClass() != obj.getClass()) {
+	public boolean equals(Object obj)
+	{
+		if (obj == null || getClass() != obj.getClass())
+		{
 			return false;
 		}
 		return this.name.getValue() == ((HalcyonNode) obj).getName();
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		return this.name.getValue().hashCode();
 	}
 
 	/**
 	 * Adds an observer to this Halcyon node.
-	 * @param listener the new observer
+	 * 
+	 * @param listener
+	 *          the new observer
 	 */
-	public void addListener( HalcyonNodeListener listener ){
-		listeners.add( listener );
+	public void addListener(HalcyonNodeListener listener)
+	{
+		listeners.add(listener);
 	}
 
 	/**
 	 * Removes an observer from this Halcyon node.
-	 * @param listener the listener to remove
+	 * 
+	 * @param listener
+	 *          the listener to remove
 	 */
-	public void removeListener( HalcyonNodeListener listener ){
-		listeners.remove( listener );
+	public void removeListener(HalcyonNodeListener listener)
+	{
+		listeners.remove(listener);
 	}
-
 
 	public String getName()
 	{

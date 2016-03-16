@@ -115,7 +115,6 @@ package window.console;
 //	}
 //}
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -129,13 +128,17 @@ public class StdOutputCaptureConsole extends ConsoleBase
 
 	public StdOutputCaptureConsole()
 	{
-		super( new ConsolePane() );
-		setTitle( "Console" );
+		super(new ConsolePane());
+		setTitle("Console");
 
 		consolePane = (ConsolePane) getContents();
 
-		System.setOut( new PrintStream( new StreamAppender( "StdOut", consolePane, System.out ) ) );
-		System.setErr( new PrintStream( new StreamAppender( "StdErr", consolePane, System.err ) ) );
+		System.setOut(new PrintStream(new StreamAppender(	"StdOut",
+																											consolePane,
+																											System.out)));
+		System.setErr(new PrintStream(new StreamAppender(	"StdErr",
+																											consolePane,
+																											System.err)));
 	}
 
 	public class StreamAppender extends OutputStream
@@ -145,28 +148,30 @@ public class StdOutputCaptureConsole extends ConsoleBase
 		private TextAppender textAppender;
 		private PrintStream old;
 
-		public StreamAppender( String prefix, TextAppender consumer, PrintStream old )
+		public StreamAppender(String prefix,
+													TextAppender consumer,
+													PrintStream old)
 		{
 			this.prefix = prefix;
-			buffer = new StringBuilder( 128 );
-			buffer.append( "[" ).append( prefix ).append( "] " );
+			buffer = new StringBuilder(128);
+			buffer.append("[").append(prefix).append("] ");
 			this.old = old;
 			this.textAppender = consumer;
 		}
 
 		@Override
-		public void write( int b ) throws IOException
+		public void write(int b) throws IOException
 		{
 			char c = (char) b;
-			String value = Character.toString( c );
-			buffer.append( value );
-			if (value.equals( "\n" ))
+			String value = Character.toString(c);
+			buffer.append(value);
+			if (value.equals("\n"))
 			{
-				textAppender.appendText( buffer.toString() );
-				buffer.delete( 0, buffer.length() );
-				buffer.append( "[" ).append( prefix ).append( "] " );
+				textAppender.appendText(buffer.toString());
+				buffer.delete(0, buffer.length());
+				buffer.append("[").append(prefix).append("] ");
 			}
-			old.print( c );
+			old.print(c);
 		}
 	}
 }

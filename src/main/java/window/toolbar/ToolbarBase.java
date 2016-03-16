@@ -6,11 +6,11 @@ import window.control.ControlWindowBase;
 /**
  * Toolbar base class
  */
-public abstract class ToolbarBase extends ControlWindowBase implements
-		ToolbarInterface
+public abstract class ToolbarBase extends ControlWindowBase	implements
+																														ToolbarInterface
 {
-	public ToolbarBase( Node node )
+	public ToolbarBase(Node node)
 	{
-		super( node );
+		super(node);
 	}
 }

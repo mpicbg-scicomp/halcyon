@@ -7,7 +7,5 @@ import model.node.HalcyonNodeType;
  */
 public enum DemoType implements HalcyonNodeType
 {
-	ONE,
-	TWO,
-	THREE
+	ONE, TWO, THREE
 }

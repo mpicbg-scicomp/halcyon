@@ -19,20 +19,21 @@ public class ConsolePane extends ScrollPane implements TextAppender
 
 	public ConsolePane()
 	{
-		setFitToWidth( true );
-		setContent( textFlow );
-		textFlow.needsLayoutProperty().addListener( ( observable, oldValue, newValue ) -> vvalueProperty().set( 1.0d ) );
+		setFitToWidth(true);
+		setContent(textFlow);
+		textFlow.needsLayoutProperty()
+						.addListener((observable, oldValue, newValue) -> vvalueProperty().set(1.0d));
 	}
 
-	public void appendText( final String str )
+	public void appendText(final String str)
 	{
 		controlSize();
-		Text text = new Text( str );
+		Text text = new Text(str);
 
-		if(str.startsWith( "[StdOut]" ))
-			text.setFill( Color.BLUE );
-		else if(str.startsWith( "[StdErr]" ))
-			text.setFill( Color.RED );
+		if (str.startsWith("[StdOut]"))
+			text.setFill(Color.BLUE);
+		else if (str.startsWith("[StdErr]"))
+			text.setFill(Color.RED);
 
 		textFlow.getChildren().add(text);
 	}
@@ -43,9 +44,10 @@ public class ConsolePane extends ScrollPane implements TextAppender
 
 		if (lTimeNow > mLastCheck + cCheckPeriod)
 		{
-			if( textFlow.getChildren().size() > maxLines )
+			if (textFlow.getChildren().size() > maxLines)
 			{
-				textFlow.getChildren().remove( 0, textFlow.getChildren().size() - maxLines );
+				textFlow.getChildren()
+								.remove(0, textFlow.getChildren().size() - maxLines);
 			}
 
 			mLastCheck = lTimeNow;

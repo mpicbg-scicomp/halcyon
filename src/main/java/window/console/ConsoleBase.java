@@ -6,10 +6,11 @@ import window.control.ControlWindowBase;
 /**
  * Console Base class
  */
-public abstract class ConsoleBase extends ControlWindowBase implements ConsoleInterface
+public abstract class ConsoleBase extends ControlWindowBase	implements
+																														ConsoleInterface
 {
-	public ConsoleBase( Node n )
+	public ConsoleBase(Node n)
 	{
-		super( n );
+		super(n);
 	}
 }

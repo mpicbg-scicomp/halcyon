@@ -1,6 +1,7 @@
 package model.property;
 
-import com.sun.javafx.binding.ExpressionHelper;
+import java.lang.ref.WeakReference;
+
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
@@ -12,12 +13,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WritableObjectValue;
 import javafx.scene.Node;
 
-import java.lang.ref.WeakReference;
+import com.sun.javafx.binding.ExpressionHelper;
 
 /**
  * PanelProperty for holding node
  */
-public class NodeProperty implements ObservableObjectValue< Node >, WritableObjectValue< Node >, Property< Node >
+public class NodeProperty	implements
+													ObservableObjectValue<Node>,
+													WritableObjectValue<Node>,
+													Property<Node>
 {
 	private static final Object DEFAULT_BEAN = null;
 	private static final String DEFAULT_NAME = "";
@@ -26,99 +30,112 @@ public class NodeProperty implements ObservableObjectValue< Node >, WritableObje
 	private final Object bean;
 	private final String name;
 
-	private ObservableValue< ? extends Node > observable = null;
+	private ObservableValue<? extends Node> observable = null;
 	private InvalidationListener listener = null;
 	private boolean valid = true;
-	private ExpressionHelper< Node > helper = null;
+	private ExpressionHelper<Node> helper = null;
 
-	public NodeProperty( Object bean, String name )
+	public NodeProperty(Object bean, String name)
 	{
 		this.bean = bean;
-		this.name = ( name == null ) ? DEFAULT_NAME : name;
+		this.name = (name == null) ? DEFAULT_NAME : name;
 	}
 
-	@Override public void bind( ObservableValue< ? extends Node > newObservable )
+	@Override
+	public void bind(ObservableValue<? extends Node> newObservable)
 	{
-		if ( newObservable == null )
+		if (newObservable == null)
 		{
-			throw new NullPointerException( "Cannot bind to null" );
+			throw new NullPointerException("Cannot bind to null");
 		}
-		if ( !newObservable.equals( observable ) )
+		if (!newObservable.equals(observable))
 		{
 			unbind();
 			observable = newObservable;
-			if ( listener == null )
+			if (listener == null)
 			{
-				listener = new Listener( this );
+				listener = new Listener(this);
 			}
-			observable.addListener( listener );
+			observable.addListener(listener);
 			markInvalid();
 		}
 	}
 
-	@Override public void unbind()
+	@Override
+	public void unbind()
 	{
-		if ( observable != null )
+		if (observable != null)
 		{
 			node = observable.getValue();
-			observable.removeListener( listener );
+			observable.removeListener(listener);
 			observable = null;
 		}
 	}
 
-	@Override public boolean isBound()
+	@Override
+	public boolean isBound()
 	{
 		return observable != null;
 	}
 
-	@Override public void bindBidirectional( Property< Node > other )
+	@Override
+	public void bindBidirectional(Property<Node> other)
 	{
-		Bindings.bindBidirectional( this, other );
+		Bindings.bindBidirectional(this, other);
 	}
 
-	@Override public void unbindBidirectional( Property< Node > other )
+	@Override
+	public void unbindBidirectional(Property<Node> other)
 	{
-		Bindings.unbindBidirectional( this, other );
+		Bindings.unbindBidirectional(this, other);
 	}
 
-	@Override public Object getBean()
+	@Override
+	public Object getBean()
 	{
 		return bean;
 	}
 
-	@Override public String getName()
+	@Override
+	public String getName()
 	{
 		return name;
 	}
 
-	@Override public void addListener( ChangeListener< ? super Node > listener )
+	@Override
+	public void addListener(ChangeListener<? super Node> listener)
 	{
-		helper = ExpressionHelper.addListener( helper, this, listener );
+		helper = ExpressionHelper.addListener(helper, this, listener);
 	}
 
-	@Override public void removeListener( ChangeListener< ? super Node > listener )
+	@Override
+	public void removeListener(ChangeListener<? super Node> listener)
 	{
-		helper = ExpressionHelper.removeListener( helper, listener );
+		helper = ExpressionHelper.removeListener(helper, listener);
 	}
 
-	@Override public Node getValue()
+	@Override
+	public Node getValue()
 	{
 		return get();
 	}
 
-	@Override public void setValue( Node newValue )
+	@Override
+	public void setValue(Node newValue)
 	{
-		set( newValue );
+		set(newValue);
 	}
 
-	@Override public void addListener( InvalidationListener listener )
+	@Override
+	public void addListener(InvalidationListener listener)
 	{
-		helper = ExpressionHelper.addListener( helper, this, listener );
+		helper = ExpressionHelper.addListener(helper, this, listener);
 	}
 
-	@Override public void removeListener( InvalidationListener listener )
+	@Override
+	public void removeListener(InvalidationListener listener)
 	{
-		helper = ExpressionHelper.removeListener( helper, listener );
+		helper = ExpressionHelper.removeListener(helper, listener);
 	}
 
 	@Override
@@ -126,28 +143,27 @@ public class NodeProperty implements ObservableObjectValue< Node >, WritableObje
 	{
 		final Object bean = getBean();
 		final String name = getName();
-		final StringBuilder result = new StringBuilder(
-				"NodeProperty [" );
-		if ( bean != null )
+		final StringBuilder result = new StringBuilder("NodeProperty [");
+		if (bean != null)
 		{
-			result.append( "bean: " ).append( bean ).append( ", " );
+			result.append("bean: ").append(bean).append(", ");
 		}
-		if ( ( name != null ) && ( !name.equals( "" ) ) )
+		if ((name != null) && (!name.equals("")))
 		{
-			result.append( "name: " ).append( name ).append( ", " );
+			result.append("name: ").append(name).append(", ");
 		}
-		result.append( "value: " ).append( get() ).append( "]" );
+		result.append("value: ").append(get()).append("]");
 		return result.toString();
 	}
 
 	protected void fireValueChangedEvent()
 	{
-		ExpressionHelper.fireValueChangedEvent( helper );
+		ExpressionHelper.fireValueChangedEvent(helper);
 	}
 
 	private void markInvalid()
 	{
-		if ( valid )
+		if (valid)
 		{
 			valid = false;
 			invalidated();
@@ -160,19 +176,21 @@ public class NodeProperty implements ObservableObjectValue< Node >, WritableObje
 
 	}
 
-	@Override public Node get()
+	@Override
+	public Node get()
 	{
 		valid = true;
 		return observable == null ? node : observable.getValue();
 	}
 
-	@Override public void set( Node newValue )
+	@Override
+	public void set(Node newValue)
 	{
-		if ( isBound() )
+		if (isBound())
 		{
-			throw new java.lang.RuntimeException( "A bound value cannot be set." );
+			throw new java.lang.RuntimeException("A bound value cannot be set.");
 		}
-		if ( ( node == null ) ? newValue != null : !node.equals( newValue ) )
+		if ((node == null) ? newValue != null : !node.equals(newValue))
 		{
 			node = newValue;
 			markInvalid();
@@ -185,9 +203,10 @@ public class NodeProperty implements ObservableObjectValue< Node >, WritableObje
 
 		return new BooleanBinding()
 		{
-			@Override protected boolean computeValue()
+			@Override
+			protected boolean computeValue()
 			{
-				return currentPanel.valid ;
+				return currentPanel.valid;
 			}
 		};
 	}
@@ -197,18 +216,18 @@ public class NodeProperty implements ObservableObjectValue< Node >, WritableObje
 
 		private final WeakReference<NodeProperty> wref;
 
-		public Listener( NodeProperty ref )
+		public Listener(NodeProperty ref)
 		{
-			this.wref = new WeakReference<>( ref );
+			this.wref = new WeakReference<>(ref);
 		}
 
 		@Override
-		public void invalidated( Observable observable )
+		public void invalidated(Observable observable)
 		{
 			NodeProperty ref = wref.get();
-			if ( ref == null )
+			if (ref == null)
 			{
-				observable.removeListener( this );
+				observable.removeListener(this);
 			}
 			else
 			{

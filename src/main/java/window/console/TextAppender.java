@@ -5,5 +5,5 @@ package window.console;
  */
 public interface TextAppender
 {
-	public void appendText( String text );
+	public void appendText(String text);
 }

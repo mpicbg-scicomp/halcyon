@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 public interface RunnableFX
 {
 	public void init();
+
 	public void start(Stage stage);
+
 	public void stop();
 }

@@ -10,27 +10,27 @@ public class MicroscopeStartStopToolbar extends ToolbarBase
 {
 	public MicroscopeStartStopToolbar()
 	{
-		super( new VBox() );
-		getDockTitleBar().setVisible( false );
+		super(new VBox());
+		getDockTitleBar().setVisible(false);
 
-		setTitle( "Start/Stop" );
+		setTitle("Start/Stop");
 
 		final VBox panel = (VBox) getContents();
 
 		Button btn = new Button("Start");
-		btn.setOnAction( ( e ) -> {
-			System.out.println( "START" );
-		} );
+		btn.setOnAction((e) -> {
+			System.out.println("START");
+		});
 
-		panel.getChildren().add( btn );
+		panel.getChildren().add(btn);
 
 		btn = new Button("Stop");
-		btn.setOnAction( ( e ) -> {
-			System.out.println( "STOP" );
-		} );
+		btn.setOnAction((e) -> {
+			System.out.println("STOP");
+		});
 
-		panel.getChildren().add( btn );
+		panel.getChildren().add(btn);
 
-		setContents( panel );
+		setContents(panel);
 	}
 }

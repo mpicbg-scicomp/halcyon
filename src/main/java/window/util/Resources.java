@@ -9,22 +9,23 @@ import java.util.ResourceBundle;
 public class Resources
 {
 	// Load the bundles
-	private static final ResourceBundle strings = ResourceBundle.getBundle( "Strings" );
+	private static final ResourceBundle strings = ResourceBundle.getBundle("Strings");
 
-	private static final String VERSION = getString( "build.date" );
+	private static final String VERSION = getString("build.date");
 
 	/**
 	 * Return string property value.
+	 * 
 	 * @param key
 	 * @return
 	 */
-	public static String getString( String key )
+	public static String getString(String key)
 	{
 		try
 		{
-			return strings.getString( key );
+			return strings.getString(key);
 		}
-		catch ( MissingResourceException e )
+		catch (MissingResourceException e)
 		{
 			return key;
 		}

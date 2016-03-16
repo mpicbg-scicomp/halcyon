@@ -13,15 +13,19 @@ public interface HalcyonNodeInterface
 
 	/**
 	 * Adds an observer to this Halcyon node.
-	 * @param listener the new observer
+	 * 
+	 * @param listener
+	 *          the new observer
 	 */
-	public void addListener( HalcyonNodeListener listener );
+	public void addListener(HalcyonNodeListener listener);
 
 	/**
 	 * Removes an observer from this Halcyon node.
-	 * @param listener the listener to remove
+	 * 
+	 * @param listener
+	 *          the listener to remove
 	 */
-	public void removeListener( HalcyonNodeListener listener );
+	public void removeListener(HalcyonNodeListener listener);
 
 	/**
 	 * Gets JavaFX panel.

@@ -6,4 +6,3 @@ package window.toolbar;
 public interface ToolbarInterface
 {
 }
-

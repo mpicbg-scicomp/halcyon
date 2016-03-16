@@ -5,6 +5,6 @@ package model.node;
  */
 public interface HalcyonNodeType
 {
-//	Camera, Laser, LightSheet, Stage, FilterWheel, AdaptiveOptics, Other
+	// Camera, Laser, LightSheet, Stage, FilterWheel, AdaptiveOptics, Other
 	String name();
 }
