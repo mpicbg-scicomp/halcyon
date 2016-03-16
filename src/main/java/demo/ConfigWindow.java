@@ -1,15 +1,26 @@
 package demo;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.ContextMenuBuilder;
+import javafx.scene.control.MenuItemBuilder;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import model.list.HalcyonNodeRepository;
 import model.list.HalcyonNodeRepositoryListener;
 import model.node.HalcyonNode;
@@ -30,6 +41,7 @@ public class ConfigWindow extends ControlWindowBase
 	final private HashMap<String, TreeItem<TreeNode>> subNodes = new HashMap<>();
 	final TreeView<TreeNode> tree;
 	JFXPanel fxPanel;
+	ContextMenu rootContextMenu;
 
 	private final Node rootIcon = new ImageView(
 			new Image( getClass().getResourceAsStream( Resources.getString( "root.icon" ) ) )
@@ -39,6 +51,7 @@ public class ConfigWindow extends ControlWindowBase
 	{
 		super( new VBox());
 		setTitle( "Config" );
+		System.out.println("text");
 
 		TreeItem<TreeNode> rootItem = new TreeItem<>( new TreeNode( "Microscopy" ), rootIcon );
 		rootItem.setExpanded( true );
@@ -85,17 +98,74 @@ public class ConfigWindow extends ControlWindowBase
 		tree.setOnMouseClicked( event -> {
 			if (event.getClickCount() == 2)
 			{
-				TreeItem<TreeNode> item = tree.getSelectionModel().getSelectedItem();
-				if(item != null)
+				// Check the number of selected items
+				ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
+
+				if(list.size() == 1)
 				{
-					TreeNode node = item.getValue();
-					if (node.getNode() != null)
+					System.out.println("list size is 1");
+					TreeItem< TreeNode > item = tree.getSelectionModel().getSelectedItem();
+					if ( item != null )
 					{
-						manager.open( node.getNode() );
+						TreeNode node = item.getValue();
+						if ( node.getNode() != null )
+						{
+							manager.open( node.getNode() );
+						}
 					}
 				}
+				else if(list.size() > 1)
+				{
+					System.out.println("list size is " + list.size());
+					// Make a composite panel from the selected items.
+
+					// Open them in one panel
+
+				}
+			}
+
+			if (event.isSecondaryButtonDown())
+			{
+				System.out.println("he");
+				rootContextMenu.show(tree, Side.BOTTOM, 0, 0);
 			}
 		} );
+
+		rootContextMenu = ContextMenuBuilder.create()
+				.items(
+						MenuItemBuilder.create()
+								.text("Menu Item")
+								.onAction(
+										new EventHandler<ActionEvent >() {
+											@Override
+											public void handle(ActionEvent arg0) {
+												System.out.println("Menu Item Clicked!");
+											}
+										}
+								)
+								.build(),
+						MenuItemBuilder.create()
+								.text( "Remove" )
+								.onAction(
+										new EventHandler< ActionEvent >()
+										{
+											@Override
+											public void handle( ActionEvent arg0 )
+											{
+												ObservableList< TreeItem< TreeNode > > list = tree.getSelectionModel().getSelectedItems();
+												for ( TreeItem< TreeNode > n : list )
+												{
+													nodes.remove( n.getValue().getNode() );
+													manager.close( n.getValue().getNode() );
+												}
+											}
+										}
+								)
+								.build()
+				)
+				.build();
+
+		tree.setContextMenu( rootContextMenu );
 	}
 
 	public void start( TreeView<TreeNode> tree )
