@@ -6,7 +6,7 @@
 
     <groupId>net.halcyon</groupId>
     <artifactId>Halcyon</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5</version>
 
     <dependencies>
         <dependency>
@@ -17,7 +17,7 @@
         <dependency>
             <groupId>org.dockfx</groupId>
             <artifactId>DockFX</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
