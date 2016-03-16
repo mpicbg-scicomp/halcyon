@@ -45,7 +45,7 @@ dependencies
 {
 
 	compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.9'
-    compile 'org.dockfx:DockFX:0.1.1'
+    compile 'org.dockfx:DockFX:0.1.2'
 
 	compile group: 'commons-collections', name: 'commons-collections', version: '3.2.1'
 	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
@@ -92,7 +92,7 @@ if (JavaVersion.current().isJava8Compatible()) {
 
 
 group = 'net.halcyon'
-version = '0.1.4'
+version = '0.1.5'
 
 artifacts
 {
