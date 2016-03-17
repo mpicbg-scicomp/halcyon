@@ -1,5 +1,6 @@
 package window.console;
 
+import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -27,15 +28,18 @@ public class ConsolePane extends ScrollPane implements TextAppender
 
 	public void appendText(final String str)
 	{
-		controlSize();
-		Text text = new Text(str);
+		Platform.runLater(() -> {
+			controlSize();
+			Text text = new Text(str);
 
-		if (str.startsWith("[StdOut]"))
-			text.setFill(Color.BLUE);
-		else if (str.startsWith("[StdErr]"))
-			text.setFill(Color.RED);
+			if (str.startsWith("[StdOut]"))
+				text.setFill(Color.BLUE);
+			else if (str.startsWith("[StdErr]"))
+				text.setFill(Color.RED);
 
-		textFlow.getChildren().add(text);
+			textFlow.getChildren().add(text);
+		});
+
 	}
 
 	private void controlSize()
