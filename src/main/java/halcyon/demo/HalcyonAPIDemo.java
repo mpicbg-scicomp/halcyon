@@ -19,9 +19,12 @@ public class HalcyonAPIDemo extends Application
 										InterruptedException
 	{
 		// TODO: support other type of devices
-		final String lRootIconPath = ResourcesUtil.getString( "root.icon" );
-		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(
-				new TreePanel( "Config", "Test Microscopy", getClass().getResourceAsStream( lRootIconPath ), HalcyonNodeTypeExample.values() ) );
+		final String lRootIconPath = ResourcesUtil.getString("root.icon");
+		TreePanel lTreePanel = new TreePanel(	"Config",
+																					"Test Microscopy",
+																					getClass().getResourceAsStream(lRootIconPath),
+																					HalcyonNodeTypeExample.values());
+		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(lTreePanel);
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",
 																									HalcyonNodeTypeExample.ONE,
@@ -51,9 +54,11 @@ public class HalcyonAPIDemo extends Application
 	public void demoJFX(Stage primaryStage) throws Exception
 	{
 		// TODO: support other type of devices
-		final String lRootIconPath = ResourcesUtil.getString( "root.icon" );
-		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(
-				new TreePanel("Config", "Test Microscopy", getClass().getResourceAsStream( lRootIconPath ), HalcyonNodeTypeExample.values()));
+		final String lRootIconPath = ResourcesUtil.getString("root.icon");
+		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(new TreePanel("Config",
+																																			"Test Microscopy",
+																																			getClass().getResourceAsStream(lRootIconPath),
+																																			HalcyonNodeTypeExample.values()));
 		lHalcyonFrame.start(primaryStage);
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",
