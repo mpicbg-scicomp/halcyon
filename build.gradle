@@ -17,9 +17,7 @@ sourceSets
 		java
 		{ srcDir 'src/main/java' }
 		resources
-		{ srcDir 'src/main/java'
-          include '**/*.png', '**/*.properties'
-        }
+		{ srcDir 'src/main/java' }
 	}
 	test
 	{
