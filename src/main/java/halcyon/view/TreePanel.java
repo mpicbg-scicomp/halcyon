@@ -7,6 +7,7 @@ import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonNodeType;
 import halcyon.window.control.ControlWindowBase;
 
+import java.io.InputStream;
 import java.util.HashMap;
 
 import javafx.collections.ObservableList;
@@ -30,12 +31,12 @@ public class TreePanel extends ControlWindowBase
 
 	ContextMenu rootContextMenu;
 
-	public TreePanel( String pTitle, String pRootNodeName, String pRootIconPath, HalcyonNodeType[] pHalcyonNodeTypes )
+	public TreePanel( String pTitle, String pRootNodeName, InputStream pRootIcon, HalcyonNodeType[] pHalcyonNodeTypes )
 	{
 		super(new VBox());
 		setTitle( pTitle );
 
-		TreeItem<TreeNode> rootItem = new TreeItem<>( new TreeNode( pRootNodeName ), HalcyonNodeType.getIconPath( pRootIconPath ) );
+		TreeItem<TreeNode> rootItem = new TreeItem<>( new TreeNode( pRootNodeName ), HalcyonNodeType.getIconPath( pRootIcon ) );
 		rootItem.setExpanded(true);
 
 		for ( HalcyonNodeType type : pHalcyonNodeTypes )
