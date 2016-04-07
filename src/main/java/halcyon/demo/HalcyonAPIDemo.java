@@ -5,6 +5,7 @@ import halcyon.model.node.HalcyonNode;
 
 import java.lang.reflect.InvocationTargetException;
 
+import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -18,7 +19,9 @@ public class HalcyonAPIDemo extends Application
 										InterruptedException
 	{
 		// TODO: support other type of devices
-		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(new TreePanel());
+		final String lRootIconPath = ResourcesUtil.getString( "root.icon" );
+		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(
+				new TreePanel( "Config", "Test Microscopy", lRootIconPath, HalcyonNodeTypeExample.values() ) );
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",
 																									HalcyonNodeTypeExample.ONE,
@@ -48,7 +51,9 @@ public class HalcyonAPIDemo extends Application
 	public void demoJFX(Stage primaryStage) throws Exception
 	{
 		// TODO: support other type of devices
-		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(new TreePanel());
+		final String lRootIconPath = ResourcesUtil.getString( "root.icon" );
+		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(
+				new TreePanel("Config", "Test Microscopy", lRootIconPath, HalcyonNodeTypeExample.values()));
 		lHalcyonFrame.start(primaryStage);
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",

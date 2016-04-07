@@ -1,12 +1,32 @@
 package halcyon.demo;
 
 import halcyon.model.node.HalcyonNodeType;
+import javafx.scene.Node;
 
 /**
- * Created by moon on 1/28/16.
+ * Example of HalcyonNodeType
  */
 public enum HalcyonNodeTypeExample implements HalcyonNodeType
 {
-	ONE, TWO, THREE;
-
+	ONE
+		{
+			@Override public Node getIcon()
+			{
+				return getIcon( ResourcesUtil.getString( name().toLowerCase() + ".icon" ) );
+			}
+		},
+	TWO
+		{
+			@Override public Node getIcon()
+			{
+				return getIcon( ResourcesUtil.getString( name().toLowerCase() + ".icon" ) );
+			}
+		},
+	THREE
+		{
+			@Override public Node getIcon()
+			{
+				return getIcon( ResourcesUtil.getString( name().toLowerCase() + ".icon" ) );
+			}
+		}
 }
