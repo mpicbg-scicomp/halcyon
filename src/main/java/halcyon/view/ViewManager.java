@@ -6,6 +6,7 @@ import halcyon.model.list.ObservableCollection;
 import halcyon.model.list.ObservableCollectionListener;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
+import halcyon.model.node.HalcyonSwingNode;
 import halcyon.window.console.ConsoleInterface;
 import halcyon.window.console.StdOutputCaptureConsole;
 import halcyon.window.control.ControlWindowBase;
@@ -133,6 +134,12 @@ public class ViewManager
 
 	public void open(HalcyonNodeInterface node)
 	{
+		if (node instanceof HalcyonSwingNode)
+		{
+			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
+			lHalcyonSwingNode.setVisible(true);
+			return;
+		}
 
 		for (final HalcyonNodeDockable n : pages)
 		{
@@ -181,6 +188,13 @@ public class ViewManager
 
 	public void hide(HalcyonNodeInterface node)
 	{
+		if (node instanceof HalcyonSwingNode)
+		{
+			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
+			lHalcyonSwingNode.setVisible(false);
+			return;
+		}
+
 		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
 		{
 			if (page.getNode() == node)
@@ -192,6 +206,13 @@ public class ViewManager
 
 	public void close(HalcyonNodeInterface node)
 	{
+		if (node instanceof HalcyonSwingNode)
+		{
+			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
+			lHalcyonSwingNode.close();
+			return;
+		}
+
 		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
 		{
 			if (page.getNode() == node)
@@ -199,5 +220,10 @@ public class ViewManager
 				page.close();
 			}
 		}
+	}
+
+	public boolean isVisible()
+	{
+		return dockPane.isVisible();
 	}
 }

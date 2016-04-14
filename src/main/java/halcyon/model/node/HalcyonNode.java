@@ -8,7 +8,10 @@ import java.util.List;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.embed.swing.SwingNode;
 import javafx.scene.Node;
+
+import javax.swing.JComponent;
 
 /**
  * Halcyon Node
@@ -18,6 +21,13 @@ import javafx.scene.Node;
  */
 public class HalcyonNode implements HalcyonNodeInterface
 {
+
+	private HalcyonNodeType type;
+	private NodeProperty panel = null;
+	private final ReadOnlyBooleanWrapper existPanel = new ReadOnlyBooleanWrapper();
+	private final StringProperty name = new SimpleStringProperty();
+	private final List<HalcyonNodeListener> listeners = new ArrayList<HalcyonNodeListener>();
+
 	// TODO: finish.
 	public static HalcyonNode wrap(	final String name,
 																	final HalcyonNodeType type,
@@ -26,15 +36,45 @@ public class HalcyonNode implements HalcyonNodeInterface
 		return new HalcyonNode(name, type, panel);
 	}
 
+	public HalcyonNode()
+	{
+		existPanel.bind(name.isNotEmpty().and(panel.isNotEmpty()));
+	}
+
+	public HalcyonNode(String name)
+	{
+		this.name.setValue(name);
+	}
+
+	public HalcyonNode(String name, HalcyonNodeType type)
+	{
+		this.name.setValue(name);
+		this.type = type;
+	}
+
+	public HalcyonNode(String name, HalcyonNodeType type, Node panel)
+	{
+		this.name.setValue(name);
+		this.type = type;
+		this.setPanel(panel);
+	}
+
+	public HalcyonNode(	String name,
+											HalcyonNodeType type,
+											JComponent panel)
+	{
+		this.name.setValue(name);
+		this.type = type;
+		final SwingNode lSwingNode = new SwingNode();
+		lSwingNode.setContent(panel);
+		this.setPanel(lSwingNode);
+	}
+
 	@Override
 	public HalcyonNodeType getType()
 	{
 		return type;
 	}
-
-	private HalcyonNodeType type;
-
-	private final StringProperty name = new SimpleStringProperty();
 
 	@Override
 	public Node getPanel()
@@ -56,36 +96,6 @@ public class HalcyonNode implements HalcyonNodeInterface
 			this.panel = new NodeProperty(null, "Content");
 
 		this.panel.set(panel);
-	}
-
-	private NodeProperty panel = null;
-
-	private final ReadOnlyBooleanWrapper existPanel = new ReadOnlyBooleanWrapper();
-
-	public HalcyonNode()
-	{
-		existPanel.bind(name.isNotEmpty().and(panel.isNotEmpty()));
-	}
-
-	/** the observers of this Halcyon node */
-	private final List<HalcyonNodeListener> listeners = new ArrayList<HalcyonNodeListener>();
-
-	public HalcyonNode(String name)
-	{
-		this.name.setValue(name);
-	}
-
-	public HalcyonNode(String name, HalcyonNodeType type)
-	{
-		this.name.setValue(name);
-		this.type = type;
-	}
-
-	public HalcyonNode(String name, HalcyonNodeType type, Node panel)
-	{
-		this.name.setValue(name);
-		this.type = type;
-		this.setPanel(panel);
 	}
 
 	@Override

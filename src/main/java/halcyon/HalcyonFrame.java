@@ -70,10 +70,14 @@ public class HalcyonFrame<T> extends Application
 														toolbarWindows);
 		this.controlWindow.setViewManager(view);
 
-		primaryStage.setScene(new Scene(dockPane, 800, 600));
+		Scene lScene = new Scene(dockPane, 800, 600);
+
+		primaryStage.setScene(lScene);
 		primaryStage.sizeToScene();
 
 		primaryStage.show();
+
+		// System.out.println(lScene.getWindow());
 
 		// test the look and feel with both Caspian and Modena
 		Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
@@ -88,5 +92,10 @@ public class HalcyonFrame<T> extends Application
 		// https://bugs.openjdk.java.net/browse/JDK-8132900
 		DockPane.initializeDefaultUserAgentStylesheet();
 
+	}
+
+	public boolean isVisible()
+	{
+		return view.isVisible();
 	}
 }
