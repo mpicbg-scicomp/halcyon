@@ -24,13 +24,17 @@ public class HalcyonSwingNode implements HalcyonNodeInterface
 
 	private final List<HalcyonNodeListener> listeners = new ArrayList<HalcyonNodeListener>();
 
+	private boolean mDockable;
+
 	public HalcyonSwingNode(String name,
 													HalcyonNodeType type,
-													JFrame pJFrame)
+													JFrame pJFrame,
+													boolean pDockable)
 	{
 		this.name = name;
 		this.type = type;
 		mJFrame = pJFrame;
+		setDockable(pDockable);
 	}
 
 	@Override
@@ -104,5 +108,15 @@ public class HalcyonSwingNode implements HalcyonNodeInterface
 	public void close()
 	{
 		mJFrame.dispose();
+	}
+
+	public boolean isDockable()
+	{
+		return mDockable;
+	}
+
+	public void setDockable(boolean pDockable)
+	{
+		mDockable = pDockable;
 	}
 }

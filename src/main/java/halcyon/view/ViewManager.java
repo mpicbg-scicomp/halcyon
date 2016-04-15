@@ -137,8 +137,11 @@ public class ViewManager
 		if (node instanceof HalcyonSwingNode)
 		{
 			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
-			lHalcyonSwingNode.setVisible(true);
-			return;
+			if (!lHalcyonSwingNode.isDockable())
+			{
+				lHalcyonSwingNode.setVisible(true);
+				return;
+			}
 		}
 
 		for (final HalcyonNodeDockable n : pages)
@@ -191,8 +194,11 @@ public class ViewManager
 		if (node instanceof HalcyonSwingNode)
 		{
 			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
-			lHalcyonSwingNode.setVisible(false);
-			return;
+			if (!lHalcyonSwingNode.isDockable())
+			{
+				lHalcyonSwingNode.setVisible(false);
+				return;
+			}
 		}
 
 		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
@@ -209,8 +215,11 @@ public class ViewManager
 		if (node instanceof HalcyonSwingNode)
 		{
 			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
-			lHalcyonSwingNode.close();
-			return;
+			if (!lHalcyonSwingNode.isDockable())
+			{
+				lHalcyonSwingNode.close();
+				return;
+			}
 		}
 
 		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
