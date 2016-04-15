@@ -16,6 +16,10 @@ import halcyon.window.toolbar.ToolbarInterface;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 
 import org.dockfx.DockNode;
@@ -42,16 +46,19 @@ public class ViewManager
 
 	private DockNode deviceTabsDock;
 
-	public ViewManager(	DockPane dockPane,
-											ControlWindowBase config,
-											HalcyonNodeRepository nodes,
-											ObservableCollection<ConsoleInterface> consoles,
-											ObservableCollection<ToolbarInterface> toolbars)
+	private final MenuBar mMenuBar;
+
+	public ViewManager( DockPane dockPane,
+			ControlWindowBase config,
+			HalcyonNodeRepository nodes,
+			ObservableCollection< ConsoleInterface > consoles,
+			ObservableCollection< ToolbarInterface > toolbars, MenuBar pMenuBar )
 	{
 		this.dockPane = dockPane;
 		this.nodes = nodes;
 
 		this.dockPane.setPrefSize(800, 600);
+		this.mMenuBar = pMenuBar;
 
 		controlWindow = config;
 		controlWindow.setPrefSize(200, 300);
@@ -60,6 +67,7 @@ public class ViewManager
 		console = new StdOutputCaptureConsole();
 		console.setPrefSize(600, 200);
 		console.dock(this.dockPane, DockPos.RIGHT, controlWindow);
+		addMenuItem( "Console", console );
 		consoles.add(console);
 
 		// Image deviceDockImage = new
@@ -72,40 +80,41 @@ public class ViewManager
 		toolbar = new MicroscopeStartStopToolbar();
 		toolbar.setPrefSize(200, 300);
 		toolbar.dock(this.dockPane, DockPos.TOP, controlWindow);
+		addMenuItem( "Toolbar", toolbar );
 		toolbars.add(toolbar);
 
 		SplitPane split = (SplitPane) dockPane.getChildren().get(0);
-		split.setDividerPositions(0.3);
-
-		toolbars.addListener(new ObservableCollectionListener<ToolbarInterface>()
-		{
-			@Override
-			public void itemAdded(ToolbarInterface item)
-			{
-				((ControlWindowBase) item).dock(dockPane,
-																				DockPos.CENTER,
-																				toolbar);
-			}
-
-			@Override
-			public void itemRemoved(ToolbarInterface item)
-			{
-
-			}
-		});
+		split.setDividerPositions( 0.3 );
 
 		consoles.addListener(new ObservableCollectionListener<ConsoleInterface>()
 		{
 			@Override
 			public void itemAdded(ConsoleInterface item)
 			{
-				((ControlWindowBase) item).dock(dockPane,
-																				DockPos.CENTER,
-																				console);
+				ControlWindowBase lControlWindowBase = (ControlWindowBase) item;
+
+				addMenuItem( "Console", lControlWindowBase );
 			}
 
 			@Override
 			public void itemRemoved(ConsoleInterface item)
+			{
+
+			}
+		});
+
+		toolbars.addListener(new ObservableCollectionListener<ToolbarInterface>()
+		{
+			@Override
+			public void itemAdded(ToolbarInterface item)
+			{
+				ControlWindowBase lControlWindowBase = (ControlWindowBase) item;
+
+				addMenuItem( "Toolbar", lControlWindowBase );
+			}
+
+			@Override
+			public void itemRemoved(ToolbarInterface item)
 			{
 
 			}
@@ -125,6 +134,32 @@ public class ViewManager
 				close(node);
 			}
 		});
+	}
+
+	private void addMenuItem( String pMenuGroupName, ControlWindowBase pControlWindowBase )
+	{
+		mMenuBar.getMenus().stream()
+				.filter( c -> c.getText().equals( pMenuGroupName ) )
+				.findFirst()
+				.ifPresent( c -> {
+					CheckMenuItem lMenuItem = new CheckMenuItem( pControlWindowBase.getTitle() );
+					lMenuItem.selectedProperty().bindBidirectional( pControlWindowBase.visibleProperty() );
+//					lMenuItem.selectedProperty().addListener( ( observable, oldValue, newValue ) -> {
+//						if(newValue)
+//							dockPane.dock( pControlWindowBase, DockPos.RIGHT );
+//					} );
+					c.getItems().add( lMenuItem );
+				});
+
+		if( !pControlWindowBase.equals( console ) && !pControlWindowBase.equals( toolbar ) )
+		{
+			if( pMenuGroupName.equals( "Console" ) )
+				pControlWindowBase.dock( dockPane, DockPos.CENTER, console );
+			else if( pMenuGroupName.equals( "Toolbar" ) )
+				pControlWindowBase.dock( dockPane, DockPos.CENTER, toolbar );
+			else
+				pControlWindowBase.dock( dockPane, DockPos.CENTER, deviceTabsDock );
+		}
 	}
 
 	public HalcyonNodeRepository getNodes()
