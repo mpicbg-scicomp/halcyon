@@ -3,8 +3,10 @@ package halcyon.model.node;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.embed.swing.SwingNode;
 import javafx.scene.Node;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -46,7 +48,15 @@ public class HalcyonSwingNode implements HalcyonNodeInterface
 	@Override
 	public Node getPanel()
 	{
-		return null;
+		if (mDockable)
+		{
+			SwingNode lSwingNode = new SwingNode();
+			lSwingNode.setContent((JComponent) mJFrame.getContentPane()
+																								.getComponent(0));
+			return lSwingNode;
+		}
+		else
+			return null;
 	}
 
 	@Override
