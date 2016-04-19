@@ -17,17 +17,14 @@ import javax.swing.JComponent;
  * Halcyon Node
  * 
  * TODO: this should in interface, rename HalcyonNodeBase TODO: add static
- * methdos to quickly wrap panels.
+ * methods to quickly wrap panels.
  */
-public class HalcyonNode implements HalcyonNodeInterface
+public class HalcyonNode extends HalcyonNodeBase implements HalcyonNodeInterface
 {
 
-	private HalcyonNodeType type;
 	private NodeProperty panel = null;
 	private final ReadOnlyBooleanWrapper existPanel = new ReadOnlyBooleanWrapper();
-	private final StringProperty name = new SimpleStringProperty();
-	private final List<HalcyonNodeListener> listeners = new ArrayList<HalcyonNodeListener>();
-
+	
 	// TODO: finish.
 	public static HalcyonNode wrap(	final String name,
 																	final HalcyonNodeType type,
@@ -38,6 +35,7 @@ public class HalcyonNode implements HalcyonNodeInterface
 
 	public HalcyonNode()
 	{
+		super();
 		existPanel.bind(name.isNotEmpty().and(panel.isNotEmpty()));
 	}
 
@@ -59,22 +57,6 @@ public class HalcyonNode implements HalcyonNodeInterface
 		this.setPanel(panel);
 	}
 
-	public HalcyonNode(	String name,
-											HalcyonNodeType type,
-											JComponent panel)
-	{
-		this.name.setValue(name);
-		this.type = type;
-		final SwingNode lSwingNode = new SwingNode();
-		lSwingNode.setContent(panel);
-		this.setPanel(lSwingNode);
-	}
-
-	@Override
-	public HalcyonNodeType getType()
-	{
-		return type;
-	}
 
 	@Override
 	public Node getPanel()
@@ -98,52 +80,5 @@ public class HalcyonNode implements HalcyonNodeInterface
 		this.panel.set(panel);
 	}
 
-	@Override
-	public String toString()
-	{
-		return name.getValue().toString();
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null || getClass() != obj.getClass())
-		{
-			return false;
-		}
-		return this.name.getValue() == ((HalcyonNode) obj).getName();
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return this.name.getValue().hashCode();
-	}
-
-	/**
-	 * Adds an observer to this Halcyon node.
-	 * 
-	 * @param listener
-	 *          the new observer
-	 */
-	public void addListener(HalcyonNodeListener listener)
-	{
-		listeners.add(listener);
-	}
-
-	/**
-	 * Removes an observer from this Halcyon node.
-	 * 
-	 * @param listener
-	 *          the listener to remove
-	 */
-	public void removeListener(HalcyonNodeListener listener)
-	{
-		listeners.remove(listener);
-	}
-
-	public String getName()
-	{
-		return name.getValue();
-	}
+	
 }

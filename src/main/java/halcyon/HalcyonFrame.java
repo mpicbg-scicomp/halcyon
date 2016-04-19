@@ -16,7 +16,7 @@ import org.dockfx.DockPane;
 /**
  * FxFrame support JavaFX based on docking framework.
  */
-public class HalcyonFrame<T> extends Application
+public class HalcyonFrame extends Application
 {
 	final private HalcyonNodeRepository nodes;
 
@@ -32,6 +32,8 @@ public class HalcyonFrame<T> extends Application
 	}
 
 	private ViewManager view;
+
+	private Stage mPrimaryStage;
 
 	public HalcyonFrame(ControlWindowBase controlWindow)
 	{
@@ -56,9 +58,10 @@ public class HalcyonFrame<T> extends Application
 	}
 
 	@Override
-	public void start(Stage primaryStage)
+	public void start(Stage pPrimaryStage)
 	{
-		primaryStage.setTitle("Halcyon");
+		mPrimaryStage = pPrimaryStage;
+		mPrimaryStage.setTitle("Halcyon");
 
 		// create a dock pane that will manage our dock nodes and handle the layout
 		DockPane dockPane = new DockPane();
@@ -72,10 +75,10 @@ public class HalcyonFrame<T> extends Application
 
 		Scene lScene = new Scene(dockPane, 800, 600);
 
-		primaryStage.setScene(lScene);
-		primaryStage.sizeToScene();
+		mPrimaryStage.setScene(lScene);
+		mPrimaryStage.sizeToScene();
 
-		primaryStage.show();
+		mPrimaryStage.show();
 
 		// System.out.println(lScene.getWindow());
 
@@ -96,6 +99,6 @@ public class HalcyonFrame<T> extends Application
 
 	public boolean isVisible()
 	{
-		return view.isVisible();
+		return mPrimaryStage==null?false:mPrimaryStage.isShowing();
 	}
 }
