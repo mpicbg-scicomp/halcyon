@@ -8,6 +8,7 @@ import halcyon.model.node.HalcyonNodeType;
 import halcyon.window.control.ControlWindowBase;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashMap;
 
 import javafx.collections.ObservableList;
@@ -34,7 +35,7 @@ public class TreePanel extends ControlWindowBase
 	public TreePanel(	String pTitle,
 										String pRootNodeName,
 										InputStream pRootIcon,
-										HalcyonNodeType[] pHalcyonNodeTypes)
+										Collection<HalcyonNodeType> pHalcyonNodeTypes)
 	{
 		super(new VBox());
 		setTitle(pTitle);

@@ -1,5 +1,7 @@
 package halcyon;
 
+import org.dockfx.DockPane;
+
 import halcyon.model.list.HalcyonNodeRepository;
 import halcyon.model.list.ObservableCollection;
 import halcyon.model.node.HalcyonNodeInterface;
@@ -8,10 +10,9 @@ import halcyon.window.console.ConsoleInterface;
 import halcyon.window.control.ControlWindowBase;
 import halcyon.window.toolbar.ToolbarInterface;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import org.dockfx.DockPane;
 
 /**
  * FxFrame support JavaFX based on docking framework.
@@ -97,8 +98,40 @@ public class HalcyonFrame extends Application
 
 	}
 
+	public void externalStart()
+	{
+		HalcyonFrame lThis = this;
+		Platform.runLater(() -> {
+			Stage stage = new Stage();
+			try
+			{
+				lThis.start(stage);
+			}
+			catch (Throwable e)
+			{
+				e.printStackTrace();
+			}
+		});
+
+	}
+
+	public void externalStop()
+	{
+		HalcyonFrame lThis = this;
+		Platform.runLater(() -> {
+			try
+			{
+				lThis.stop();
+			}
+			catch (Throwable e)
+			{
+				e.printStackTrace();
+			}
+		});
+	}
+
 	public boolean isVisible()
 	{
-		return mPrimaryStage==null?false:mPrimaryStage.isShowing();
+		return mPrimaryStage == null ? false : mPrimaryStage.isShowing();
 	}
 }
