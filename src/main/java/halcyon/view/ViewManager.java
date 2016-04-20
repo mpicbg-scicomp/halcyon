@@ -15,9 +15,18 @@ import halcyon.window.toolbar.ToolbarInterface;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
@@ -143,11 +152,31 @@ public class ViewManager
 				.findFirst()
 				.ifPresent( c -> {
 					CheckMenuItem lMenuItem = new CheckMenuItem( pControlWindowBase.getTitle() );
-					lMenuItem.selectedProperty().bindBidirectional( pControlWindowBase.visibleProperty() );
-//					lMenuItem.selectedProperty().addListener( ( observable, oldValue, newValue ) -> {
-//						if(newValue)
-//							dockPane.dock( pControlWindowBase, DockPos.RIGHT );
-//					} );
+
+					lMenuItem.setSelected( !pControlWindowBase.isClosed() );
+					pControlWindowBase.closedProperty().addListener( new ChangeListener< Boolean >()
+					{
+						@Override public void changed( ObservableValue< ? extends Boolean > observable, Boolean oldValue, Boolean newValue )
+						{
+							lMenuItem.setSelected( !newValue );
+						}
+					} );
+
+					lMenuItem.setOnAction( new EventHandler< ActionEvent >()
+					{
+						@Override public void handle( ActionEvent event )
+						{
+							if ( pControlWindowBase.isClosed() )
+							{
+								pControlWindowBase.dock( dockPane, pControlWindowBase.getLastDockPos(), pControlWindowBase.getLastDockSibling() );
+							}
+							else
+							{
+								lMenuItem.setSelected( true );
+							}
+						}
+					} );
+
 					c.getItems().add( lMenuItem );
 				});
 
