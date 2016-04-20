@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +20,7 @@ import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ContextMenuBuilder;
 import javafx.scene.control.MenuItemBuilder;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.VBox;
@@ -55,7 +58,14 @@ public class TreePanel extends ControlWindowBase
 
 		tree = new TreeView<>(rootItem);
 
-		setContents(tree);
+		this.heightProperty().addListener( new ChangeListener< Number >()
+		{
+			@Override public void changed( ObservableValue< ? extends Number > observable, Number oldValue, Number newValue )
+			{
+				tree.setPrefHeight( newValue.doubleValue() );
+			}
+		} );
+		setContents( tree );
 	}
 
 	@Override
