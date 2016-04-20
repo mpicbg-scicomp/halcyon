@@ -149,6 +149,6 @@ public class HalcyonFrame<T> extends Application
 
 	public boolean isVisible()
 	{
-		return view.isVisible();
+		return mPrimaryStage == null ? false : mPrimaryStage.isShowing();
 	}
 }
