@@ -1,5 +1,6 @@
 package halcyon;
 
+import javafx.scene.layout.BorderPane;
 import org.dockfx.DockPane;
 
 import halcyon.model.list.HalcyonNodeRepository;
@@ -64,7 +65,7 @@ public class HalcyonFrame<T> extends Application
 
 	public void addToolbar(ToolbarInterface toolbar)
 	{
-		toolbarWindows.add(toolbar);
+		toolbarWindows.add( toolbar );
 	}
 
 	public void addConsole(ConsoleInterface console)
@@ -89,9 +90,10 @@ public class HalcyonFrame<T> extends Application
 														mMenuBar);
 		this.controlWindow.setViewManager(view);
 
-		VBox lVBox = new VBox( mMenuBar,
-				dockPane );
-		Scene lScene = new Scene( lVBox, 800, 600 );
+		BorderPane lBorderPane = new BorderPane();
+		lBorderPane.setTop( mMenuBar );
+		lBorderPane.setCenter( dockPane );
+		Scene lScene = new Scene( lBorderPane, 800, 600 );
 
 		mPrimaryStage.setScene(lScene);
 		mPrimaryStage.sizeToScene();
