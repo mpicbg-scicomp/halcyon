@@ -1,17 +1,10 @@
 package halcyon.model.node;
 
-import halcyon.model.property.NodeProperty;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.embed.swing.SwingNode;
-import javafx.scene.Node;
-
-import javax.swing.JComponent;
 
 /**
  * Halcyon Node Base class

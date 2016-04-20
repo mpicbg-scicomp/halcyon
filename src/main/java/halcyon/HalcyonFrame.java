@@ -12,12 +12,20 @@ import halcyon.window.toolbar.ToolbarInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import org.dockfx.DockPane;
+
+import java.util.Arrays;
 
 /**
  * FxFrame support JavaFX based on docking framework.
  */
-public class HalcyonFrame extends Application
+public class HalcyonFrame<T> extends Application
 {
 	final private HalcyonNodeRepository nodes;
 
@@ -26,6 +34,12 @@ public class HalcyonFrame extends Application
 	final private ObservableCollection<ToolbarInterface> toolbarWindows = new ObservableCollection<>();
 
 	final private ControlWindowBase controlWindow;
+
+	final private Menu mToolbarMenu = new Menu( "Toolbar" );
+	final private Menu mConsoleMenu = new Menu( "Console" );
+	final private Menu mDeviceMenu = new Menu( "Device" );
+
+	final private MenuBar mMenuBar = new MenuBar( mToolbarMenu, mConsoleMenu, mDeviceMenu );
 
 	public ViewManager getViewManager()
 	{
@@ -71,10 +85,13 @@ public class HalcyonFrame extends Application
 														controlWindow,
 														nodes,
 														consoleWindows,
-														toolbarWindows);
+														toolbarWindows,
+														mMenuBar);
 		this.controlWindow.setViewManager(view);
 
-		Scene lScene = new Scene(dockPane, 800, 600);
+		VBox lVBox = new VBox( mMenuBar,
+				dockPane );
+		Scene lScene = new Scene( lVBox, 800, 600 );
 
 		mPrimaryStage.setScene(lScene);
 		mPrimaryStage.sizeToScene();
@@ -132,6 +149,6 @@ public class HalcyonFrame extends Application
 
 	public boolean isVisible()
 	{
-		return mPrimaryStage == null ? false : mPrimaryStage.isShowing();
+		return view.isVisible();
 	}
 }
