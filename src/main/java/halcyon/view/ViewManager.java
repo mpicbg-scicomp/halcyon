@@ -209,6 +209,7 @@ public class ViewManager
 		{
 			if (n.isDocked())
 			{
+				n.focus();
 				deviceTabsDock = n;
 				break;
 			}
@@ -218,9 +219,11 @@ public class ViewManager
 		{
 			if (n.getNode() == node)
 			{
-
 				if (n.isDocked())
+				{
+					n.focus();
 					return;
+				}
 				else
 				{
 					if (deviceTabsDock.isDocked())
