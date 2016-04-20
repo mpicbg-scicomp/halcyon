@@ -3,8 +3,10 @@ package halcyon.model.node;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.embed.swing.SwingNode;
 import javafx.scene.Node;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -14,23 +16,34 @@ import javax.swing.SwingUtilities;
  * TODO: this should in interface, rename HalcyonNodeBase TODO: add static
  * methdos to quickly wrap panels.
  */
-public class HalcyonSwingNode implements HalcyonNodeInterface
+public class HalcyonSwingNode extends HalcyonNodeBase	implements
+																											HalcyonNodeInterface
 {
-	private String name;
-
-	private HalcyonNodeType type;
 
 	private JFrame mJFrame;
 
-	private final List<HalcyonNodeListener> listeners = new ArrayList<HalcyonNodeListener>();
+	private boolean mDockable;
+
+	private JComponent mJComponent;
 
 	public HalcyonSwingNode(String name,
 													HalcyonNodeType type,
-													JFrame pJFrame)
+													JFrame pJFrame,
+													boolean pDockable)
 	{
-		this.name = name;
-		this.type = type;
+		super(name, type);
 		mJFrame = pJFrame;
+		setDockable(pDockable);
+	}
+
+	public HalcyonSwingNode(String name,
+													HalcyonNodeType type,
+													JComponent pJComponent)
+	{
+		super(name, type);
+		mJComponent = pJComponent;
+		mJFrame = null;
+		setDockable(true);
 	}
 
 	@Override
@@ -42,67 +55,45 @@ public class HalcyonSwingNode implements HalcyonNodeInterface
 	@Override
 	public Node getPanel()
 	{
-		return null;
-	}
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null || getClass() != obj.getClass())
+		if (mDockable)
 		{
-			return false;
+			SwingNode lSwingNode = new SwingNode();
+			if (mJFrame != null)
+			{
+				lSwingNode.setContent((JComponent) mJFrame.getContentPane()
+																									.getComponent(0));
+			}
+			else if (mJComponent != null)
+			{
+				lSwingNode.setContent(mJComponent);
+			}
+			return lSwingNode;
 		}
-		return this.name == ((HalcyonSwingNode) obj).getName();
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return this.name.hashCode();
-	}
-
-	/**
-	 * Adds an observer to this Halcyon node.
-	 * 
-	 * @param listener
-	 *          the new observer
-	 */
-	public void addListener(HalcyonNodeListener listener)
-	{
-		listeners.add(listener);
-	}
-
-	/**
-	 * Removes an observer from this Halcyon node.
-	 * 
-	 * @param listener
-	 *          the listener to remove
-	 */
-	public void removeListener(HalcyonNodeListener listener)
-	{
-		listeners.remove(listener);
-	}
-
-	public String getName()
-	{
-		return name;
+		else
+			return null;
 	}
 
 	public void setVisible(boolean pB)
 	{
 		SwingUtilities.invokeLater(() -> {
-			mJFrame.setVisible(pB);
+			if (mJFrame != null)
+				mJFrame.setVisible(pB);
 		});
 	}
 
 	public void close()
 	{
-		mJFrame.dispose();
+		if (mJFrame != null)
+			mJFrame.dispose();
+	}
+
+	public boolean isDockable()
+	{
+		return mDockable;
+	}
+
+	public void setDockable(boolean pDockable)
+	{
+		mDockable = pDockable;
 	}
 }

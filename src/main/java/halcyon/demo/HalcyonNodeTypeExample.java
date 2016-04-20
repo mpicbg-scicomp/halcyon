@@ -8,12 +8,11 @@ import javafx.scene.Node;
  */
 public enum HalcyonNodeTypeExample implements HalcyonNodeType
 {
-	ONE,
-	TWO,
-	THREE;
+	ONE, TWO, THREE;
 
-	@Override public Node getIcon()
+	@Override
+	public Node getIcon()
 	{
-		return getIcon( ResourcesUtil.getString( name().toLowerCase() + ".icon" ) );
+		return getIcon(ResourcesUtil.getString(name().toLowerCase() + ".icon"));
 	}
 }

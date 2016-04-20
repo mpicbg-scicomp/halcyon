@@ -2,8 +2,10 @@ package halcyon.demo;
 
 import halcyon.HalcyonFrame;
 import halcyon.model.node.HalcyonNode;
+import halcyon.model.node.HalcyonNodeType;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import halcyon.view.TreePanel;
 import javafx.application.Application;
@@ -20,10 +22,16 @@ public class HalcyonAPIDemo extends Application
 	{
 		// TODO: support other type of devices
 		final String lRootIconPath = ResourcesUtil.getString("root.icon");
+
+		ArrayList<HalcyonNodeType> lNodeTypeList = new ArrayList<HalcyonNodeType>();
+		for (HalcyonNodeType lHalcyonNodeType : HalcyonNodeTypeExample.values())
+			lNodeTypeList.add(lHalcyonNodeType);
+
 		TreePanel lTreePanel = new TreePanel(	"Config",
 																					"Test Microscopy",
 																					getClass().getResourceAsStream(lRootIconPath),
-																					HalcyonNodeTypeExample.values());
+																					lNodeTypeList);
+
 		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(lTreePanel);
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",
@@ -55,10 +63,15 @@ public class HalcyonAPIDemo extends Application
 	{
 		// TODO: support other type of devices
 		final String lRootIconPath = ResourcesUtil.getString("root.icon");
+
+		ArrayList<HalcyonNodeType> lNodeTypeList = new ArrayList<HalcyonNodeType>();
+		for (HalcyonNodeType lHalcyonNodeType : HalcyonNodeTypeExample.values())
+			lNodeTypeList.add(lHalcyonNodeType);
+
 		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(new TreePanel("Config",
 																																			"Test Microscopy",
 																																			getClass().getResourceAsStream(lRootIconPath),
-																																			HalcyonNodeTypeExample.values()));
+																																			lNodeTypeList));
 		lHalcyonFrame.start(primaryStage);
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",

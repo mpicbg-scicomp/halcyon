@@ -1,5 +1,7 @@
 package halcyon;
 
+import org.dockfx.DockPane;
+
 import halcyon.model.list.HalcyonNodeRepository;
 import halcyon.model.list.ObservableCollection;
 import halcyon.model.node.HalcyonNodeInterface;
@@ -8,6 +10,7 @@ import halcyon.window.console.ConsoleInterface;
 import halcyon.window.control.ControlWindowBase;
 import halcyon.window.toolbar.ToolbarInterface;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Menu;
@@ -45,6 +48,8 @@ public class HalcyonFrame<T> extends Application
 
 	private ViewManager view;
 
+	private Stage mPrimaryStage;
+
 	public HalcyonFrame(ControlWindowBase controlWindow)
 	{
 		this.nodes = new HalcyonNodeRepository();
@@ -68,9 +73,10 @@ public class HalcyonFrame<T> extends Application
 	}
 
 	@Override
-	public void start(Stage primaryStage)
+	public void start(Stage pPrimaryStage)
 	{
-		primaryStage.setTitle("Halcyon");
+		mPrimaryStage = pPrimaryStage;
+		mPrimaryStage.setTitle("Halcyon");
 
 		// create a dock pane that will manage our dock nodes and handle the layout
 		DockPane dockPane = new DockPane();
@@ -87,10 +93,10 @@ public class HalcyonFrame<T> extends Application
 				dockPane );
 		Scene lScene = new Scene( lVBox, 800, 600 );
 
-		primaryStage.setScene(lScene);
-		primaryStage.sizeToScene();
+		mPrimaryStage.setScene(lScene);
+		mPrimaryStage.sizeToScene();
 
-		primaryStage.show();
+		mPrimaryStage.show();
 
 		// System.out.println(lScene.getWindow());
 
@@ -107,6 +113,38 @@ public class HalcyonFrame<T> extends Application
 		// https://bugs.openjdk.java.net/browse/JDK-8132900
 		DockPane.initializeDefaultUserAgentStylesheet();
 
+	}
+
+	public void externalStart()
+	{
+		HalcyonFrame lThis = this;
+		Platform.runLater(() -> {
+			Stage stage = new Stage();
+			try
+			{
+				lThis.start(stage);
+			}
+			catch (Throwable e)
+			{
+				e.printStackTrace();
+			}
+		});
+
+	}
+
+	public void externalStop()
+	{
+		HalcyonFrame lThis = this;
+		Platform.runLater(() -> {
+			try
+			{
+				lThis.stop();
+			}
+			catch (Throwable e)
+			{
+				e.printStackTrace();
+			}
+		});
 	}
 
 	public boolean isVisible()

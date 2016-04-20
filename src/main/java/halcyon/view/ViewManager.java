@@ -4,6 +4,7 @@ import halcyon.model.list.HalcyonNodeRepository;
 import halcyon.model.list.HalcyonNodeRepositoryListener;
 import halcyon.model.list.ObservableCollection;
 import halcyon.model.list.ObservableCollectionListener;
+import halcyon.model.node.HalcyonExternalNode;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonSwingNode;
@@ -201,7 +202,16 @@ public class ViewManager
 		if (node instanceof HalcyonSwingNode)
 		{
 			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
-			lHalcyonSwingNode.setVisible(true);
+			if (!lHalcyonSwingNode.isDockable())
+			{
+				lHalcyonSwingNode.setVisible(true);
+				return;
+			}
+		}
+		else if(node instanceof HalcyonExternalNode)
+		{
+			HalcyonExternalNode lHalcyonExternalNode = (HalcyonExternalNode) node;
+			lHalcyonExternalNode.setVisible(true);
 			return;
 		}
 
@@ -258,7 +268,16 @@ public class ViewManager
 		if (node instanceof HalcyonSwingNode)
 		{
 			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
-			lHalcyonSwingNode.setVisible(false);
+			if (!lHalcyonSwingNode.isDockable())
+			{
+				lHalcyonSwingNode.setVisible(false);
+				return;
+			}
+		}
+		else if(node instanceof HalcyonExternalNode)
+		{
+			HalcyonExternalNode lHalcyonExternalNode = (HalcyonExternalNode) node;
+			lHalcyonExternalNode.setVisible(false);
 			return;
 		}
 
@@ -276,7 +295,16 @@ public class ViewManager
 		if (node instanceof HalcyonSwingNode)
 		{
 			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
-			lHalcyonSwingNode.close();
+			if (!lHalcyonSwingNode.isDockable())
+			{
+				lHalcyonSwingNode.close();
+				return;
+			}
+		}
+		else if(node instanceof HalcyonExternalNode)
+		{
+			HalcyonExternalNode lHalcyonExternalNode = (HalcyonExternalNode) node;
+			lHalcyonExternalNode.close();
 			return;
 		}
 
