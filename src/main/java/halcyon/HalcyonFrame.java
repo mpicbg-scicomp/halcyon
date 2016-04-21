@@ -15,13 +15,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import org.dockfx.DockPane;
-
-import java.util.Arrays;
 
 /**
  * FxFrame support JavaFX based on docking framework.
