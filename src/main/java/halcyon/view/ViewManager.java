@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -135,7 +136,7 @@ public class ViewManager
 			@Override
 			public void nodeAdded(HalcyonNodeInterface node)
 			{
-				open(node, false);
+//				open(node);
 			}
 
 			@Override
@@ -197,21 +198,6 @@ public class ViewManager
 		return nodes;
 	}
 
-	private void open( HalcyonNodeInterface node, boolean b )
-	{
-		if(b) open( node );
-		else {
-			open( node );
-			for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
-			{
-				if (page.getNode() == node)
-				{
-					page.close();
-				}
-			}
-		}
-	}
-
 	public void open(HalcyonNodeInterface node)
 	{
 		if (node instanceof HalcyonSwingNode)
@@ -266,15 +252,17 @@ public class ViewManager
 		}
 
 		final HalcyonNodeDockable page = new HalcyonNodeDockable(node);
+
 		if (pages.size() == 0)
 		{
 			deviceTabsDock = page;
-			page.dock(this.dockPane, DockPos.TOP, console);
+			page.dock(dockPane, DockPos.TOP, console);
 		}
 		else
 		{
 			page.dock(dockPane, DockPos.CENTER, deviceTabsDock);
 		}
+
 		pages.add(page);
 	}
 
