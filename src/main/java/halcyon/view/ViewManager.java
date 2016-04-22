@@ -135,7 +135,7 @@ public class ViewManager
 			@Override
 			public void nodeAdded(HalcyonNodeInterface node)
 			{
-				open(node);
+				//open(node);
 			}
 
 			@Override

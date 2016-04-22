@@ -132,7 +132,6 @@ public class TreePanel extends ControlWindowBase
 
 			if (event.isSecondaryButtonDown())
 			{
-				System.out.println("he");
 				rootContextMenu.show(tree, Side.BOTTOM, 0, 0);
 			}
 		});
