@@ -135,7 +135,7 @@ public class ViewManager
 			@Override
 			public void nodeAdded(HalcyonNodeInterface node)
 			{
-				//open(node);
+				open(node, false);
 			}
 
 			@Override
@@ -195,6 +195,21 @@ public class ViewManager
 	public HalcyonNodeRepository getNodes()
 	{
 		return nodes;
+	}
+
+	private void open( HalcyonNodeInterface node, boolean b )
+	{
+		if(b) open( node );
+		else {
+			open( node );
+			for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
+			{
+				if (page.getNode() == node)
+				{
+					page.close();
+				}
+			}
+		}
 	}
 
 	public void open(HalcyonNodeInterface node)
