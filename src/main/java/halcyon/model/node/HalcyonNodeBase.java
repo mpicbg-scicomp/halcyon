@@ -16,22 +16,15 @@ public abstract class HalcyonNodeBase implements HalcyonNodeInterface
 	protected final StringProperty name = new SimpleStringProperty();
 	protected final List<HalcyonNodeListener> listeners = new ArrayList<HalcyonNodeListener>();
 
-
 	public HalcyonNodeBase()
 	{
 	}
-	
+
 	public HalcyonNodeBase(String name, HalcyonNodeType type)
 	{
 		this.name.setValue(name);
 		this.type = type;
 	}
-
-	
-
-
-
-
 
 	@Override
 	public HalcyonNodeType getType()
