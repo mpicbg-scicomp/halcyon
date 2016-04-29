@@ -5,7 +5,6 @@ import halcyon.model.list.HalcyonNodeRepositoryListener;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonNodeType;
-import halcyon.window.control.ControlWindowBase;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -28,7 +27,7 @@ import javafx.scene.layout.VBox;
 /**
  * Device Config Window
  */
-public class TreePanel extends ControlWindowBase
+public class TreePanel extends TreeDockNode
 {
 	final private HashMap<String, TreeItem<TreeNode>> subNodes = new HashMap<>();
 	final TreeView<TreeNode> tree;

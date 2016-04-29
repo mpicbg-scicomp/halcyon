@@ -12,10 +12,10 @@ public class ObservableCollection<T>
 	 * observers of this repository, will be informed whenever items are added or
 	 * removed
 	 */
-	private List<ObservableCollectionListener<T>> listeners = new ArrayList<>();
+	private ArrayList<ObservableCollectionListener<T>> listeners = new ArrayList<>();
 
 	/** the item collection in this repository */
-	private List<T> collection = new ArrayList<>();
+	private ArrayList<T> collection = new ArrayList<>();
 
 	/**
 	 * Adds an observer to this repository. The observer will be informed whenever
@@ -105,5 +105,10 @@ public class ObservableCollection<T>
 				return item;
 
 		return null;
+	}
+
+	public ArrayList<T> getList()
+	{
+		return collection;
 	}
 }

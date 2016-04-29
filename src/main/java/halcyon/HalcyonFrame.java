@@ -1,34 +1,32 @@
 package halcyon;
 
-import javafx.scene.layout.BorderPane;
+import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 
 import halcyon.model.list.HalcyonNodeRepository;
 import halcyon.model.list.ObservableCollection;
 import halcyon.model.node.HalcyonNodeInterface;
+import halcyon.view.TreeDockNode;
 import halcyon.view.ViewManager;
-import halcyon.window.console.ConsoleInterface;
-import halcyon.window.control.ControlWindowBase;
-import halcyon.window.toolbar.ToolbarInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
  * FxFrame support JavaFX based on docking framework.
  */
-public class HalcyonFrame<T> extends Application
+public class HalcyonFrame extends Application
 {
 	final private HalcyonNodeRepository nodes;
 
-	final private ObservableCollection<ConsoleInterface> consoleWindows = new ObservableCollection<>();
+	final private ObservableCollection<DockNode> mConsoleDockNodes = new ObservableCollection<>();
+	final private ObservableCollection<DockNode> mToolBarDockNodes = new ObservableCollection<>();
 
-	final private ObservableCollection<ToolbarInterface> toolbarWindows = new ObservableCollection<>();
-
-	final private ControlWindowBase controlWindow;
+	final private TreeDockNode controlWindow;
 
 	final private Menu mToolbarMenu = new Menu( "Toolbar" );
 	final private Menu mConsoleMenu = new Menu( "Console" );
@@ -45,7 +43,7 @@ public class HalcyonFrame<T> extends Application
 
 	private Stage mPrimaryStage;
 
-	public HalcyonFrame(ControlWindowBase controlWindow)
+	public HalcyonFrame(TreeDockNode controlWindow)
 	{
 		this.nodes = new HalcyonNodeRepository();
 		this.controlWindow = controlWindow;
@@ -57,14 +55,14 @@ public class HalcyonFrame<T> extends Application
 		nodes.add(node);
 	}
 
-	public void addToolbar(ToolbarInterface toolbar)
+	public void addToolbar(DockNode toolbar)
 	{
-		toolbarWindows.add( toolbar );
+		mToolBarDockNodes.add( toolbar );
 	}
 
-	public void addConsole(ConsoleInterface console)
+	public void addConsole(DockNode console)
 	{
-		consoleWindows.add(console);
+		mConsoleDockNodes.add(console);
 	}
 
 	@Override
@@ -79,8 +77,8 @@ public class HalcyonFrame<T> extends Application
 		view = new ViewManager(	dockPane,
 														controlWindow,
 														nodes,
-														consoleWindows,
-														toolbarWindows,
+														mConsoleDockNodes,
+														mToolBarDockNodes,
 														mMenuBar);
 		this.controlWindow.setViewManager(view);
 

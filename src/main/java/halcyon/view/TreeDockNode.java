@@ -1,7 +1,6 @@
-package halcyon.window.control;
+package halcyon.view;
 
 import halcyon.model.list.HalcyonNodeRepository;
-import halcyon.view.ViewManager;
 import javafx.scene.Node;
 
 import org.dockfx.DockNode;
@@ -10,12 +9,11 @@ import org.dockfx.DockNode;
  * Basic Control type Window for tools, which will be overridden by inherited
  * class
  */
-public abstract class ControlWindowBase extends DockNode implements
-																												ControlWindowInterface
+public class TreeDockNode extends DockNode
 {
 	protected HalcyonNodeRepository nodes;
 
-	public ControlWindowBase(Node n)
+	public TreeDockNode(Node n)
 	{
 		super(n);
 	}

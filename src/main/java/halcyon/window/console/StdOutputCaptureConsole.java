@@ -119,10 +119,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import org.dockfx.DockNode;
+
 /**
  * Standard Output and Error capture console
  */
-public class StdOutputCaptureConsole extends ConsoleBase
+public class StdOutputCaptureConsole extends DockNode
 {
 	private final ConsolePane consolePane;
 
