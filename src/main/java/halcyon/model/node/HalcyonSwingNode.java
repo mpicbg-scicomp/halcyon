@@ -26,6 +26,7 @@ public class HalcyonSwingNode extends HalcyonNodeBase	implements
 
 	private JComponent mJComponent;
 
+	//TODO: we should only create HalcyonSwingNode from JComponents, get rid of this constructor
 	public HalcyonSwingNode(String name,
 													HalcyonNodeType type,
 													JFrame pJFrame,

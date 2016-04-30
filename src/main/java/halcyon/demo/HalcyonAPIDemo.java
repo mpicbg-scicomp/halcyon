@@ -18,7 +18,7 @@ public class HalcyonAPIDemo extends Application
 {
 
 	@Override
-	public void start(Stage primaryStage) throws Exception
+	public void start(Stage pPrimaryStage) throws Exception
 	{
 		// TODO: support other type of devices
 		final String lRootIconPath = ResourcesUtil.getString("root.icon");
@@ -55,9 +55,9 @@ public class HalcyonAPIDemo extends Application
 
 		lHalcyonFrame.addToolbar(new DemoToolbarWindow());
 
-		primaryStage.setOnCloseRequest(event -> System.exit(0));
+		pPrimaryStage.setOnCloseRequest(event -> System.exit(0));
 
-		lHalcyonFrame.start(primaryStage);
+		lHalcyonFrame.start(pPrimaryStage);
 	}
 
 	public static void main(String[] args) throws Exception
