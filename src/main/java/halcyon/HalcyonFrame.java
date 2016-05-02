@@ -1,8 +1,5 @@
 package halcyon;
 
-import org.dockfx.DockNode;
-import org.dockfx.DockPane;
-
 import halcyon.model.list.HalcyonNodeRepository;
 import halcyon.model.list.ObservableCollection;
 import halcyon.model.node.HalcyonNodeInterface;
@@ -16,6 +13,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import org.dockfx.DockNode;
+import org.dockfx.DockPane;
+
 /**
  * FxFrame support JavaFX based on docking framework.
  */
@@ -28,11 +28,13 @@ public class HalcyonFrame extends Application
 
 	final private TreeDockNode controlWindow;
 
-	final private Menu mToolbarMenu = new Menu( "Toolbar" );
-	final private Menu mConsoleMenu = new Menu( "Console" );
-	final private Menu mDeviceMenu = new Menu( "Device" );
+	final private Menu mToolbarMenu = new Menu("Toolbar");
+	final private Menu mConsoleMenu = new Menu("Console");
+	final private Menu mDeviceMenu = new Menu("Device");
 
-	final private MenuBar mMenuBar = new MenuBar( mToolbarMenu, mConsoleMenu, mDeviceMenu );
+	final private MenuBar mMenuBar = new MenuBar(	mToolbarMenu,
+																								mConsoleMenu,
+																								mDeviceMenu);
 
 	public ViewManager getViewManager()
 	{
@@ -57,7 +59,7 @@ public class HalcyonFrame extends Application
 
 	public void addToolbar(DockNode toolbar)
 	{
-		mToolBarDockNodes.add( toolbar );
+		mToolBarDockNodes.add(toolbar);
 	}
 
 	public void addConsole(DockNode console)
@@ -67,6 +69,18 @@ public class HalcyonFrame extends Application
 
 	@Override
 	public void start(Stage pPrimaryStage)
+	{
+
+		if (Platform.isFxApplicationThread())
+			internalStart(pPrimaryStage);
+		else
+			Platform.runLater(() -> {
+				internalStart(pPrimaryStage);
+			});
+
+	}
+
+	private void internalStart(Stage pPrimaryStage)
 	{
 		mPrimaryStage = pPrimaryStage;
 		mPrimaryStage.setTitle("Halcyon");
@@ -83,9 +97,9 @@ public class HalcyonFrame extends Application
 		this.controlWindow.setViewManager(view);
 
 		BorderPane lBorderPane = new BorderPane();
-		lBorderPane.setTop( mMenuBar );
-		lBorderPane.setCenter( dockPane );
-		Scene lScene = new Scene( lBorderPane, 800, 600 );
+		lBorderPane.setTop(mMenuBar);
+		lBorderPane.setCenter(dockPane);
+		Scene lScene = new Scene(lBorderPane, 800, 600);
 
 		mPrimaryStage.setScene(lScene);
 		mPrimaryStage.sizeToScene();
@@ -106,7 +120,6 @@ public class HalcyonFrame extends Application
 		// this must be called after the primary stage is shown
 		// https://bugs.openjdk.java.net/browse/JDK-8132900
 		DockPane.initializeDefaultUserAgentStylesheet();
-
 	}
 
 	public void externalStart()
