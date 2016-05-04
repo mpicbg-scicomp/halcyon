@@ -22,7 +22,6 @@ public class HalcyonExternalNode extends HalcyonNodeBase implements
 		mRunnableShow = pRunnableShow;
 		mRunnableHide = pRunnableHide;
 		mRunnableClose = pRunnableClose;
-		mRunnableClose = pRunnableClose;
 	}
 
 	@Override
