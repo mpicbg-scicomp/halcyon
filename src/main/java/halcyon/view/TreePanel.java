@@ -178,6 +178,24 @@ public class TreePanel extends TreeDockNode
 																																	}
 																																})
 																																.build(),
+																						MenuItemBuilder.create()
+																								.text("Make independent")
+																								.onAction(new EventHandler<ActionEvent>()
+																								{
+																									@Override
+																									public void handle(ActionEvent arg0)
+																									{
+																										ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel()
+																												.getSelectedItems();
+
+																										for (TreeItem<TreeNode> n : list)
+																										{
+																											manager.makeIndenpendentWindow( n.getValue().getNode() );
+																										}
+																									}
+																								})
+																								.build(),
+
 																								MenuItemBuilder.create()
 																																.text("Remove")
 																																.onAction(new EventHandler<ActionEvent>()

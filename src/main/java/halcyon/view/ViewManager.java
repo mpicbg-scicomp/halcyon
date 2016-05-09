@@ -3,6 +3,11 @@ package halcyon.view;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 import org.dockfx.DockPos;
@@ -324,5 +329,36 @@ public class ViewManager
 	public boolean isVisible()
 	{
 		return pDockPane.isVisible();
+	}
+
+	public void makeIndenpendentWindow(HalcyonNodeInterface node)
+	{
+		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
+		{
+			if (page.getNode() == node)
+			{
+				page.close();
+
+				BorderPane lBorderPane = new BorderPane();
+				final Node lPanel = page.getNode().getPanel();
+				lBorderPane.setCenter( lPanel );
+				Scene lScene = new Scene( lBorderPane, 500, 300 );
+
+				Stage lStage = new Stage();
+				lStage.setTitle( page.getTitle() );
+				lStage.setScene( lScene );
+				lStage.show();
+
+				lStage.setOnCloseRequest( new EventHandler< WindowEvent >()
+				{
+					@Override public void handle( WindowEvent event )
+					{
+						open( node );
+					}
+				} );
+
+				pages.remove( page );
+			}
+		}
 	}
 }
