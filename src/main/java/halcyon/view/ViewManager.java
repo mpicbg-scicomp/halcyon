@@ -41,8 +41,6 @@ public class ViewManager
 
 	private final StdOutputCaptureConsole mStdOutputCaptureConsole;
 
-	private DockNode deviceTabsDock;
-
 	private final MenuBar mMenuBar;
 
 	public ViewManager(	DockPane pDockPane,
@@ -60,10 +58,12 @@ public class ViewManager
 
 		mTreePanel = pTreePanel;
 		mTreePanel.setPrefSize(200, 300);
+		mTreePanel.setClosable( false );
 		mTreePanel.dock(this.pDockPane, DockPos.LEFT);
 
 		mStdOutputCaptureConsole = new StdOutputCaptureConsole();
 		mStdOutputCaptureConsole.setPrefSize(600, 200);
+		mStdOutputCaptureConsole.setClosable( false );
 		pConsoles.add(mStdOutputCaptureConsole);
 
 
@@ -231,53 +231,37 @@ public class ViewManager
 			return;
 		}
 
+		// If users want to focus the opened dock, then focus and return
+		for (final HalcyonNodeDockable n : pages)
+		{
+			if (n.getNode() == node && n.isDocked())
+			{
+				n.focus();
+				return;
+			}
+		}
+
+		DockNode deviceTabsDock = null;
+		// Checking which dock window is docked
 		for (final HalcyonNodeDockable n : pages)
 		{
 			if (n.isDocked())
 			{
-				n.focus();
 				deviceTabsDock = n;
 				break;
 			}
 		}
 
-		for (final HalcyonNodeDockable n : pages)
-		{
-			if (n.getNode() == node)
-			{
-				if (n.isDocked())
-				{
-					n.focus();
-					return;
-				}
-				else
-				{
-					if (deviceTabsDock.isDocked())
-					{
-						n.dock(pDockPane, DockPos.CENTER, deviceTabsDock);
-					}
-					else
-					{
-						deviceTabsDock = n;
-						n.dock(	this.pDockPane,
-										DockPos.TOP,
-										mStdOutputCaptureConsole);
-					}
-					return;
-				}
-			}
-		}
-
+		// Otherwise, we will create new HalcyonNode
 		final HalcyonNodeDockable page = new HalcyonNodeDockable(node);
 
-		if (pages.size() == 0)
+		if( deviceTabsDock != null )
 		{
-			deviceTabsDock = page;
-			page.dock(pDockPane, DockPos.TOP, mStdOutputCaptureConsole);
+			page.dock(pDockPane, DockPos.CENTER, deviceTabsDock);
 		}
 		else
 		{
-			page.dock(pDockPane, DockPos.CENTER, deviceTabsDock);
+			page.dock(pDockPane, DockPos.TOP, mStdOutputCaptureConsole);
 		}
 
 		pages.add(page);
