@@ -19,7 +19,7 @@ import halcyon.model.list.HalcyonNodeRepository;
 import halcyon.model.list.HalcyonNodeRepositoryListener;
 import halcyon.model.list.ObservableCollection;
 import halcyon.model.list.ObservableCollectionListener;
-import halcyon.model.node.HalcyonExternalNode;
+import halcyon.model.node.HalcyonOtherNode;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonSwingNode;
@@ -236,9 +236,9 @@ public class ViewManager
 				return;
 			}
 		}
-		else if (node instanceof HalcyonExternalNode)
+		else if (node instanceof HalcyonOtherNode)
 		{
-			HalcyonExternalNode lHalcyonExternalNode = (HalcyonExternalNode) node;
+			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			lHalcyonExternalNode.setVisible(true);
 			return;
 		}
@@ -290,9 +290,9 @@ public class ViewManager
 				return;
 			}
 		}
-		else if (node instanceof HalcyonExternalNode)
+		else if (node instanceof HalcyonOtherNode)
 		{
-			HalcyonExternalNode lHalcyonExternalNode = (HalcyonExternalNode) node;
+			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			lHalcyonExternalNode.setVisible(false);
 			return;
 		}
@@ -317,9 +317,9 @@ public class ViewManager
 				return;
 			}
 		}
-		else if (node instanceof HalcyonExternalNode)
+		else if (node instanceof HalcyonOtherNode)
 		{
-			HalcyonExternalNode lHalcyonExternalNode = (HalcyonExternalNode) node;
+			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			// Close() makes the application hangs. Use setVisible(false) instead.
 			// lHalcyonExternalNode.close();
 			lHalcyonExternalNode.setVisible(false);
@@ -348,7 +348,7 @@ public class ViewManager
 
 	public void makeIndenpendentWindow(HalcyonNodeInterface node)
 	{
-		if( node instanceof HalcyonExternalNode) return;
+		if( node instanceof HalcyonOtherNode) return;
 
 		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
 		{

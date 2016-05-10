@@ -3,20 +3,21 @@ package halcyon.model.node;
 import javafx.scene.Node;
 
 /**
- * Halcyon External Node
+ * Halcyon 'Other' Node These nodes are not managed by Halcyon, we just provide
+ * closures that specify how to show, hide and close the corresponding windows.
  * 
  */
-public class HalcyonExternalNode extends HalcyonNodeBase implements
-																												HalcyonNodeInterface
+public class HalcyonOtherNode extends HalcyonNodeBase	implements
+																											HalcyonNodeInterface
 {
 
 	private Runnable mRunnableShow, mRunnableHide, mRunnableClose;
 
-	public HalcyonExternalNode(	String name,
-															HalcyonNodeType type,
-															Runnable pRunnableShow,
-															Runnable pRunnableHide,
-															Runnable pRunnableClose)
+	public HalcyonOtherNode(String name,
+													HalcyonNodeType type,
+													Runnable pRunnableShow,
+													Runnable pRunnableHide,
+													Runnable pRunnableClose)
 	{
 		super(name, type);
 		mRunnableShow = pRunnableShow;
