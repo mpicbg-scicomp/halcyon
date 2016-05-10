@@ -26,11 +26,15 @@ public class HalcyonAPIDemo extends Application
 		ArrayList<HalcyonNodeType> lNodeTypeList = new ArrayList<HalcyonNodeType>();
 		for (HalcyonNodeType lHalcyonNodeType : HalcyonNodeTypeExample.values())
 			lNodeTypeList.add(lHalcyonNodeType);
+		
+		TreePanel lTreePanel = new TreePanel("Config",
+									"Test Microscopy",
+									getClass().getResourceAsStream(lRootIconPath),
+									lNodeTypeList);
 
-		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(new TreePanel("Config",
-																																			"Test Microscopy",
-																																			getClass().getResourceAsStream(lRootIconPath),
-																																			lNodeTypeList));
+		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(800,600);
+		
+		lHalcyonFrame.setTreeDockNode(lTreePanel);
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",
 																									HalcyonNodeTypeExample.ONE,

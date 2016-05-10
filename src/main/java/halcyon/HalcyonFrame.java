@@ -21,12 +21,15 @@ import org.dockfx.DockPane;
  */
 public class HalcyonFrame extends Application
 {
+	
+	private double mWindowWidth,mWindowHeight;
+	
 	final private HalcyonNodeRepository nodes;
 
 	final private ObservableCollection<DockNode> mConsoleDockNodes = new ObservableCollection<>();
 	final private ObservableCollection<DockNode> mToolBarDockNodes = new ObservableCollection<>();
 
-	final private TreeDockNode controlWindow;
+  private TreeDockNode controlWindow;
 
 	final private Menu mToolbarMenu = new Menu("Toolbar");
 	final private Menu mConsoleMenu = new Menu("Console");
@@ -36,18 +39,24 @@ public class HalcyonFrame extends Application
 																								mConsoleMenu,
 																								mDeviceMenu);
 
+	private ViewManager view;
+
+	private Stage mPrimaryStage;
+	
 	public ViewManager getViewManager()
 	{
 		return view;
 	}
 
-	private ViewManager view;
-
-	private Stage mPrimaryStage;
-
-	public HalcyonFrame(TreeDockNode controlWindow)
+	public HalcyonFrame(int pWindowWidth, int pWindowHeight)
 	{
+		mWindowWidth = pWindowWidth;
+		mWindowHeight = pWindowHeight;
 		this.nodes = new HalcyonNodeRepository();
+	}
+	
+	public void setTreeDockNode(TreeDockNode controlWindow)
+	{
 		this.controlWindow = controlWindow;
 		this.controlWindow.setNodes(nodes);
 	}
@@ -99,7 +108,7 @@ public class HalcyonFrame extends Application
 		BorderPane lBorderPane = new BorderPane();
 		lBorderPane.setTop(mMenuBar);
 		lBorderPane.setCenter(dockPane);
-		Scene lScene = new Scene(lBorderPane, 800, 600);
+		Scene lScene = new Scene(lBorderPane, mWindowWidth, mWindowHeight);
 
 		mPrimaryStage.setScene(lScene);
 		mPrimaryStage.sizeToScene();
