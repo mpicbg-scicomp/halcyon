@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -73,7 +74,7 @@ public class ViewManager
 		mStdOutputCaptureConsole.setClosable( false );
 		pConsoles.add(mStdOutputCaptureConsole);
 
-		addViewMenuItem("Console", mStdOutputCaptureConsole);
+		addViewMenuItem( "Console", mStdOutputCaptureConsole );
 
 		dockNodes(pDockPane, DockPos.RIGHT, mTreePanel, pConsoles);
 		dockNodes(pDockPane, DockPos.TOP, mTreePanel, pToolbars);
@@ -94,7 +95,7 @@ public class ViewManager
 			@Override
 			public void itemAdded(DockNode item)
 			{
-				addViewMenuItem("Console", item);
+				addViewMenuItem( "Console", item );
 			}
 
 			@Override
@@ -109,7 +110,7 @@ public class ViewManager
 			@Override
 			public void itemAdded(DockNode item)
 			{
-				addViewMenuItem("Toolbar", item);
+				addViewMenuItem( "Toolbar", item );
 			}
 
 			@Override
@@ -197,7 +198,7 @@ public class ViewManager
 								}
 							});
 
-							((Menu)c).getItems().add(lMenuItem);
+							((Menu)c).getItems().add( lMenuItem );
 						});
 
 	}
@@ -351,6 +352,7 @@ public class ViewManager
 
 		if( !externalNodeMap.containsKey( node ) )
 		{
+			final Scene scene = pDockPane.getScene();
 
 			BorderPane lBorderPane = new BorderPane();
 			final Node lPanel = node.getPanel();
@@ -360,6 +362,8 @@ public class ViewManager
 			Stage lStage = new Stage();
 			lStage.setTitle( node.getName() );
 			lStage.setScene( lScene );
+			lStage.setX( scene.getWindow().getX() );
+			lStage.setY( scene.getWindow().getY() );
 			lStage.show();
 
 			externalNodeMap.put( node, lStage );
