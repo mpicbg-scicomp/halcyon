@@ -1,8 +1,11 @@
 package halcyon.view;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -36,6 +39,8 @@ import javafx.scene.control.SplitPane;
 public class ViewManager
 {
 	private final List<HalcyonNodeDockable> pages = new LinkedList<>();
+
+	private final HashMap<HalcyonNodeInterface, Stage> externalNodeMap = new HashMap<>();
 
 	/** a set of {@link HalcyonNode}s */
 	private final HalcyonNodeRepository mNodes;
@@ -220,6 +225,8 @@ public class ViewManager
 
 	public void open(HalcyonNodeInterface node)
 	{
+		if( externalNodeMap.containsKey( node ) ) return;
+
 		if (node instanceof HalcyonSwingNode)
 		{
 			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
@@ -313,7 +320,15 @@ public class ViewManager
 		else if (node instanceof HalcyonExternalNode)
 		{
 			HalcyonExternalNode lHalcyonExternalNode = (HalcyonExternalNode) node;
-			lHalcyonExternalNode.close();
+			// Close() makes the application hangs. Use setVisible(false) instead.
+			// lHalcyonExternalNode.close();
+			lHalcyonExternalNode.setVisible(false);
+			return;
+		}
+		else if ( externalNodeMap.containsKey( node ) )
+		{
+			externalNodeMap.get( node ).close();
+			externalNodeMap.remove( node );
 			return;
 		}
 
@@ -333,32 +348,39 @@ public class ViewManager
 
 	public void makeIndenpendentWindow(HalcyonNodeInterface node)
 	{
+		if( node instanceof HalcyonExternalNode) return;
+
 		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
 		{
 			if (page.getNode() == node)
 			{
 				page.close();
-
-				BorderPane lBorderPane = new BorderPane();
-				final Node lPanel = page.getNode().getPanel();
-				lBorderPane.setCenter( lPanel );
-				Scene lScene = new Scene( lBorderPane, 500, 300 );
-
-				Stage lStage = new Stage();
-				lStage.setTitle( page.getTitle() );
-				lStage.setScene( lScene );
-				lStage.show();
-
-				lStage.setOnCloseRequest( new EventHandler< WindowEvent >()
-				{
-					@Override public void handle( WindowEvent event )
-					{
-						open( node );
-					}
-				} );
-
 				pages.remove( page );
 			}
+		}
+
+		if( !externalNodeMap.containsKey( node ) )
+		{
+
+			BorderPane lBorderPane = new BorderPane();
+			final Node lPanel = node.getPanel();
+			lBorderPane.setCenter( lPanel );
+			Scene lScene = new Scene( lBorderPane );
+
+			Stage lStage = new Stage();
+			lStage.setTitle( node.getName() );
+			lStage.setScene( lScene );
+			lStage.show();
+
+			externalNodeMap.put( node, lStage );
+
+			lStage.setOnCloseRequest( new EventHandler< WindowEvent >()
+			{
+				@Override public void handle( WindowEvent event )
+				{
+					externalNodeMap.remove( node );
+				}
+			} );
 		}
 	}
 }
