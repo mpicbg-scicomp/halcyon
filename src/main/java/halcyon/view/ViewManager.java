@@ -225,7 +225,10 @@ public class ViewManager
 
 	public void open(HalcyonNodeInterface node)
 	{
-		if( externalNodeMap.containsKey( node ) ) return;
+		if( externalNodeMap.containsKey( node ) ) {
+			externalNodeMap.get(node).requestFocus();
+			return;
+		}
 
 		if (node instanceof HalcyonSwingNode)
 		{
@@ -348,7 +351,10 @@ public class ViewManager
 
 	public void makeIndenpendentWindow(HalcyonNodeInterface node)
 	{
-		if( node instanceof HalcyonOtherNode) return;
+		if( node instanceof HalcyonOtherNode) {
+			open( node );
+			return;
+		}
 
 		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
 		{

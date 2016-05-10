@@ -101,9 +101,9 @@ public class TreePanel extends TreeDockNode
 	{
 		tree.setOnMouseClicked(event -> {
 
-			if( event.isControlDown() )
+			if ( event.getClickCount() == 2 )
 			{
-				if( event.getClickCount() >= 1 )
+				if( event.isShiftDown() )
 				{
 					TreeItem<TreeNode> item = tree.getSelectionModel().getSelectedItem();
 					if (item != null)
@@ -115,10 +115,7 @@ public class TreePanel extends TreeDockNode
 						}
 					}
 				}
-			}
-			else
-			{
-				if (event.getClickCount() == 2)
+				else
 				{
 					// Check the number of selected items
 					ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel()
@@ -146,85 +143,57 @@ public class TreePanel extends TreeDockNode
 
 					}
 				}
-				if (event.isSecondaryButtonDown())
-				{
-					rootContextMenu.show(tree, Side.BOTTOM, 0, 0);
-				}
 			}
 		});
 
 		rootContextMenu = ContextMenuBuilder.create()
 			.items(	MenuItemBuilder.create()
-							.text("open")
-							.onAction(new EventHandler<ActionEvent>()
+						.text("open")
+						.onAction(new EventHandler<ActionEvent>()
+						{
+							@Override
+							public void handle(ActionEvent arg0)
 							{
-								@Override
-								public void handle(ActionEvent arg0)
+								ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
+								for (TreeItem<TreeNode> n : list)
 								{
-									ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
-									VBox vBox = new VBox();
-
-									for (TreeItem<TreeNode> n : list)
-									{
-										vBox.getChildren()
-												.add(n.getValue()
-															.getNode()
-															.getPanel());
-									}
-
-									for (TreeItem<TreeNode> n : list)
-									{
-										nodes.remove(n.getValue().getNode());
-									}
-
-									// Get the
-									// default
-									// NodeType
-									// HalcyonNode
-									// node =
-									// new
-									// HalcyonNode(
-									// "User panel",
-									// RTlibNodeType.Laser,
-									// vBox );
-									// nodes.add(
-									// node );
+									manager.open( n.getValue().getNode() );
 								}
-							})
-							.build(),
+							}
+						})
+						.build(),
 					MenuItemBuilder.create()
-							.text("open externally")
-							.onAction(new EventHandler<ActionEvent>()
+						.text("open externally")
+						.onAction(new EventHandler<ActionEvent>()
+						{
+							@Override
+							public void handle(ActionEvent arg0)
 							{
-								@Override
-								public void handle(ActionEvent arg0)
-								{
-									ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel()
-											.getSelectedItems();
+								ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
 
-									for (TreeItem<TreeNode> n : list)
-									{
-										manager.makeIndenpendentWindow( n.getValue().getNode() );
-									}
+								for (TreeItem<TreeNode> n : list)
+								{
+									manager.makeIndenpendentWindow( n.getValue().getNode() );
 								}
-							})
-							.build(),
+							}
+						})
+						.build(),
 
-							MenuItemBuilder.create()
-								.text("close")
-								.onAction(new EventHandler<ActionEvent>()
+					MenuItemBuilder.create()
+						.text("close")
+						.onAction(new EventHandler<ActionEvent>()
+						{
+							@Override
+							public void handle(ActionEvent arg0)
+							{
+								ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
+								for (TreeItem<TreeNode> n : list)
 								{
-									@Override
-									public void handle(ActionEvent arg0)
-									{
-										ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
-										for (TreeItem<TreeNode> n : list)
-										{
-											manager.close(n.getValue().getNode());
-										}
-									}
-								})
-								.build())
+									manager.close(n.getValue().getNode());
+								}
+							}
+						})
+						.build())
 			.build();
 
 		tree.setContextMenu(rootContextMenu);
