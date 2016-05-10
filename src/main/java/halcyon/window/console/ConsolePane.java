@@ -18,10 +18,9 @@ public class ConsolePane extends ScrollPane implements TextAppender
 
 	public ConsolePane()
 	{
-		setFitToWidth(true);
+		setFitToWidth( true );
+		setFitToHeight( true );
 		setContent(mTextArea);
-		mTextArea.needsLayoutProperty()
-							.addListener((observable, oldValue, newValue) -> vvalueProperty().set(1.0d));
 	}
 
 	public void appendText(final String pString)
