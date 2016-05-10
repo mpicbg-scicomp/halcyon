@@ -29,15 +29,10 @@ public class HalcyonFrame extends Application
 	final private ObservableCollection<DockNode> mConsoleDockNodes = new ObservableCollection<>();
 	final private ObservableCollection<DockNode> mToolBarDockNodes = new ObservableCollection<>();
 
-  private TreeDockNode controlWindow;
+  	private TreeDockNode controlWindow;
 
-	final private Menu mToolbarMenu = new Menu("Toolbar");
-	final private Menu mConsoleMenu = new Menu("Console");
-	final private Menu mDeviceMenu = new Menu("Device");
-
-	final private MenuBar mMenuBar = new MenuBar(	mToolbarMenu,
-																								mConsoleMenu,
-																								mDeviceMenu);
+	final private Menu mViewMenu = new Menu("View");
+	final private MenuBar mMenuBar = new MenuBar( mViewMenu );
 
 	private ViewManager view;
 
@@ -97,12 +92,17 @@ public class HalcyonFrame extends Application
 		// create a dock pane that will manage our dock nodes and handle the layout
 		DockPane dockPane = new DockPane();
 
+		Menu lToolbarMenu = new Menu("Toolbar");
+		Menu lConsoleMenu = new Menu("Console");
+		Menu lDeviceMenu = new Menu("Device");
+		mViewMenu.getItems().addAll( lToolbarMenu, lConsoleMenu, lDeviceMenu );
+
 		view = new ViewManager(	dockPane,
 														controlWindow,
 														nodes,
 														mConsoleDockNodes,
 														mToolBarDockNodes,
-														mMenuBar);
+														mViewMenu);
 		this.controlWindow.setViewManager(view);
 
 		BorderPane lBorderPane = new BorderPane();

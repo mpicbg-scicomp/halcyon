@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -23,14 +22,12 @@ import halcyon.model.node.HalcyonOtherNode;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonSwingNode;
-import halcyon.window.console.ConsoleInterface;
 import halcyon.window.console.StdOutputCaptureConsole;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 
 /**
@@ -51,20 +48,20 @@ public class ViewManager
 
 	private final StdOutputCaptureConsole mStdOutputCaptureConsole;
 
-	private final MenuBar mMenuBar;
+	private final Menu mViewMenu;
 
 	public ViewManager(	DockPane pDockPane,
 											TreeDockNode pTreePanel,
 											HalcyonNodeRepository nodes,
 											ObservableCollection<DockNode> pConsoles,
 											ObservableCollection<DockNode> pToolbars,
-											MenuBar pMenuBar)
+											Menu pViewMenu)
 	{
 		this.pDockPane = pDockPane;
 		this.mNodes = nodes;
 
 		this.pDockPane.setPrefSize(800, 600);
-		this.mMenuBar = pMenuBar;
+		this.mViewMenu = pViewMenu;
 
 		mTreePanel = pTreePanel;
 		mTreePanel.setPrefSize(200, 300);
@@ -76,20 +73,7 @@ public class ViewManager
 		mStdOutputCaptureConsole.setClosable( false );
 		pConsoles.add(mStdOutputCaptureConsole);
 
-
-		/*
-		if (!pControlWindowBase.equals(console))
-		{
-			if (pMenuGroupName.equals("Console"))
-				pControlWindowBase.dock(dockPane, DockPos.CENTER, console);
-			else
-				pControlWindowBase.dock(dockPane,
-																DockPos.CENTER,
-																deviceTabsDock);
-		}
-		/**/
-
-		addMenuItem("Console", mStdOutputCaptureConsole);
+		addViewMenuItem("Console", mStdOutputCaptureConsole);
 
 		dockNodes(pDockPane, DockPos.RIGHT, mTreePanel, pConsoles);
 		dockNodes(pDockPane, DockPos.TOP, mTreePanel, pToolbars);
@@ -110,7 +94,7 @@ public class ViewManager
 			@Override
 			public void itemAdded(DockNode item)
 			{
-				addMenuItem("Console", item);
+				addViewMenuItem("Console", item);
 			}
 
 			@Override
@@ -125,7 +109,7 @@ public class ViewManager
 			@Override
 			public void itemAdded(DockNode item)
 			{
-				addMenuItem("Toolbar", item);
+				addViewMenuItem("Toolbar", item);
 			}
 
 			@Override
@@ -172,10 +156,10 @@ public class ViewManager
 		}
 	}
 
-	private void addMenuItem(	String pMenuGroupName,
+	private void addViewMenuItem(	String pMenuGroupName,
 														DockNode pControlWindowBase)
 	{
-		mMenuBar.getMenus()
+		mViewMenu.getItems()
 						.stream()
 						.filter(c -> c.getText().equals(pMenuGroupName))
 						.findFirst()
@@ -213,7 +197,7 @@ public class ViewManager
 								}
 							});
 
-							c.getItems().add(lMenuItem);
+							((Menu)c).getItems().add(lMenuItem);
 						});
 
 	}
