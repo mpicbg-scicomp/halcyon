@@ -7,8 +7,10 @@ import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonNodeType;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -197,6 +199,24 @@ public class TreePanel extends TreeDockNode
 			.build();
 
 		tree.setContextMenu(rootContextMenu);
+
+		removeNoChildNode();
+	}
+
+	private void removeNoChildNode()
+	{
+		final List<TreeItem> lRemoveItemList = new ArrayList<>();
+
+		tree.getRoot().getChildren().forEach( c -> {
+					if(c.getChildren().size() == 0)
+					{
+						lRemoveItemList.add( c );
+						subNodes.remove( c.getValue().getName() );
+					}
+				}
+		);
+
+		tree.getRoot().getChildren().removeIf( c -> lRemoveItemList.contains( c ) );
 	}
 
 	private class TreeNode
