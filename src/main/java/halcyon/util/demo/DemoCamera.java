@@ -1,7 +1,7 @@
-package halcyon.demo;
+package halcyon.util.demo;
 
-import halcyon.model.component.RunnableFX;
-import halcyon.utils.RunFX;
+import halcyon.util.RunnableFX;
+import halcyon.util.RunFX;
 
 import java.util.Arrays;
 
@@ -32,7 +32,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 /**
- * Created by moon on 1/29/16.
+ * DemoCamera application for showing Camera resolution control
  */
 public class DemoCamera implements RunnableFX
 {

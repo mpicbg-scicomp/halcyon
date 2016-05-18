@@ -13,8 +13,16 @@ import javafx.scene.image.ImageView;
  */
 public interface HalcyonNodeType
 {
+	/**
+	 * Name string of HalcyonNode type.
+	 * @return the string
+	 */
 	String name();
 
+	/**
+	 * Gets icon.
+	 * @return the icon
+	 */
 	default public Node getIcon()
 	{
 		String lKey = name().toLowerCase() + ".icon";
@@ -58,11 +66,21 @@ public interface HalcyonNodeType
 		}
 	}
 
+	/**
+	 * Gets icon from the resource.
+	 * @param pPath the resource path
+	 * @return the icon
+	 */
 	default Node getIcon(String pPath)
 	{
 		return getIconPath(this.getClass().getResourceAsStream(pPath));
 	}
 
+	/**
+	 * Gets icon from the resource stream.
+	 * @param resourceStream the resource stream
+	 * @return the Node
+	 */
 	static Node getIconPath(InputStream resourceStream)
 	{
 		return new ImageView(new Image(resourceStream));

@@ -1,4 +1,4 @@
-package halcyon.demo;
+package halcyon.view.demo;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

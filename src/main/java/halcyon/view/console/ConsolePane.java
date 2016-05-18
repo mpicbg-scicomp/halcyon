@@ -1,4 +1,4 @@
-package halcyon.window.console;
+package halcyon.view.console;
 
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
@@ -12,10 +12,19 @@ public class ConsolePane extends ScrollPane implements TextAppender
 	private static final long cCheckPeriod = 1_000_000_000;
 	private volatile long mLastCheck = System.nanoTime();
 
+	/**
+	 * The Max lines.
+	 */
 	// It remains more than 1000 lines at some point
 	final int maxLines = 1000;
+	/**
+	 * The text area.
+	 */
 	final TextArea mTextArea = new TextArea();
 
+	/**
+	 * Instantiates a new Console pane.
+	 */
 	public ConsolePane()
 	{
 		setFitToWidth( true );
@@ -23,6 +32,10 @@ public class ConsolePane extends ScrollPane implements TextAppender
 		setContent(mTextArea);
 	}
 
+	/**
+	 * Append text.
+	 * @param pString the p string
+	 */
 	public void appendText(final String pString)
 	{
 		Platform.runLater(() -> {

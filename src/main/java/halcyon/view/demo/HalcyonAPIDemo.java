@@ -1,18 +1,15 @@
-package halcyon.demo;
+package halcyon.view.demo;
 
 import halcyon.HalcyonFrame;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeType;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import org.junit.Test;
 
 public class HalcyonAPIDemo extends Application
 {
@@ -34,7 +31,7 @@ public class HalcyonAPIDemo extends Application
 
 		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(800,600);
 		
-		lHalcyonFrame.setTreeDockNode(lTreePanel);
+		lHalcyonFrame.setTreePanel( lTreePanel );
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",
 																									HalcyonNodeTypeExample.ONE,

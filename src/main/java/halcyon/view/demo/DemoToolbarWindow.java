@@ -1,13 +1,8 @@
-package halcyon.demo;
+package halcyon.view.demo;
 
 import org.dockfx.DockNode;
 
-import halcyon.model.list.HalcyonNodeRepository;
-import halcyon.model.node.HalcyonNode;
-import halcyon.view.ViewManager;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 /**

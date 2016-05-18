@@ -1,7 +1,8 @@
 package halcyon.view;
 
-import halcyon.model.list.HalcyonNodeRepository;
-import halcyon.model.list.HalcyonNodeRepositoryListener;
+import halcyon.controller.ViewManager;
+import halcyon.model.collection.HalcyonNodeRepository;
+import halcyon.model.collection.HalcyonNodeRepositoryListener;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonNodeType;
@@ -17,25 +18,39 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ContextMenuBuilder;
 import javafx.scene.control.MenuItemBuilder;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.VBox;
+import org.dockfx.DockNode;
 
 /**
- * Device Config Window
+ * TreePanel contains multiple HalcyonNodes for making HalcyonPanel
  */
-public class TreePanel extends TreeDockNode
+public class TreePanel extends DockNode
 {
+	private HalcyonNodeRepository nodes;
 	final private HashMap<String, TreeItem<TreeNode>> subNodes = new HashMap<>();
+
+	/**
+	 * The TreeView.
+	 */
 	final TreeView<TreeNode> tree;
 
+	/**
+	 * The Root context menu.
+	 */
 	ContextMenu rootContextMenu;
 
+	/**
+	 * Instantiates a new Tree panel.
+	 * @param pTitle the p title
+	 * @param pRootNodeName the p root node name
+	 * @param pRootIcon the p root icon
+	 * @param pHalcyonNodeTypes the p halcyon node types
+	 */
 	public TreePanel(	String pTitle,
 										String pRootNodeName,
 										InputStream pRootIcon,
@@ -69,7 +84,10 @@ public class TreePanel extends TreeDockNode
 		setContents( tree );
 	}
 
-	@Override
+	/**
+	 * Sets Halcyon node repository and setups the event listeners.
+	 * @param nodes the nodes
+	 */
 	public void setNodes(HalcyonNodeRepository nodes)
 	{
 		this.nodes = nodes;
@@ -97,8 +115,11 @@ public class TreePanel extends TreeDockNode
 		});
 	}
 
+	/**
+	 * Sets ViewManager.
+	 * @param manager the manager
+	 */
 	@SuppressWarnings("deprecation")
-	@Override
 	public void setViewManager(ViewManager manager)
 	{
 		tree.setOnMouseClicked(event -> {
@@ -225,37 +246,66 @@ public class TreePanel extends TreeDockNode
 
 		private HalcyonNodeInterface node;
 
+		/**
+		 * Instantiates a new Tree node.
+		 * @param name the name
+		 */
 		public TreeNode(String name)
 		{
 			this.name = name;
 		}
 
+		/**
+		 * Instantiates a new Tree node.
+		 * @param name the name
+		 * @param node the node
+		 */
 		public TreeNode(String name, HalcyonNodeInterface node)
 		{
 			this.name = name;
 			this.node = node;
 		}
 
+		/**
+		 * Gets name.
+		 * @return the name
+		 */
 		public String getName()
 		{
 			return name;
 		}
 
+		/**
+		 * Sets name.
+		 * @param name the name
+		 */
 		public void setName(String name)
 		{
 			this.name = name;
 		}
 
+		/**
+		 * Gets Halcyon node.
+		 * @return the node
+		 */
 		public HalcyonNodeInterface getNode()
 		{
 			return node;
 		}
 
+		/**
+		 * Sets Halcyon node.
+		 * @param node the node
+		 */
 		public void setNode(HalcyonNode node)
 		{
 			this.node = node;
 		}
 
+		/**
+		 * Makes a string.
+		 * @return the string
+		 */
 		@Override
 		public String toString()
 		{

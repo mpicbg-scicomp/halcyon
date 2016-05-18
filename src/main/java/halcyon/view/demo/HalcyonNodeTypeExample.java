@@ -1,4 +1,4 @@
-package halcyon.demo;
+package halcyon.view.demo;
 
 import halcyon.model.node.HalcyonNodeType;
 import javafx.scene.Node;
