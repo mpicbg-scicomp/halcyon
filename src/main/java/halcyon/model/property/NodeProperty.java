@@ -16,7 +16,7 @@ import javafx.scene.Node;
 import com.sun.javafx.binding.ExpressionHelper;
 
 /**
- * PanelProperty for holding node
+ * NodeProperty for holding JavaFX {@link javafx.scene.Node}.
  */
 public class NodeProperty	implements
 													ObservableObjectValue<Node>,

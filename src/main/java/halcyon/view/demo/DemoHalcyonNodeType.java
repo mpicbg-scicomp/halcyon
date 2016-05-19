@@ -6,13 +6,13 @@ import javafx.scene.Node;
 /**
  * Example of HalcyonNodeType
  */
-public enum HalcyonNodeTypeExample implements HalcyonNodeType
+public enum DemoHalcyonNodeType implements HalcyonNodeType
 {
 	ONE, TWO, THREE;
 
 	@Override
 	public Node getIcon()
 	{
-		return getIcon(ResourcesUtil.getString(name().toLowerCase() + ".icon"));
+		return getIcon( DemoResourcesUtil.getString( name().toLowerCase() + ".icon" ));
 	}
 }

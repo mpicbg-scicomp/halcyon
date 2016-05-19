@@ -6,10 +6,10 @@ import java.util.ResourceBundle;
 /**
  * Resource accessor
  */
-public class ResourcesUtil
+public class DemoResourcesUtil
 {
 	// Load the bundles
-	private static final ResourceBundle strings = ResourceBundle.getBundle("halcyon.demo.images.Strings");
+	private static final ResourceBundle strings = ResourceBundle.getBundle("halcyon.view.demo.images.Strings");
 
 	private static final String VERSION = getString("build.date");
 

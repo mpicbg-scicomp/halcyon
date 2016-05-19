@@ -11,17 +11,17 @@ import javafx.application.Application;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class HalcyonAPIDemo extends Application
+public class DemoHalcyonMain extends Application
 {
 
 	@Override
 	public void start(Stage pPrimaryStage) throws Exception
 	{
 		// TODO: support other type of devices
-		final String lRootIconPath = ResourcesUtil.getString("root.icon");
+		final String lRootIconPath = DemoResourcesUtil.getString( "root.icon" );
 
 		ArrayList<HalcyonNodeType> lNodeTypeList = new ArrayList<HalcyonNodeType>();
-		for (HalcyonNodeType lHalcyonNodeType : HalcyonNodeTypeExample.values())
+		for (HalcyonNodeType lHalcyonNodeType : DemoHalcyonNodeType.values())
 			lNodeTypeList.add(lHalcyonNodeType);
 		
 		TreePanel lTreePanel = new TreePanel("Config",
@@ -34,19 +34,19 @@ public class HalcyonAPIDemo extends Application
 		lHalcyonFrame.setTreePanel( lTreePanel );
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",
-																									HalcyonNodeTypeExample.ONE,
+																									DemoHalcyonNodeType.ONE,
 																									new VBox());
 
 		final HalcyonNode lLaser2 = HalcyonNode.wrap(	"Laser-2",
-																									HalcyonNodeTypeExample.ONE,
+																									DemoHalcyonNodeType.ONE,
 																									new VBox());
 
 		final HalcyonNode lCamera = HalcyonNode.wrap(	"Camera-1",
-																									HalcyonNodeTypeExample.TWO,
+																									DemoHalcyonNodeType.TWO,
 																									new VBox());
 
 		final HalcyonNode lStage1 = HalcyonNode.wrap(	"Stage-1",
-																									HalcyonNodeTypeExample.THREE,
+																									DemoHalcyonNodeType.THREE,
 																									new VBox());
 
 		lHalcyonFrame.addNode(lLaser1);
@@ -54,7 +54,8 @@ public class HalcyonAPIDemo extends Application
 		lHalcyonFrame.addNode(lCamera);
 		lHalcyonFrame.addNode(lStage1);
 
-		lHalcyonFrame.addToolbar(new DemoToolbarWindow());
+		// Custom DemoToolbar provided here
+		lHalcyonFrame.addToolbar(new DemoToolbarPanel());
 
 		pPrimaryStage.setOnCloseRequest(event -> System.exit(0));
 

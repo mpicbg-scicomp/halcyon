@@ -1,13 +1,14 @@
-package halcyon.view.console;
+package halcyon.view;
 
+import halcyon.view.console.TextAppender;
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 
 /**
- * ConsolePane for Standard Out and Standard Error messages.
+ * ConsolePane for Standard Output and Standard Error messages.
  */
-public class ConsolePane extends ScrollPane implements TextAppender
+public class ConsolePanel extends ScrollPane implements TextAppender
 {
 	private static final long cCheckPeriod = 1_000_000_000;
 	private volatile long mLastCheck = System.nanoTime();
@@ -25,7 +26,7 @@ public class ConsolePane extends ScrollPane implements TextAppender
 	/**
 	 * Instantiates a new Console pane.
 	 */
-	public ConsolePane()
+	public ConsolePanel()
 	{
 		setFitToWidth( true );
 		setFitToHeight( true );
