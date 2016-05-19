@@ -25,17 +25,17 @@ Scrrenshot
 1. HalcyonNodeRepository - Halcyon node collection
 
 ### ```halcyon.model.property``` package
-1. NodeProperty - NodeProperty holds a ```javafx.scene.Node``` instance in HalcyonNode.
+1. NodeProperty - holds a ```javafx.scene.Node``` instance in HalcyonNode.
 
 ## ```halcyon.view``` package
 1. HalcyonPanel - contains HalcyonNode.
-1. ConsolePanel - used for Console. 
-1. TreePanel - a panel holds multiple HalcyonPanel containing one of HalcyonNode in a tree structure. When clicking specific node, the corresponding HalcyonNode opens an appropriate GUI component.
+1. ConsolePanel - used for Console output. 
+1. TreePanel - holds multiple HalcyonPanel containing one of HalcyonNode in a tree structure. When clicking specific node, the corresponding HalcyonNode opens an appropriate GUI component.
 
 ### ```halcyon.view.demo``` package
-1. DemoHalcyonMain - is an entry point of the demo application.
-1. DemoHalcyonNodeType - has a custom-made HalcyonType enumeration. This will be used for mapping the icons in the TreePanel.
-1. DemoResourceUtil - is a resource access utility only for demonstration. It contains where the icon files are located.
+1. DemoHalcyonMain - an entry point of the demo application.
+1. DemoHalcyonNodeType - has custom-made HalcyonType enumeration elements. This will be used for mapping the icons in the TreePanel.
+1. DemoResourceUtil - a resource access utility only for demonstration. It contains where the icon files are located.
 1. DemoToolbarPanel - contains a user-defined Toolbar which will be located in Toolbar Area in the Pane.
 
 ## ```halcyon.controller``` package
@@ -43,4 +43,4 @@ Scrrenshot
 
 ## ```halcyon.util``` package
 1. RunFX - can run all ```RunnableFX``` the inherited class.
-1. RunnableFX - is an interface which can be run by ```RunFX```.
+1. RunnableFX - an interface which can be run by ```RunFX```.
