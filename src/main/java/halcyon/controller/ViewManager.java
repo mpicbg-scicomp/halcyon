@@ -33,7 +33,7 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.SplitPane;
 
 /**
- * ViewManager is a controller class to manage HalcyonNode and Windows
+ * ViewManager is a controller class to manage HalcyonNodes and GUI.
  */
 public class ViewManager
 {
@@ -52,6 +52,15 @@ public class ViewManager
 
 	private final Menu mViewMenu;
 
+	/**
+	 * Instantiates a new ViewManager.
+	 * @param pDockPane the DockPane
+	 * @param pTreePanel the TreePanel
+	 * @param nodes the HalcyonNodes
+	 * @param pConsoles the ConsolePanel collection
+	 * @param pToolbars the ToobalPanel collection
+	 * @param pViewMenu the ViewMenu
+	 */
 	public ViewManager(	DockPane pDockPane,
 											TreePanel pTreePanel,
 											HalcyonNodeRepository nodes,
@@ -196,11 +205,19 @@ public class ViewManager
 
 	}
 
+	/**
+	 * Gets the Halcyons.
+	 * @return the nodes
+	 */
 	public HalcyonNodeRepository getNodes()
 	{
 		return mNodes;
 	}
 
+	/**
+	 * Open the HalcyonNode.
+	 * @param node the node
+	 */
 	public void open(HalcyonNodeInterface node)
 	{
 		if( mExternalNodeMap.containsKey( node ) ) {
@@ -260,6 +277,10 @@ public class ViewManager
 		mPages.add( page );
 	}
 
+	/**
+	 * Hide the HalcyonNode.
+	 * @param node the node
+	 */
 	public void hide(HalcyonNodeInterface node)
 	{
 		if (node instanceof HalcyonSwingNode)
@@ -287,6 +308,10 @@ public class ViewManager
 		}
 	}
 
+	/**
+	 * Close the HalcyonNode.
+	 * @param node the node
+	 */
 	public void close(HalcyonNodeInterface node)
 	{
 		if (node instanceof HalcyonSwingNode)
@@ -322,12 +347,20 @@ public class ViewManager
 		}
 	}
 
+	/**
+	 * Is visible or not.
+	 * @return the boolean
+	 */
 	public boolean isVisible()
 	{
 		return mDockPane.isVisible();
 	}
 
-	public void makeIndenpendentWindow(HalcyonNodeInterface node)
+	/**
+	 * Make an independent window.
+	 * @param node the node
+	 */
+	public void makeIndependentWindow( HalcyonNodeInterface node )
 	{
 		if( node instanceof HalcyonOtherNode) {
 			open( node );
