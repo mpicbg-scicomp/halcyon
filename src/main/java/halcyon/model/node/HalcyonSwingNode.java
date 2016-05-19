@@ -1,98 +1,103 @@
 package halcyon.model.node;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.embed.swing.SwingNode;
 import javafx.scene.Node;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 /**
  * Halcyon Swing Node
- * 
- * TODO: this should in interface, rename HalcyonNodeBase TODO: add static
- * methdos to quickly wrap panels.
  */
 public class HalcyonSwingNode extends HalcyonNodeBase	implements
 																											HalcyonNodeInterface
 {
-
-	private JFrame mJFrame;
-
 	private boolean mDockable;
 
 	private JComponent mJComponent;
 
-	//TODO: we should only create HalcyonSwingNode from JComponents, get rid of this constructor
-	public HalcyonSwingNode(String name,
-													HalcyonNodeType type,
-													JFrame pJFrame,
-													boolean pDockable)
-	{
-		super(name, type);
-		mJFrame = pJFrame;
-		setDockable(pDockable);
-	}
-
+	/**
+	 * Instantiates a new Halcyon swing node.
+	 * @param name the HalcyonNode name
+	 * @param type the HalcyonNode type
+	 * @param pJComponent the JComponent
+	 */
 	public HalcyonSwingNode(String name,
 													HalcyonNodeType type,
 													JComponent pJComponent)
 	{
 		super(name, type);
 		mJComponent = pJComponent;
-		mJFrame = null;
 		setDockable(true);
 	}
 
+	/**
+	 * Gets HalcyonNode type.
+	 * @return the type
+	 */
 	@Override
 	public HalcyonNodeType getType()
 	{
 		return type;
 	}
 
+	/**
+	 * Gets SwingNode by wrapping the swing component.
+	 * @return the panel
+	 */
 	@Override
 	public Node getPanel()
 	{
 		if (mDockable)
 		{
 			SwingNode lSwingNode = new SwingNode();
-			if (mJFrame != null)
-			{
-				lSwingNode.setContent((JComponent) mJFrame.getContentPane()
-																									.getComponent(0));
-			}
-			else if (mJComponent != null)
+
+			if (mJComponent != null)
 			{
 				lSwingNode.setContent(mJComponent);
 			}
+
 			return lSwingNode;
 		}
 		else
 			return null;
 	}
 
+	/**
+	 * Sets visible.
+	 * @param pB the visible flag
+	 */
 	public void setVisible(boolean pB)
 	{
 		SwingUtilities.invokeLater(() -> {
-			if (mJFrame != null)
-				mJFrame.setVisible(pB);
+			if (mJComponent != null)
+				mJComponent.setVisible(pB);
 		});
 	}
 
+	/**
+	 * Close.
+	 */
 	public void close()
 	{
-		if (mJFrame != null)
-			mJFrame.dispose();
+		if (mJComponent != null)
+			mJComponent = null;
+
 	}
 
+	/**
+	 * Is dockable boolean.
+	 * @return the boolean
+	 */
 	public boolean isDockable()
 	{
 		return mDockable;
 	}
 
+	/**
+	 * Sets dockable.
+	 * @param pDockable the p dockable
+	 */
 	public void setDockable(boolean pDockable)
 	{
 		mDockable = pDockable;

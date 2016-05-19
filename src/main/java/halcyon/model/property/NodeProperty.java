@@ -16,7 +16,7 @@ import javafx.scene.Node;
 import com.sun.javafx.binding.ExpressionHelper;
 
 /**
- * PanelProperty for holding node
+ * NodeProperty for holding JavaFX {@link javafx.scene.Node}.
  */
 public class NodeProperty	implements
 													ObservableObjectValue<Node>,
@@ -35,12 +35,21 @@ public class NodeProperty	implements
 	private boolean valid = true;
 	private ExpressionHelper<Node> helper = null;
 
+	/**
+	 * Instantiates a new Node property.
+	 * @param bean the bean
+	 * @param name the name
+	 */
 	public NodeProperty(Object bean, String name)
 	{
 		this.bean = bean;
 		this.name = (name == null) ? DEFAULT_NAME : name;
 	}
 
+	/**
+	 * Bind.
+	 * @param newObservable the new observable
+	 */
 	@Override
 	public void bind(ObservableValue<? extends Node> newObservable)
 	{
@@ -61,6 +70,9 @@ public class NodeProperty	implements
 		}
 	}
 
+	/**
+	 * Unbind.
+	 */
 	@Override
 	public void unbind()
 	{
@@ -72,72 +84,120 @@ public class NodeProperty	implements
 		}
 	}
 
+	/**
+	 * Is bound boolean.
+	 * @return the boolean
+	 */
 	@Override
 	public boolean isBound()
 	{
 		return observable != null;
 	}
 
+	/**
+	 * Bind bidirectional.
+	 * @param other the other
+	 */
 	@Override
 	public void bindBidirectional(Property<Node> other)
 	{
 		Bindings.bindBidirectional(this, other);
 	}
 
+	/**
+	 * Unbind bidirectional.
+	 * @param other the other
+	 */
 	@Override
 	public void unbindBidirectional(Property<Node> other)
 	{
 		Bindings.unbindBidirectional(this, other);
 	}
 
+	/**
+	 * Gets bean.
+	 * @return the bean
+	 */
 	@Override
 	public Object getBean()
 	{
 		return bean;
 	}
 
+	/**
+	 * Gets name.
+	 * @return the name
+	 */
 	@Override
 	public String getName()
 	{
 		return name;
 	}
 
+	/**
+	 * Add listener.
+	 * @param listener the listener
+	 */
 	@Override
 	public void addListener(ChangeListener<? super Node> listener)
 	{
 		helper = ExpressionHelper.addListener(helper, this, listener);
 	}
 
+	/**
+	 * Remove listener.
+	 * @param listener the listener
+	 */
 	@Override
 	public void removeListener(ChangeListener<? super Node> listener)
 	{
 		helper = ExpressionHelper.removeListener(helper, listener);
 	}
 
+	/**
+	 * Gets value.
+	 * @return the value
+	 */
 	@Override
 	public Node getValue()
 	{
 		return get();
 	}
 
+	/**
+	 * Sets value.
+	 * @param newValue the new value
+	 */
 	@Override
 	public void setValue(Node newValue)
 	{
 		set(newValue);
 	}
 
+	/**
+	 * Add listener.
+	 * @param listener the listener
+	 */
 	@Override
 	public void addListener(InvalidationListener listener)
 	{
 		helper = ExpressionHelper.addListener(helper, this, listener);
 	}
 
+	/**
+	 * Remove listener.
+	 * @param listener the listener
+	 */
 	@Override
 	public void removeListener(InvalidationListener listener)
 	{
 		helper = ExpressionHelper.removeListener(helper, listener);
 	}
 
+	/**
+	 * To string string.
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -156,6 +216,9 @@ public class NodeProperty	implements
 		return result.toString();
 	}
 
+	/**
+	 * Fire value changed event.
+	 */
 	protected void fireValueChangedEvent()
 	{
 		ExpressionHelper.fireValueChangedEvent(helper);
@@ -171,11 +234,18 @@ public class NodeProperty	implements
 		}
 	}
 
+	/**
+	 * Invalidated.
+	 */
 	protected void invalidated()
 	{
 
 	}
 
+	/**
+	 * Get node.
+	 * @return the node
+	 */
 	@Override
 	public Node get()
 	{
@@ -183,6 +253,10 @@ public class NodeProperty	implements
 		return observable == null ? node : observable.getValue();
 	}
 
+	/**
+	 * Set.
+	 * @param newValue the new value
+	 */
 	@Override
 	public void set(Node newValue)
 	{
@@ -197,6 +271,10 @@ public class NodeProperty	implements
 		}
 	}
 
+	/**
+	 * Is not empty boolean binding.
+	 * @return the boolean binding
+	 */
 	public BooleanBinding isNotEmpty()
 	{
 		NodeProperty currentPanel = this;
@@ -216,11 +294,19 @@ public class NodeProperty	implements
 
 		private final WeakReference<NodeProperty> wref;
 
+		/**
+		 * Instantiates a new Listener.
+		 * @param ref the ref
+		 */
 		public Listener(NodeProperty ref)
 		{
 			this.wref = new WeakReference<>(ref);
 		}
 
+		/**
+		 * Invalidated.
+		 * @param observable the observable
+		 */
 		@Override
 		public void invalidated(Observable observable)
 		{

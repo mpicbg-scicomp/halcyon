@@ -1,4 +1,4 @@
-package halcyon.model.component;
+package halcyon.util;
 
 import javafx.stage.Stage;
 
@@ -8,9 +8,19 @@ import javafx.stage.Stage;
  */
 public interface RunnableFX
 {
+	/**
+	 * Initiates RunnableFX application.
+	 */
 	public void init();
 
+	/**
+	 * Starts the RunnableFX application.
+	 * @param stage the stage
+	 */
 	public void start(Stage stage);
 
+	/**
+	 * Stops the RunnableFX application.
+	 */
 	public void stop();
 }

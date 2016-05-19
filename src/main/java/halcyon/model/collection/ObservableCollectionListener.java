@@ -1,4 +1,4 @@
-package halcyon.model.list;
+package halcyon.model.collection;
 
 /**
  * ObservableCollectionListener

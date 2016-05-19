@@ -2,21 +2,17 @@ package halcyon.demo;
 
 import org.dockfx.DockNode;
 
-import halcyon.model.list.HalcyonNodeRepository;
-import halcyon.model.node.HalcyonNode;
-import halcyon.view.ViewManager;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 /**
- * Control type Toolbar window
+ * Demo Toolbar window for demonstrating. Users can make their own ToolBar window and add them {@link halcyon.HalcyonFrame}.
+ * Please, have a look {@link DemoHalcyonMain}.
  */
-public class DemoToolbarWindow extends DockNode
+public class DemoToolbarPanel extends DockNode
 {
 
-	public DemoToolbarWindow()
+	public DemoToolbarPanel()
 	{
 		super(new VBox());
 		getDockTitleBar().setVisible(false);

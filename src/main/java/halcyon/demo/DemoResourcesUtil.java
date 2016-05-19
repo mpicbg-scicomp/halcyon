@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 /**
  * Resource accessor
  */
-public class ResourcesUtil
+public class DemoResourcesUtil
 {
 	// Load the bundles
 	private static final ResourceBundle strings = ResourceBundle.getBundle("halcyon.demo.images.Strings");
@@ -16,8 +16,8 @@ public class ResourcesUtil
 	/**
 	 * Return string property value.
 	 * 
-	 * @param key
-	 * @return
+	 * @param key to find the String value
+	 * @return a String corresponding to the given key.
 	 */
 	public static String getString(String key)
 	{

@@ -9,9 +9,9 @@ import org.dockfx.DockNode;
 import org.dockfx.demo.DockFX;
 
 /**
- * Dockable Window for Halcyon Node
+ * HalcyonPanel encapsulates HalcyonNode
  */
-public class HalcyonNodeDockable extends DockNode
+public class HalcyonPanel extends DockNode
 {
 	/** the current node */
 	private HalcyonNodeInterface node;
@@ -20,7 +20,11 @@ public class HalcyonNodeDockable extends DockNode
 
 	};
 
-	public HalcyonNodeDockable(HalcyonNodeInterface node)
+	/**
+	 * Instantiates a new Halcyon panel.
+	 * @param node the node
+	 */
+	public HalcyonPanel( HalcyonNodeInterface node )
 	{
 		super(node.getPanel(),
 					node.getName(),
@@ -40,6 +44,10 @@ public class HalcyonNodeDockable extends DockNode
 			node.addListener(listener);
 	}
 
+	/**
+	 * Sets Halcyon node explicitly.
+	 * @param node the node
+	 */
 	public void setNode(HalcyonNodeInterface node)
 	{
 		if (isVisible() && getNode() != null)
@@ -55,6 +63,10 @@ public class HalcyonNodeDockable extends DockNode
 			node.addListener(listener);
 	}
 
+	/**
+	 * Gets HalcyonNode.
+	 * @return the HalcyonNode
+	 */
 	public HalcyonNodeInterface getNode()
 	{
 		return node;

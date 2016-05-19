@@ -1,10 +1,11 @@
-package halcyon.view;
+package halcyon.controller;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import javafx.geometry.Point2D;
+import halcyon.view.HalcyonPanel;
+import halcyon.view.TreePanel;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -15,15 +16,15 @@ import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 import org.dockfx.DockPos;
 
-import halcyon.model.list.HalcyonNodeRepository;
-import halcyon.model.list.HalcyonNodeRepositoryListener;
-import halcyon.model.list.ObservableCollection;
-import halcyon.model.list.ObservableCollectionListener;
+import halcyon.model.collection.HalcyonNodeRepository;
+import halcyon.model.collection.HalcyonNodeRepositoryListener;
+import halcyon.model.collection.ObservableCollection;
+import halcyon.model.collection.ObservableCollectionListener;
 import halcyon.model.node.HalcyonOtherNode;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonSwingNode;
-import halcyon.window.console.StdOutputCaptureConsole;
+import halcyon.view.console.StdOutputCaptureConsole;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -32,42 +33,51 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.SplitPane;
 
 /**
- * ViewManager class for managing Windows
+ * ViewManager is a controller class to manage HalcyonNodes and GUI.
  */
 public class ViewManager
 {
-	private final List<HalcyonNodeDockable> pages = new LinkedList<>();
+	private final List<HalcyonPanel > mPages = new LinkedList<>();
 
-	private final HashMap<HalcyonNodeInterface, Stage> externalNodeMap = new HashMap<>();
+	private final HashMap<HalcyonNodeInterface, Stage> mExternalNodeMap = new HashMap<>();
 
 	/** a set of {@link HalcyonNode}s */
 	private final HalcyonNodeRepository mNodes;
 
-	private final DockPane pDockPane;
+	private final DockPane mDockPane;
 
-	private final TreeDockNode mTreePanel;
+	private final TreePanel mTreePanel;
 
 	private final StdOutputCaptureConsole mStdOutputCaptureConsole;
 
 	private final Menu mViewMenu;
 
+	/**
+	 * Instantiates a new ViewManager.
+	 * @param pDockPane the DockPane
+	 * @param pTreePanel the TreePanel
+	 * @param nodes the HalcyonNodes
+	 * @param pConsoles the ConsolePanel collection
+	 * @param pToolbars the ToobalPanel collection
+	 * @param pViewMenu the ViewMenu
+	 */
 	public ViewManager(	DockPane pDockPane,
-											TreeDockNode pTreePanel,
+											TreePanel pTreePanel,
 											HalcyonNodeRepository nodes,
 											ObservableCollection<DockNode> pConsoles,
 											ObservableCollection<DockNode> pToolbars,
 											Menu pViewMenu)
 	{
-		this.pDockPane = pDockPane;
+		this.mDockPane = pDockPane;
 		this.mNodes = nodes;
 
-		this.pDockPane.setPrefSize(800, 600);
+		this.mDockPane.setPrefSize( 800, 600 );
 		this.mViewMenu = pViewMenu;
 
 		mTreePanel = pTreePanel;
 		mTreePanel.setPrefSize(200, 300);
 		mTreePanel.setClosable( false );
-		mTreePanel.dock(this.pDockPane, DockPos.LEFT);
+		mTreePanel.dock(this.mDockPane, DockPos.LEFT);
 
 		mStdOutputCaptureConsole = new StdOutputCaptureConsole();
 		mStdOutputCaptureConsole.setPrefSize(600, 200);
@@ -78,14 +88,6 @@ public class ViewManager
 
 		dockNodes(pDockPane, DockPos.RIGHT, mTreePanel, pConsoles);
 		dockNodes(pDockPane, DockPos.TOP, mTreePanel, pToolbars);
-
-
-		// Image deviceDockImage = new
-		// Image(DockFX.class.getResource("docknode.png").toExternalForm());
-		// deviceTabsDock = new DockNode(new VBox(), "Device", new
-		// ImageView(deviceDockImage));
-		// deviceTabsDock.setPrefSize( 600, 400 );
-		// deviceTabsDock.dock( this.dockPane, DockPos.TOP, console );
 
 		SplitPane split = (SplitPane) pDockPane.getChildren().get(0);
 		split.setDividerPositions(0.3);
@@ -187,7 +189,7 @@ public class ViewManager
 								{
 									if (pControlWindowBase.isClosed())
 									{
-										pControlWindowBase.dock(pDockPane,
+										pControlWindowBase.dock( mDockPane,
 																						pControlWindowBase.getLastDockPos(),
 																						pControlWindowBase.getLastDockSibling());
 									}
@@ -203,15 +205,23 @@ public class ViewManager
 
 	}
 
+	/**
+	 * Gets the Halcyons.
+	 * @return the nodes
+	 */
 	public HalcyonNodeRepository getNodes()
 	{
 		return mNodes;
 	}
 
+	/**
+	 * Open the HalcyonNode.
+	 * @param node the node
+	 */
 	public void open(HalcyonNodeInterface node)
 	{
-		if( externalNodeMap.containsKey( node ) ) {
-			externalNodeMap.get(node).requestFocus();
+		if( mExternalNodeMap.containsKey( node ) ) {
+			mExternalNodeMap.get( node ).requestFocus();
 			return;
 		}
 
@@ -232,7 +242,7 @@ public class ViewManager
 		}
 
 		// If users want to focus the opened dock, then focus and return
-		for (final HalcyonNodeDockable n : pages)
+		for (final HalcyonPanel n : mPages )
 		{
 			if (n.getNode() == node && n.isDocked())
 			{
@@ -243,7 +253,7 @@ public class ViewManager
 
 		DockNode deviceTabsDock = null;
 		// Checking which dock window is docked
-		for (final HalcyonNodeDockable n : pages)
+		for (final HalcyonPanel n : mPages )
 		{
 			if (n.isDocked())
 			{
@@ -253,20 +263,24 @@ public class ViewManager
 		}
 
 		// Otherwise, we will create new HalcyonNode
-		final HalcyonNodeDockable page = new HalcyonNodeDockable(node);
+		final HalcyonPanel page = new HalcyonPanel(node);
 
 		if( deviceTabsDock != null )
 		{
-			page.dock(pDockPane, DockPos.CENTER, deviceTabsDock);
+			page.dock( mDockPane, DockPos.CENTER, deviceTabsDock);
 		}
 		else
 		{
-			page.dock(pDockPane, DockPos.TOP, mStdOutputCaptureConsole);
+			page.dock( mDockPane, DockPos.TOP, mStdOutputCaptureConsole);
 		}
 
-		pages.add(page);
+		mPages.add( page );
 	}
 
+	/**
+	 * Hide the HalcyonNode.
+	 * @param node the node
+	 */
 	public void hide(HalcyonNodeInterface node)
 	{
 		if (node instanceof HalcyonSwingNode)
@@ -285,7 +299,7 @@ public class ViewManager
 			return;
 		}
 
-		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
+		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[ mPages.size()]))
 		{
 			if (page.getNode() == node)
 			{
@@ -294,6 +308,10 @@ public class ViewManager
 		}
 	}
 
+	/**
+	 * Close the HalcyonNode.
+	 * @param node the node
+	 */
 	public void close(HalcyonNodeInterface node)
 	{
 		if (node instanceof HalcyonSwingNode)
@@ -313,14 +331,14 @@ public class ViewManager
 			lHalcyonExternalNode.setVisible(false);
 			return;
 		}
-		else if ( externalNodeMap.containsKey( node ) )
+		else if ( mExternalNodeMap.containsKey( node ) )
 		{
-			externalNodeMap.get( node ).close();
-			externalNodeMap.remove( node );
+			mExternalNodeMap.get( node ).close();
+			mExternalNodeMap.remove( node );
 			return;
 		}
 
-		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
+		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[ mPages.size()]))
 		{
 			if (page.getNode() == node)
 			{
@@ -329,30 +347,38 @@ public class ViewManager
 		}
 	}
 
+	/**
+	 * Is visible or not.
+	 * @return the boolean
+	 */
 	public boolean isVisible()
 	{
-		return pDockPane.isVisible();
+		return mDockPane.isVisible();
 	}
 
-	public void makeIndenpendentWindow(HalcyonNodeInterface node)
+	/**
+	 * Make an independent window.
+	 * @param node the node
+	 */
+	public void makeIndependentWindow( HalcyonNodeInterface node )
 	{
 		if( node instanceof HalcyonOtherNode) {
 			open( node );
 			return;
 		}
 
-		for (final HalcyonNodeDockable page : pages.toArray(new HalcyonNodeDockable[pages.size()]))
+		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[ mPages.size()]))
 		{
 			if (page.getNode() == node)
 			{
 				page.close();
-				pages.remove( page );
+				mPages.remove( page );
 			}
 		}
 
-		if( !externalNodeMap.containsKey( node ) )
+		if( !mExternalNodeMap.containsKey( node ) )
 		{
-			final Scene scene = pDockPane.getScene();
+			final Scene scene = mDockPane.getScene();
 
 			BorderPane lBorderPane = new BorderPane();
 			final Node lPanel = node.getPanel();
@@ -366,13 +392,13 @@ public class ViewManager
 			lStage.setY( scene.getWindow().getY() );
 			lStage.show();
 
-			externalNodeMap.put( node, lStage );
+			mExternalNodeMap.put( node, lStage );
 
 			lStage.setOnCloseRequest( new EventHandler< WindowEvent >()
 			{
 				@Override public void handle( WindowEvent event )
 				{
-					externalNodeMap.remove( node );
+					mExternalNodeMap.remove( node );
 				}
 			} );
 		}

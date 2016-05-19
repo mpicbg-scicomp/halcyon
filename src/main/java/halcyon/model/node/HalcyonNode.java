@@ -2,30 +2,26 @@ package halcyon.model.node;
 
 import halcyon.model.property.NodeProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.property.ReadOnlyBooleanWrapper;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.embed.swing.SwingNode;
 import javafx.scene.Node;
 
-import javax.swing.JComponent;
-
 /**
- * Halcyon Node
- * 
- * TODO: this should in interface, rename HalcyonNodeBase TODO: add static
- * methods to quickly wrap panels.
+ * Halcyon Node presents any kinds of element which contains GUI interfaces.
+ * By default, it supports JavaFX Node {@link javafx.scene.Node}
  */
 public class HalcyonNode extends HalcyonNodeBase implements HalcyonNodeInterface
 {
 
 	private NodeProperty panel = null;
 	private final ReadOnlyBooleanWrapper existPanel = new ReadOnlyBooleanWrapper();
-	
-	// TODO: finish.
+
+	/**
+	 * Create a HalcyonNode by wrapping the panel with the given name and type
+	 * @param name the name
+	 * @param type the type
+	 * @param panel the panel
+	 * @return the halcyon node
+	 */
 	public static HalcyonNode wrap(	final String name,
 																	final HalcyonNodeType type,
 																	final Node panel)
@@ -33,23 +29,41 @@ public class HalcyonNode extends HalcyonNodeBase implements HalcyonNodeInterface
 		return new HalcyonNode(name, type, panel);
 	}
 
+	/**
+	 * Instantiates a new Halcyon node.
+	 */
 	public HalcyonNode()
 	{
 		super();
 		existPanel.bind(name.isNotEmpty().and(panel.isNotEmpty()));
 	}
 
+	/**
+	 * Instantiates a new Halcyon node.
+	 * @param name the name
+	 */
 	public HalcyonNode(String name)
 	{
 		this.name.setValue(name);
 	}
 
+	/**
+	 * Instantiates a new Halcyon node.
+	 * @param name the name
+	 * @param type the type
+	 */
 	public HalcyonNode(String name, HalcyonNodeType type)
 	{
 		this.name.setValue(name);
 		this.type = type;
 	}
 
+	/**
+	 * Instantiates a new Halcyon node.
+	 * @param name the name
+	 * @param type the type
+	 * @param panel the panel
+	 */
 	public HalcyonNode(String name, HalcyonNodeType type, Node panel)
 	{
 		this.name.setValue(name);
@@ -57,7 +71,10 @@ public class HalcyonNode extends HalcyonNodeBase implements HalcyonNodeInterface
 		this.setPanel(panel);
 	}
 
-
+	/**
+	 * Gets JavaFX Node panel {@link javafx.scene.Node}.
+	 * @return the panel
+	 */
 	@Override
 	public Node getPanel()
 	{
@@ -67,11 +84,19 @@ public class HalcyonNode extends HalcyonNodeBase implements HalcyonNodeInterface
 		return panel.get();
 	}
 
+	/**
+	 * Gets Panel property {@link halcyon.model.property.NodeProperty}.
+	 * @return the node property
+	 */
 	public NodeProperty panelProperty()
 	{
 		return panel;
 	}
 
+	/**
+	 * Sets panel.
+	 * @param panel the panel
+	 */
 	public void setPanel(Node panel)
 	{
 		if (this.panel == null)
@@ -79,6 +104,4 @@ public class HalcyonNode extends HalcyonNodeBase implements HalcyonNodeInterface
 
 		this.panel.set(panel);
 	}
-
-	
 }

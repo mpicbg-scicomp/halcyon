@@ -1,6 +1,5 @@
-package halcyon.utils;
+package halcyon.util;
 
-import halcyon.model.component.RunnableFX;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

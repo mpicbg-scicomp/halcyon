@@ -1,9 +1,10 @@
-package halcyon.window.console;
+package halcyon.view.console;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import halcyon.view.ConsolePanel;
 import org.dockfx.DockNode;
 
 /**
@@ -11,14 +12,17 @@ import org.dockfx.DockNode;
  */
 public class StdOutputCaptureConsole extends DockNode
 {
-	private final ConsolePane consolePane;
+	private final ConsolePanel consolePane;
 
+	/**
+	 * Instantiates a new Standard output/error capture console.
+	 */
 	public StdOutputCaptureConsole()
 	{
-		super(new ConsolePane());
+		super(new ConsolePanel());
 		setTitle("Console");
 
-		consolePane = (ConsolePane) getContents();
+		consolePane = (ConsolePanel ) getContents();
 
 		System.setOut(new PrintStream(new StreamAppender(	"StdOut",
 																											consolePane,
@@ -28,6 +32,9 @@ public class StdOutputCaptureConsole extends DockNode
 																											System.err)));
 	}
 
+	/**
+	 * The Stream appender for output stream.
+	 */
 	public class StreamAppender extends OutputStream
 	{
 		private StringBuilder buffer;
@@ -35,6 +42,12 @@ public class StdOutputCaptureConsole extends DockNode
 		private TextAppender textAppender;
 		private PrintStream old;
 
+		/**
+		 * Instantiates a new Stream appender.
+		 * @param prefix the prefix
+		 * @param consumer the consumer
+		 * @param old the old
+		 */
 		public StreamAppender(String prefix,
 													TextAppender consumer,
 													PrintStream old)
@@ -46,6 +59,11 @@ public class StdOutputCaptureConsole extends DockNode
 			this.textAppender = consumer;
 		}
 
+		/**
+		 * Write b.
+		 * @param b the b
+		 * @throws IOException the io exception
+		 */
 		@Override
 		public void write(int b) throws IOException
 		{

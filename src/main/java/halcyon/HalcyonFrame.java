@@ -1,10 +1,10 @@
 package halcyon;
 
-import halcyon.model.list.HalcyonNodeRepository;
-import halcyon.model.list.ObservableCollection;
+import halcyon.model.collection.HalcyonNodeRepository;
+import halcyon.model.collection.ObservableCollection;
 import halcyon.model.node.HalcyonNodeInterface;
-import halcyon.view.TreeDockNode;
-import halcyon.view.ViewManager;
+import halcyon.controller.ViewManager;
+import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -29,7 +29,7 @@ public class HalcyonFrame extends Application
 	final private ObservableCollection<DockNode> mConsoleDockNodes = new ObservableCollection<>();
 	final private ObservableCollection<DockNode> mToolBarDockNodes = new ObservableCollection<>();
 
-  	private TreeDockNode controlWindow;
+  	private TreePanel controlWindow;
 
 	final private Menu mViewMenu = new Menu("View");
 	final private MenuBar mMenuBar = new MenuBar( mViewMenu );
@@ -37,40 +37,69 @@ public class HalcyonFrame extends Application
 	private ViewManager view;
 
 	private Stage mPrimaryStage;
-	
+
+	/**
+	 * Gets the ViewManager.
+	 * @return the ViewManager
+	 */
 	public ViewManager getViewManager()
 	{
 		return view;
 	}
 
+	/**
+	 * Instantiates a new Halcyon frame.
+	 * @param pWindowWidth the p window width
+	 * @param pWindowHeight the p window height
+	 */
 	public HalcyonFrame(int pWindowWidth, int pWindowHeight)
 	{
 		mWindowWidth = pWindowWidth;
 		mWindowHeight = pWindowHeight;
 		this.nodes = new HalcyonNodeRepository();
 	}
-	
-	public void setTreeDockNode(TreeDockNode controlWindow)
+
+	/**
+	 * Sets tree panel.
+	 * @param controlWindow the control window
+	 */
+	public void setTreePanel( TreePanel controlWindow )
 	{
 		this.controlWindow = controlWindow;
 		this.controlWindow.setNodes(nodes);
 	}
 
+	/**
+	 * Add a Halcyon node.
+	 * @param node the node
+	 */
 	public void addNode(HalcyonNodeInterface node)
 	{
 		nodes.add(node);
 	}
 
+	/**
+	 * Add a toolbar.
+	 * @param toolbar the toolbar
+	 */
 	public void addToolbar(DockNode toolbar)
 	{
 		mToolBarDockNodes.add(toolbar);
 	}
 
+	/**
+	 * Add a console.
+	 * @param console the console
+	 */
 	public void addConsole(DockNode console)
 	{
 		mConsoleDockNodes.add(console);
 	}
 
+	/**
+	 * Starts JavaFX application.
+	 * @param pPrimaryStage the p primary stage
+	 */
 	@Override
 	public void start(Stage pPrimaryStage)
 	{
@@ -131,6 +160,9 @@ public class HalcyonFrame extends Application
 		DockPane.initializeDefaultUserAgentStylesheet();
 	}
 
+	/**
+	 * External starts from Java swing environment.
+	 */
 	public void externalStart()
 	{
 		HalcyonFrame lThis = this;
@@ -148,6 +180,9 @@ public class HalcyonFrame extends Application
 
 	}
 
+	/**
+	 * External stops.
+	 */
 	public void externalStop()
 	{
 		HalcyonFrame lThis = this;
@@ -163,6 +198,10 @@ public class HalcyonFrame extends Application
 		});
 	}
 
+	/**
+	 * Is visible boolean.
+	 * @return the boolean
+	 */
 	public boolean isVisible()
 	{
 		return mPrimaryStage == null ? false : mPrimaryStage.isShowing();

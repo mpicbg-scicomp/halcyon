@@ -1,7 +1,6 @@
-package halcyon.model.list;
+package halcyon.model.collection;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * ObservableCollection
