@@ -16,8 +16,8 @@ public class DemoResourcesUtil
 	/**
 	 * Return string property value.
 	 * 
-	 * @param key
-	 * @return
+	 * @param key to find the String value
+	 * @return a String corresponding to the given key.
 	 */
 	public static String getString(String key)
 	{

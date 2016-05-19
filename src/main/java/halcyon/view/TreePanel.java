@@ -134,7 +134,7 @@ public class TreePanel extends DockNode
 						TreeNode node = item.getValue();
 						if (node.getNode() != null)
 						{
-							manager.makeIndenpendentWindow( node.getNode() );
+							manager.makeIndependentWindow( node.getNode() );
 						}
 					}
 				}
@@ -196,7 +196,7 @@ public class TreePanel extends DockNode
 
 								for (TreeItem<TreeNode> n : list)
 								{
-									manager.makeIndenpendentWindow( n.getValue().getNode() );
+									manager.makeIndependentWindow( n.getValue().getNode() );
 								}
 							}
 						})
