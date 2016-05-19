@@ -1,4 +1,4 @@
-package halcyon.view.demo;
+package halcyon.demo;
 
 import org.dockfx.DockNode;
 

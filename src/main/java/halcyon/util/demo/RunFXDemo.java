@@ -34,7 +34,7 @@ import javafx.util.StringConverter;
 /**
  * DemoCamera application for showing Camera resolution control
  */
-public class DemoCamera implements RunnableFX
+public class RunFXDemo implements RunnableFX
 {
 	final private int resUnit = 256;
 	final int size = 300;
@@ -51,7 +51,7 @@ public class DemoCamera implements RunnableFX
 	Line hLine, vLine;
 	Text hText, vText;
 
-	public DemoCamera()
+	public RunFXDemo()
 	{
 		// Setting up the double properties with 256x256
 		widthDoubleProperty = new SimpleDoubleProperty(37.5);
@@ -351,6 +351,6 @@ public class DemoCamera implements RunnableFX
 
 	public static void main(final String[] args)
 	{
-		RunFX.start(new DemoCamera());
+		RunFX.start(new RunFXDemo());
 	}
 }

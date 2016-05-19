@@ -1,4 +1,4 @@
-package halcyon.view.demo;
+package halcyon.demo;
 
 import halcyon.HalcyonFrame;
 import halcyon.model.node.HalcyonNode;

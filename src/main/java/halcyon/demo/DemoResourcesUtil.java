@@ -1,4 +1,4 @@
-package halcyon.view.demo;
+package halcyon.demo;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 public class DemoResourcesUtil
 {
 	// Load the bundles
-	private static final ResourceBundle strings = ResourceBundle.getBundle("halcyon.view.demo.images.Strings");
+	private static final ResourceBundle strings = ResourceBundle.getBundle("halcyon.demo.images.Strings");
 
 	private static final String VERSION = getString("build.date");
 
