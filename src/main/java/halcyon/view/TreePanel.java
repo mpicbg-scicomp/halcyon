@@ -117,10 +117,10 @@ public class TreePanel extends DockNode
 
 	/**
 	 * Sets ViewManager.
-	 * @param manager the manager
+	 * @param viewManager the manager
 	 */
 	@SuppressWarnings("deprecation")
-	public void setViewManager(ViewManager manager)
+	public void setViewManager(ViewManager viewManager)
 	{
 		tree.setOnMouseClicked(event -> {
 
@@ -134,7 +134,7 @@ public class TreePanel extends DockNode
 						TreeNode node = item.getValue();
 						if (node.getNode() != null)
 						{
-							manager.makeIndependentWindow( node.getNode() );
+							viewManager.makeIndependentWindow( node.getNode() );
 						}
 					}
 				}
@@ -153,7 +153,7 @@ public class TreePanel extends DockNode
 							TreeNode node = item.getValue();
 							if (node.getNode() != null)
 							{
-								manager.open(node.getNode());
+								viewManager.open( node.getNode() );
 							}
 						}
 					}
@@ -180,7 +180,7 @@ public class TreePanel extends DockNode
 								ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
 								for (TreeItem<TreeNode> n : list)
 								{
-									manager.open( n.getValue().getNode() );
+									viewManager.open( n.getValue().getNode() );
 								}
 							}
 						})
@@ -196,7 +196,7 @@ public class TreePanel extends DockNode
 
 								for (TreeItem<TreeNode> n : list)
 								{
-									manager.makeIndependentWindow( n.getValue().getNode() );
+									viewManager.makeIndependentWindow( n.getValue().getNode() );
 								}
 							}
 						})
@@ -212,7 +212,7 @@ public class TreePanel extends DockNode
 								ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
 								for (TreeItem<TreeNode> n : list)
 								{
-									manager.close(n.getValue().getNode());
+									viewManager.close( n.getValue().getNode() );
 								}
 							}
 						})

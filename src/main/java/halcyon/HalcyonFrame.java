@@ -23,18 +23,14 @@ public class HalcyonFrame extends Application
 {
 	
 	private double mWindowWidth,mWindowHeight;
-	
-	final private HalcyonNodeRepository nodes;
+	final private HalcyonNodeRepository mNodes;
 
 	final private ObservableCollection<DockNode> mConsoleDockNodes = new ObservableCollection<>();
 	final private ObservableCollection<DockNode> mToolBarDockNodes = new ObservableCollection<>();
 
-  	private TreePanel controlWindow;
+  	private TreePanel mTreePanel;
 
-	final private Menu mViewMenu = new Menu("View");
-	final private MenuBar mMenuBar = new MenuBar( mViewMenu );
-
-	private ViewManager view;
+	private ViewManager mViewManager;
 
 	private Stage mPrimaryStage;
 
@@ -44,7 +40,7 @@ public class HalcyonFrame extends Application
 	 */
 	public ViewManager getViewManager()
 	{
-		return view;
+		return mViewManager;
 	}
 
 	/**
@@ -56,17 +52,17 @@ public class HalcyonFrame extends Application
 	{
 		mWindowWidth = pWindowWidth;
 		mWindowHeight = pWindowHeight;
-		this.nodes = new HalcyonNodeRepository();
+		mNodes = new HalcyonNodeRepository();
 	}
 
 	/**
 	 * Sets tree panel.
-	 * @param controlWindow the control window
+	 * @param pTreePanel the Tree Panel
 	 */
-	public void setTreePanel( TreePanel controlWindow )
+	public void setTreePanel( TreePanel pTreePanel )
 	{
-		this.controlWindow = controlWindow;
-		this.controlWindow.setNodes(nodes);
+		mTreePanel = pTreePanel;
+		mTreePanel.setNodes( mNodes );
 	}
 
 	/**
@@ -75,7 +71,7 @@ public class HalcyonFrame extends Application
 	 */
 	public void addNode(HalcyonNodeInterface node)
 	{
-		nodes.add(node);
+		mNodes.add( node );
 	}
 
 	/**
@@ -118,25 +114,28 @@ public class HalcyonFrame extends Application
 		mPrimaryStage = pPrimaryStage;
 		mPrimaryStage.setTitle("Halcyon");
 
-		// create a dock pane that will manage our dock nodes and handle the layout
-		DockPane dockPane = new DockPane();
+		// create a dock pane that will manage our dock mNodes and handle the layout
+		DockPane lDockPane = new DockPane();
 
 		Menu lToolbarMenu = new Menu("Toolbar");
 		Menu lConsoleMenu = new Menu("Console");
-		Menu lDeviceMenu = new Menu("Device");
-		mViewMenu.getItems().addAll( lToolbarMenu, lConsoleMenu, lDeviceMenu );
 
-		view = new ViewManager(	dockPane,
-														controlWindow,
-														nodes,
-														mConsoleDockNodes,
-														mToolBarDockNodes,
-														mViewMenu);
-		this.controlWindow.setViewManager(view);
+		Menu lViewMenu = new Menu("View");
+		MenuBar lMenuBar = new MenuBar( lViewMenu );
+		lViewMenu.getItems().addAll( lToolbarMenu, lConsoleMenu );
+
+		mViewManager = new ViewManager(	lDockPane,
+				mTreePanel,
+				mNodes,
+				mConsoleDockNodes,
+				mToolBarDockNodes,
+				lViewMenu);
+
+		mTreePanel.setViewManager( mViewManager );
 
 		BorderPane lBorderPane = new BorderPane();
-		lBorderPane.setTop(mMenuBar);
-		lBorderPane.setCenter(dockPane);
+		lBorderPane.setTop(lMenuBar);
+		lBorderPane.setCenter(lDockPane);
 		Scene lScene = new Scene(lBorderPane, mWindowWidth, mWindowHeight);
 
 		mPrimaryStage.setScene(lScene);

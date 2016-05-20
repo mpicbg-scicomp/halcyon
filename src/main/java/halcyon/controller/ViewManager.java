@@ -41,6 +41,8 @@ public class ViewManager
 
 	private final HashMap<HalcyonNodeInterface, Stage> mExternalNodeMap = new HashMap<>();
 
+	private final HashMap<String, ObservableCollection<DockNode>> mControlNodeMap = new HashMap<>();
+
 	/** a set of {@link HalcyonNode}s */
 	private final HalcyonNodeRepository mNodes;
 
@@ -84,10 +86,11 @@ public class ViewManager
 		mStdOutputCaptureConsole.setClosable( false );
 		pConsoles.add(mStdOutputCaptureConsole);
 
-		addViewMenuItem( "Console", mStdOutputCaptureConsole );
+		mControlNodeMap.put( "Console", new ObservableCollection<>() );
+		mControlNodeMap.put( "Toolbar", new ObservableCollection<>() );
 
-		dockNodes(pDockPane, DockPos.RIGHT, mTreePanel, pConsoles);
-		dockNodes(pDockPane, DockPos.TOP, mTreePanel, pToolbars);
+		dockNodes( "Console", DockPos.RIGHT, pConsoles );
+		dockNodes( "Toolbar", DockPos.TOP, pToolbars );
 
 		SplitPane split = (SplitPane) pDockPane.getChildren().get(0);
 		split.setDividerPositions(0.3);
@@ -97,6 +100,7 @@ public class ViewManager
 			@Override
 			public void itemAdded(DockNode item)
 			{
+				dockNode( "Console", item, DockPos.RIGHT );
 				addViewMenuItem( "Console", item );
 			}
 
@@ -112,6 +116,7 @@ public class ViewManager
 			@Override
 			public void itemAdded(DockNode item)
 			{
+				dockNode( "Toolbar", item, DockPos.TOP );
 				addViewMenuItem( "Toolbar", item );
 			}
 
@@ -138,39 +143,39 @@ public class ViewManager
 		});
 	}
 
-	private void dockNodes(	DockPane pDockPane,
-													DockPos pPosition,
-													DockNode pSibling,
-													ObservableCollection<DockNode> pToolbars)
+	private void dockNode( String pMenu, DockNode item, DockPos pDefaultPosition )
 	{
+		if(mControlNodeMap.get(pMenu).getCount() == 0)
+			item.dock( mDockPane, pDefaultPosition, mTreePanel );
+		else
+			item.dock( mDockPane, DockPos.CENTER, mControlNodeMap.get(pMenu).get(0) );
 
-		int i = 0;
-		DockNode lFirstDockNode = null;
-		for (DockNode lDockNode : pToolbars.getList())
+		mControlNodeMap.get( pMenu ).add( item );
+	}
+
+	private void dockNodes(	String pMenu,
+													DockPos pPosition,
+													ObservableCollection<DockNode> pControlNodes)
+	{
+		for (DockNode lDockNode : pControlNodes.getList())
 		{
-			if (i == 0)
-			{
-				lFirstDockNode = lDockNode;
-				lDockNode.dock(pDockPane, pPosition, pSibling);
-			}
-			else
-				lDockNode.dock(pDockPane, DockPos.CENTER, lFirstDockNode);
-			i++;
+			dockNode( pMenu, lDockNode, pPosition );
+			addViewMenuItem( pMenu, lDockNode );
 		}
 	}
 
 	private void addViewMenuItem(	String pMenuGroupName,
-														DockNode pControlWindowBase)
+														DockNode pControlNode)
 	{
 		mViewMenu.getItems()
 						.stream()
 						.filter(c -> c.getText().equals(pMenuGroupName))
 						.findFirst()
 						.ifPresent(c -> {
-							CheckMenuItem lMenuItem = new CheckMenuItem(pControlWindowBase.getTitle());
+							CheckMenuItem lMenuItem = new CheckMenuItem(pControlNode.getTitle());
 
-							lMenuItem.setSelected(!pControlWindowBase.isClosed());
-							pControlWindowBase.closedProperty()
+							lMenuItem.setSelected( !pControlNode.isClosed() );
+							pControlNode.closedProperty()
 																.addListener(new ChangeListener<Boolean>()
 																{
 																	@Override
@@ -178,6 +183,7 @@ public class ViewManager
 																											Boolean oldValue,
 																											Boolean newValue)
 																	{
+																		if(newValue) mControlNodeMap.get(pMenuGroupName).remove( pControlNode );
 																		lMenuItem.setSelected(!newValue);
 																	}
 																});
@@ -187,11 +193,16 @@ public class ViewManager
 								@Override
 								public void handle(ActionEvent event)
 								{
-									if (pControlWindowBase.isClosed())
+									if (pControlNode.isClosed())
 									{
-										pControlWindowBase.dock( mDockPane,
-																						pControlWindowBase.getLastDockPos(),
-																						pControlWindowBase.getLastDockSibling());
+										DockPos lDefaultPos = DockPos.RIGHT;
+
+										if(pMenuGroupName.equals( "Console" ))
+											lDefaultPos = DockPos.RIGHT;
+										else if(pMenuGroupName.equals( "Toolbar" ))
+											lDefaultPos = DockPos.TOP;
+
+										dockNode( pMenuGroupName, pControlNode, lDefaultPos );
 									}
 									else
 									{
