@@ -10,6 +10,7 @@ import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.dockfx.DockNode;
 
 public class DemoHalcyonMain extends Application
 {
@@ -30,7 +31,7 @@ public class DemoHalcyonMain extends Application
 									lNodeTypeList);
 
 		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(800,600);
-		
+
 		lHalcyonFrame.setTreePanel( lTreePanel );
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",
@@ -55,7 +56,10 @@ public class DemoHalcyonMain extends Application
 		lHalcyonFrame.addNode(lStage1);
 
 		// Custom DemoToolbar provided here
-		lHalcyonFrame.addToolbar(new DemoToolbarPanel());
+		DockNode lToolbar = new DemoToolbarPanel();
+		lToolbar.setPrefSize( 300, 200 );
+		lHalcyonFrame.addToolbar(lToolbar);
+		lHalcyonFrame.addToolbar(new DemoSecondToolbarPanel());
 
 		pPrimaryStage.setOnCloseRequest(event -> System.exit(0));
 
