@@ -1,5 +1,8 @@
 # Halcyon
 
+Halcyon is JavaFX framework for designing dockable multiple window applications.
+It supports legacy Swing components and accomodates other non Swing/JavaFX components. 
+
 Halcyon provides basic interfaces which are ```Console``` and ```TreePanel```.
 *ConsolePane* is linked with standard out and standard error streams. ```TreePanel``` contains all other HalcyonNode instances.
 
@@ -10,7 +13,7 @@ Halcyon holds normally three basic types of nodes, which are Console, ToolBar an
 
 Halcyon is based MVC pattern where Model/View/Controller are separated and linked by EventHandlers.
 
-Scrrenshot
+Screenshot
 --
 ![Screenshot](https://github.com/ClearControl/Halcyon/blob/master/artwork/HalcyonCapture.png?raw=true)
 
