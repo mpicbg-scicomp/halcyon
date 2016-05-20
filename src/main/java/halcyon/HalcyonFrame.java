@@ -23,6 +23,7 @@ public class HalcyonFrame extends Application
 {
 	
 	private double mWindowWidth,mWindowHeight;
+	final private String mAppIconPath;
 	final private HalcyonNodeRepository mNodes;
 
 	final private ObservableCollection<DockNode> mConsoleDockNodes = new ObservableCollection<>();
@@ -45,15 +46,28 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Instantiates a new Halcyon frame.
-	 * @param pWindowWidth the p window width
-	 * @param pWindowHeight the p window height
+	 * @param pAppIconPath the app icon path
+	 * @param pWindowWidth the window width
+	 * @param pWindowHeight the window height
 	 */
-	public HalcyonFrame(int pWindowWidth, int pWindowHeight)
+	public HalcyonFrame(String pAppIconPath, int pWindowWidth, int pWindowHeight)
 	{
+		mAppIconPath = pAppIconPath;
 		mWindowWidth = pWindowWidth;
 		mWindowHeight = pWindowHeight;
 		mNodes = new HalcyonNodeRepository();
 	}
+
+	/**
+	 * Instantiates a new Halcyon frame.
+	 * @param pWindowWidth the window width
+	 * @param pWindowHeight the window height
+	 */
+	public HalcyonFrame(int pWindowWidth, int pWindowHeight)
+	{
+		this(null, pWindowWidth, pWindowHeight);
+	}
+
 
 	/**
 	 * Sets tree panel.
@@ -129,7 +143,7 @@ public class HalcyonFrame extends Application
 				mNodes,
 				mConsoleDockNodes,
 				mToolBarDockNodes,
-				lViewMenu);
+				lViewMenu, mAppIconPath);
 
 		mTreePanel.setViewManager( mViewManager );
 

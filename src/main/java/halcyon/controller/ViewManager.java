@@ -9,6 +9,7 @@ import halcyon.view.TreePanel;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -54,6 +55,8 @@ public class ViewManager
 
 	private final Menu mViewMenu;
 
+	private final String mAppIconPath;
+
 	/**
 	 * Instantiates a new ViewManager.
 	 * @param pDockPane the DockPane
@@ -62,13 +65,15 @@ public class ViewManager
 	 * @param pConsoles the ConsolePanel collection
 	 * @param pToolbars the ToobalPanel collection
 	 * @param pViewMenu the ViewMenu
+	 * @param pAppIconPath the application icon path
 	 */
 	public ViewManager(	DockPane pDockPane,
 											TreePanel pTreePanel,
 											HalcyonNodeRepository nodes,
 											ObservableCollection<DockNode> pConsoles,
 											ObservableCollection<DockNode> pToolbars,
-											Menu pViewMenu)
+											Menu pViewMenu,
+											String pAppIconPath)
 	{
 		this.mDockPane = pDockPane;
 		this.mNodes = nodes;
@@ -80,6 +85,8 @@ public class ViewManager
 		mTreePanel.setPrefSize(200, 300);
 		mTreePanel.setClosable( false );
 		mTreePanel.dock(this.mDockPane, DockPos.LEFT);
+
+		mAppIconPath = pAppIconPath;
 
 		mStdOutputCaptureConsole = new StdOutputCaptureConsole();
 		mStdOutputCaptureConsole.setPrefSize(600, 200);
@@ -397,6 +404,9 @@ public class ViewManager
 			Scene lScene = new Scene( lBorderPane );
 
 			Stage lStage = new Stage();
+
+			if(mAppIconPath != null)
+				lStage.getIcons().add( new Image( getClass().getResourceAsStream( mAppIconPath ) ) );
 			lStage.setTitle( node.getName() );
 			lStage.setScene( lScene );
 			lStage.setX( scene.getWindow().getX() );

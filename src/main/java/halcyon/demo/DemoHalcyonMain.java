@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import halcyon.view.TreePanel;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.dockfx.DockNode;
@@ -30,7 +31,12 @@ public class DemoHalcyonMain extends Application
 									getClass().getResourceAsStream(lRootIconPath),
 									lNodeTypeList);
 
-		final HalcyonFrame lHalcyonFrame = new HalcyonFrame(800,600);
+		// Gets the application icon path.
+		final String lAppIconPath = DemoResourcesUtil.getString( "app.icon" );
+
+		// Creates a HalcyonFrame with the application icon path.
+		// This icon is also used in the external window as well.
+		final HalcyonFrame lHalcyonFrame = new HalcyonFrame( lAppIconPath, 800, 600 );
 
 		lHalcyonFrame.setTreePanel( lTreePanel );
 
@@ -61,6 +67,7 @@ public class DemoHalcyonMain extends Application
 		lHalcyonFrame.addToolbar(lToolbar);
 		lHalcyonFrame.addToolbar(new DemoSecondToolbarPanel());
 
+		pPrimaryStage.getIcons().add( new Image( getClass().getResourceAsStream(lAppIconPath) ) );
 		pPrimaryStage.setOnCloseRequest(event -> System.exit(0));
 
 		lHalcyonFrame.start(pPrimaryStage);
