@@ -3,14 +3,15 @@ package halcyon.demo;
 import halcyon.HalcyonFrame;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeType;
+import halcyon.view.TreePanel;
 
 import java.util.ArrayList;
 
-import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import org.dockfx.DockNode;
 
 public class DemoHalcyonMain extends Application
@@ -20,25 +21,28 @@ public class DemoHalcyonMain extends Application
 	public void start(Stage pPrimaryStage) throws Exception
 	{
 		// TODO: support other type of devices
-		final String lRootIconPath = DemoResourcesUtil.getString( "root.icon" );
+		final String lRootIconPath = DemoResourcesUtil.getString("root.icon");
 
 		ArrayList<HalcyonNodeType> lNodeTypeList = new ArrayList<HalcyonNodeType>();
 		for (HalcyonNodeType lHalcyonNodeType : DemoHalcyonNodeType.values())
 			lNodeTypeList.add(lHalcyonNodeType);
-		
-		TreePanel lTreePanel = new TreePanel("Config",
-									"Test Microscopy",
-									getClass().getResourceAsStream(lRootIconPath),
-									lNodeTypeList);
+
+		TreePanel lTreePanel = new TreePanel(	"Config",
+																					"Test Microscopy",
+																					getClass().getResourceAsStream(lRootIconPath),
+																					lNodeTypeList);
 
 		// Gets the application icon path.
-		final String lAppIconPath = DemoResourcesUtil.getString( "app.icon" );
+		final String lAppIconPath = DemoResourcesUtil.getString("app.icon");
 
 		// Creates a HalcyonFrame with the application icon path.
 		// This icon is also used in the external window as well.
-		final HalcyonFrame lHalcyonFrame = new HalcyonFrame( lAppIconPath, 800, 600 );
+		final HalcyonFrame lHalcyonFrame = new HalcyonFrame("Demo",
+																												lAppIconPath,
+																												800,
+																												600);
 
-		lHalcyonFrame.setTreePanel( lTreePanel );
+		lHalcyonFrame.setTreePanel(lTreePanel);
 
 		final HalcyonNode lLaser1 = HalcyonNode.wrap(	"Laser-1",
 																									DemoHalcyonNodeType.ONE,
@@ -63,11 +67,12 @@ public class DemoHalcyonMain extends Application
 
 		// Custom DemoToolbar provided here
 		DockNode lToolbar = new DemoToolbarPanel();
-		lToolbar.setPrefSize( 300, 200 );
+		lToolbar.setPrefSize(300, 200);
 		lHalcyonFrame.addToolbar(lToolbar);
 		lHalcyonFrame.addToolbar(new DemoSecondToolbarPanel());
 
-		pPrimaryStage.getIcons().add( new Image( getClass().getResourceAsStream(lAppIconPath) ) );
+		pPrimaryStage.getIcons()
+									.add(new Image(getClass().getResourceAsStream(lAppIconPath)));
 		pPrimaryStage.setOnCloseRequest(event -> System.exit(0));
 
 		lHalcyonFrame.start(pPrimaryStage);

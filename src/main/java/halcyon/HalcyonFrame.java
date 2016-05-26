@@ -1,9 +1,9 @@
 package halcyon;
 
+import halcyon.controller.ViewManager;
 import halcyon.model.collection.HalcyonNodeRepository;
 import halcyon.model.collection.ObservableCollection;
 import halcyon.model.node.HalcyonNodeInterface;
-import halcyon.controller.ViewManager;
 import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -21,15 +21,16 @@ import org.dockfx.DockPane;
  */
 public class HalcyonFrame extends Application
 {
-	
-	private double mWindowWidth,mWindowHeight;
+
+	final private double mWindowWidth, mWindowHeight;
+	final private String mWindowtitle;
 	final private String mAppIconPath;
 	final private HalcyonNodeRepository mNodes;
 
 	final private ObservableCollection<DockNode> mConsoleDockNodes = new ObservableCollection<>();
 	final private ObservableCollection<DockNode> mToolBarDockNodes = new ObservableCollection<>();
 
-  	private TreePanel mTreePanel;
+	private TreePanel mTreePanel;
 
 	private ViewManager mViewManager;
 
@@ -37,6 +38,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Gets the ViewManager.
+	 * 
 	 * @return the ViewManager
 	 */
 	public ViewManager getViewManager()
@@ -46,12 +48,23 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Instantiates a new Halcyon frame.
-	 * @param pAppIconPath the app icon path
-	 * @param pWindowWidth the window width
-	 * @param pWindowHeight the window height
+	 * 
+	 * @param pWindowTitle
+	 *          window title
+	 * @param pAppIconPath
+	 *          the app icon path
+	 * @param pWindowWidth
+	 *          the window width
+	 * @param pWindowHeight
+	 *          the window height
 	 */
-	public HalcyonFrame(String pAppIconPath, int pWindowWidth, int pWindowHeight)
+
+	public HalcyonFrame(String pWindowTitle,
+											String pAppIconPath,
+											int pWindowWidth,
+											int pWindowHeight)
 	{
+		mWindowtitle = pWindowTitle;
 		mAppIconPath = pAppIconPath;
 		mWindowWidth = pWindowWidth;
 		mWindowHeight = pWindowHeight;
@@ -60,37 +73,49 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Instantiates a new Halcyon frame.
-	 * @param pWindowWidth the window width
-	 * @param pWindowHeight the window height
+	 * 
+	 * @param pWindowTitle
+	 *          window title
+	 * @param pWindowWidth
+	 *          the window width
+	 * @param pWindowHeight
+	 *          the window height
 	 */
-	public HalcyonFrame(int pWindowWidth, int pWindowHeight)
+	public HalcyonFrame(String pWindowTitle,
+											int pWindowWidth,
+											int pWindowHeight)
 	{
-		this(null, pWindowWidth, pWindowHeight);
+		this(pWindowTitle, null, pWindowWidth, pWindowHeight);
 	}
-
 
 	/**
 	 * Sets tree panel.
-	 * @param pTreePanel the Tree Panel
+	 * 
+	 * @param pTreePanel
+	 *          the Tree Panel
 	 */
-	public void setTreePanel( TreePanel pTreePanel )
+	public void setTreePanel(TreePanel pTreePanel)
 	{
 		mTreePanel = pTreePanel;
-		mTreePanel.setNodes( mNodes );
+		mTreePanel.setNodes(mNodes);
 	}
 
 	/**
 	 * Add a Halcyon node.
-	 * @param node the node
+	 * 
+	 * @param node
+	 *          the node
 	 */
 	public void addNode(HalcyonNodeInterface node)
 	{
-		mNodes.add( node );
+		mNodes.add(node);
 	}
 
 	/**
 	 * Add a toolbar.
-	 * @param toolbar the toolbar
+	 * 
+	 * @param toolbar
+	 *          the toolbar
 	 */
 	public void addToolbar(DockNode toolbar)
 	{
@@ -99,7 +124,9 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Add a console.
-	 * @param console the console
+	 * 
+	 * @param console
+	 *          the console
 	 */
 	public void addConsole(DockNode console)
 	{
@@ -108,7 +135,9 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Starts JavaFX application.
-	 * @param pPrimaryStage the p primary stage
+	 * 
+	 * @param pPrimaryStage
+	 *          the p primary stage
 	 */
 	@Override
 	public void start(Stage pPrimaryStage)
@@ -126,7 +155,6 @@ public class HalcyonFrame extends Application
 	private void internalStart(Stage pPrimaryStage)
 	{
 		mPrimaryStage = pPrimaryStage;
-		mPrimaryStage.setTitle("Halcyon");
 
 		// create a dock pane that will manage our dock mNodes and handle the layout
 		DockPane lDockPane = new DockPane();
@@ -135,17 +163,18 @@ public class HalcyonFrame extends Application
 		Menu lConsoleMenu = new Menu("Console");
 
 		Menu lViewMenu = new Menu("View");
-		MenuBar lMenuBar = new MenuBar( lViewMenu );
-		lViewMenu.getItems().addAll( lToolbarMenu, lConsoleMenu );
+		MenuBar lMenuBar = new MenuBar(lViewMenu);
+		lViewMenu.getItems().addAll(lToolbarMenu, lConsoleMenu);
 
 		mViewManager = new ViewManager(	lDockPane,
-				mTreePanel,
-				mNodes,
-				mConsoleDockNodes,
-				mToolBarDockNodes,
-				lViewMenu, mAppIconPath);
+																		mTreePanel,
+																		mNodes,
+																		mConsoleDockNodes,
+																		mToolBarDockNodes,
+																		lViewMenu,
+																		mAppIconPath);
 
-		mTreePanel.setViewManager( mViewManager );
+		mTreePanel.setViewManager(mViewManager);
 
 		BorderPane lBorderPane = new BorderPane();
 		lBorderPane.setTop(lMenuBar);
@@ -181,6 +210,7 @@ public class HalcyonFrame extends Application
 		HalcyonFrame lThis = this;
 		Platform.runLater(() -> {
 			Stage stage = new Stage();
+			stage.setTitle(mWindowtitle);
 			try
 			{
 				lThis.start(stage);
@@ -213,6 +243,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Is visible boolean.
+	 * 
 	 * @return the boolean
 	 */
 	public boolean isVisible()
