@@ -4,6 +4,7 @@ import halcyon.controller.ViewManager;
 import halcyon.demo.DemoHalcyonNodeType;
 import halcyon.model.collection.HalcyonNodeRepository;
 import halcyon.model.collection.HalcyonNodeRepositoryListener;
+import halcyon.model.node.HalcyonGroupNode;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonNodeType;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -76,6 +78,7 @@ public class TreePanel extends DockNode
 		}
 
 		tree = new TreeView<>(rootItem);
+		tree.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
 
 		this.heightProperty().addListener( new ChangeListener< Number >()
 		{
@@ -173,53 +176,118 @@ public class TreePanel extends DockNode
 		});
 
 		rootContextMenu = ContextMenuBuilder.create()
-			.items(	MenuItemBuilder.create()
-						.text("open")
-						.onAction(new EventHandler<ActionEvent>()
-						{
-							@Override
-							public void handle(ActionEvent arg0)
+			.items( MenuItemBuilder.create()
+							.text( "open" )
+							.onAction( new EventHandler< ActionEvent >()
 							{
-								ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
-								for (TreeItem<TreeNode> n : list)
+								@Override
+								public void handle( ActionEvent arg0 )
 								{
-									viewManager.open( n.getValue().getNode() );
+									ObservableList< TreeItem< TreeNode > > list = tree.getSelectionModel().getSelectedItems();
+									for ( TreeItem< TreeNode > n : list )
+									{
+										viewManager.open( n.getValue().getNode() );
+									}
 								}
-							}
-						})
-						.build(),
+							} )
+							.build(),
 					MenuItemBuilder.create()
-						.text("open externally")
-						.onAction(new EventHandler<ActionEvent>()
-						{
-							@Override
-							public void handle(ActionEvent arg0)
+							.text( "open externally" )
+							.onAction( new EventHandler< ActionEvent >()
 							{
-								ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
-
-								for (TreeItem<TreeNode> n : list)
+								@Override
+								public void handle( ActionEvent arg0 )
 								{
-									viewManager.makeIndependentWindow( n.getValue().getNode() );
+									ObservableList< TreeItem< TreeNode > > list = tree.getSelectionModel().getSelectedItems();
+
+									for ( TreeItem< TreeNode > n : list )
+									{
+										viewManager.makeIndependentWindow( n.getValue().getNode() );
+									}
 								}
-							}
-						})
-						.build(),
+							} )
+							.build(),
 
 					MenuItemBuilder.create()
-						.text("close")
-						.onAction(new EventHandler<ActionEvent>()
-						{
-							@Override
-							public void handle(ActionEvent arg0)
+							.text( "open (V) grouped panel" )
+							.onAction( new EventHandler< ActionEvent >()
 							{
-								ObservableList<TreeItem<TreeNode>> list = tree.getSelectionModel().getSelectedItems();
-								for (TreeItem<TreeNode> n : list)
+								@Override
+								public void handle( ActionEvent arg0 )
 								{
-									viewManager.close( n.getValue().getNode() );
+									ObservableList< TreeItem< TreeNode > > list = tree.getSelectionModel().getSelectedItems();
+
+									List< HalcyonNodeInterface > nodeList = new ArrayList< HalcyonNodeInterface >();
+
+									list.stream().forEach( c -> {
+										if ( !c.getValue().equals( tree.getRoot() ) )
+										{
+											if ( c.getValue().getNode() == null )
+												c.getChildren().forEach( t -> nodeList.add( t.getValue().getNode() ) );
+											else
+												nodeList.add( c.getValue().getNode() );
+										}
+									} );
+
+									nodeList.stream().forEach( viewManager::close );
+
+									HalcyonGroupNode lHalcyonGroupNode = new HalcyonGroupNode( "", DemoHalcyonNodeType.ONE,
+											HalcyonGroupNode.Grouping.Vertical,
+											nodeList );
+
+									viewManager.makeIndependentWindow( lHalcyonGroupNode );
 								}
-							}
-						})
-						.build())
+							} )
+							.build(),
+
+					MenuItemBuilder.create()
+							.text( "open (H) grouped panel" )
+							.onAction( new EventHandler< ActionEvent >()
+							{
+								@Override
+								public void handle( ActionEvent arg0 )
+								{
+									ObservableList< TreeItem< TreeNode > > list = tree.getSelectionModel().getSelectedItems();
+
+									List< HalcyonNodeInterface > nodeList = new ArrayList< HalcyonNodeInterface >();
+
+									list.stream().forEach( c -> {
+										if ( !c.getValue().equals( tree.getRoot() ) )
+										{
+											if ( c.getValue().getNode() == null )
+												c.getChildren().forEach( t -> nodeList.add( t.getValue().getNode() ) );
+											else
+												nodeList.add( c.getValue().getNode() );
+										}
+									} );
+
+
+									nodeList.stream().forEach( viewManager::close );
+
+									HalcyonGroupNode lHalcyonGroupNode = new HalcyonGroupNode( "", DemoHalcyonNodeType.ONE,
+											HalcyonGroupNode.Grouping.Horizontal,
+											nodeList );
+
+									viewManager.makeIndependentWindow( lHalcyonGroupNode );
+								}
+							} )
+							.build(),
+
+					MenuItemBuilder.create()
+							.text( "close" )
+							.onAction( new EventHandler< ActionEvent >()
+							{
+								@Override
+								public void handle( ActionEvent arg0 )
+								{
+									ObservableList< TreeItem< TreeNode > > list = tree.getSelectionModel().getSelectedItems();
+									for ( TreeItem< TreeNode > n : list )
+									{
+										viewManager.close( n.getValue().getNode() );
+									}
+								}
+							} )
+							.build() )
 			.build();
 
 		tree.setContextMenu(rootContextMenu);

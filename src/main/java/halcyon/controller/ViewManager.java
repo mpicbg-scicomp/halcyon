@@ -1,11 +1,15 @@
 package halcyon.controller;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import halcyon.model.node.HalcyonGroupNode;
+import halcyon.model.node.HalcyonNodeListener;
 import halcyon.view.HalcyonPanel;
 import halcyon.view.TreePanel;
+import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -288,6 +292,8 @@ public class ViewManager
 		}
 
 		// Otherwise, we will create new HalcyonNode
+		halcyonGroupNodes.forEach( c -> c.removeNode( node ) );
+
 		final HalcyonPanel page = new HalcyonPanel(node);
 
 		if( deviceTabsDock != null )
@@ -381,6 +387,8 @@ public class ViewManager
 		return mDockPane.isVisible();
 	}
 
+	HashSet<HalcyonGroupNode> halcyonGroupNodes = new HashSet<>(  );
+
 	/**
 	 * Make an independent window.
 	 * @param node the node
@@ -390,6 +398,11 @@ public class ViewManager
 		if( node instanceof HalcyonOtherNode) {
 			open( node );
 			return;
+		}
+
+		if( node instanceof HalcyonGroupNode )
+		{
+			halcyonGroupNodes.add( (HalcyonGroupNode) node );
 		}
 
 		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[ mPages.size()]))
@@ -422,11 +435,32 @@ public class ViewManager
 
 			mExternalNodeMap.put( node, lStage );
 
+			if(node instanceof  HalcyonGroupNode)
+			{
+				((HalcyonGroupNode) node).getNodeList().addListener( new ListChangeListener< Node >()
+				{
+					@Override public void onChanged( Change< ? extends Node > c )
+					{
+						if(c.getList().size() == 0)
+						{
+							lStage.close();
+							mExternalNodeMap.remove( node );
+							halcyonGroupNodes.removeIf( t -> t.equals( node ) );
+						}
+						else
+						{
+							lStage.sizeToScene();
+						}
+					}
+				} );
+			}
+
 			lStage.setOnCloseRequest( new EventHandler< WindowEvent >()
 			{
 				@Override public void handle( WindowEvent event )
 				{
 					mExternalNodeMap.remove( node );
+					halcyonGroupNodes.removeIf( c -> c.equals( node ) );
 				}
 			} );
 		}
