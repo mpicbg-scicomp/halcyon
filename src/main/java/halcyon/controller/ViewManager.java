@@ -214,10 +214,14 @@ public class ViewManager
 
 										dockNode( pMenuGroupName, pControlNode, lDefaultPos );
 									}
-									else
+									else if(!pControlNode.isClosed())
 									{
-										lMenuItem.setSelected(true);
+										pControlNode.close();
 									}
+//									else
+//									{
+//										lMenuItem.setSelected(true);
+//									}
 								}
 							});
 
