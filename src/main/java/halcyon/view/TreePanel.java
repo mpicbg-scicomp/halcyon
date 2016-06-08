@@ -1,6 +1,7 @@
 package halcyon.view;
 
 import halcyon.controller.ViewManager;
+import halcyon.demo.DemoHalcyonNodeType;
 import halcyon.model.collection.HalcyonNodeRepository;
 import halcyon.model.collection.HalcyonNodeRepositoryListener;
 import halcyon.model.node.HalcyonNode;
@@ -21,8 +22,10 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ContextMenuBuilder;
 import javafx.scene.control.MenuItemBuilder;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.dockfx.DockNode;
 
@@ -67,7 +70,7 @@ public class TreePanel extends DockNode
 		{
 			TreeItem<TreeNode> node = new TreeItem<>(	new TreeNode(type.name()),
 																								type.getIcon());
-			node.setExpanded(true);
+			//node.setExpanded(true);
 			subNodes.put(type.name(), node);
 			rootItem.getChildren().add(node);
 		}
