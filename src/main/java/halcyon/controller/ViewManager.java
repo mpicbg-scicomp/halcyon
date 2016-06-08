@@ -169,6 +169,9 @@ public class ViewManager
 			dockNode( pMenu, lDockNode, pPosition );
 			addViewMenuItem( pMenu, lDockNode );
 		}
+
+		if(pControlNodes.getCount() > 0)
+			pControlNodes.get(0).focus();
 	}
 
 	private void addViewMenuItem(	String pMenuGroupName,
