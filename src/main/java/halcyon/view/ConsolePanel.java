@@ -47,6 +47,16 @@ public class ConsolePanel extends ScrollPane implements TextAppender
 
 	}
 
+	/**
+	 * Clear all the text in Console.
+	 */
+	public void clearText()
+	{
+		Platform.runLater(() -> {
+			mTextArea.clear();
+		});
+	}
+
 	private void controlSize()
 	{
 		final long lTimeNow = System.nanoTime();

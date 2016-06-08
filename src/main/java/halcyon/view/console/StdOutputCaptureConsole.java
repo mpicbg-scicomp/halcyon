@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import halcyon.view.ConsolePane;
 import halcyon.view.ConsolePanel;
 import org.dockfx.DockNode;
 
@@ -12,23 +13,23 @@ import org.dockfx.DockNode;
  */
 public class StdOutputCaptureConsole extends DockNode
 {
-	private final ConsolePanel consolePane;
+	private final ConsolePane consolePane;
 
 	/**
 	 * Instantiates a new Standard output/error capture console.
 	 */
 	public StdOutputCaptureConsole()
 	{
-		super(new ConsolePanel());
+		super(new ConsolePane());
 		setTitle("Console");
 
-		consolePane = (ConsolePanel ) getContents();
+		consolePane = (ConsolePane) getContents();
 
 		System.setOut(new PrintStream(new StreamAppender(	"StdOut",
-																											consolePane,
+																											consolePane.getConsolePanel(),
 																											System.out)));
 		System.setErr(new PrintStream(new StreamAppender(	"StdErr",
-																											consolePane,
+																											consolePane.getConsolePanel(),
 																											System.err)));
 	}
 
