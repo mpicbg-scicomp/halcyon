@@ -184,10 +184,20 @@ public class TreePanel extends DockNode
 								public void handle( ActionEvent arg0 )
 								{
 									ObservableList< TreeItem< TreeNode > > list = tree.getSelectionModel().getSelectedItems();
-									for ( TreeItem< TreeNode > n : list )
-									{
-										viewManager.open( n.getValue().getNode() );
-									}
+
+									List< HalcyonNodeInterface > nodeList = new ArrayList< HalcyonNodeInterface >();
+
+									list.stream().forEach( c -> {
+										if ( !c.getValue().equals( tree.getRoot() ) )
+										{
+											if ( c.getValue().getNode() == null )
+												c.getChildren().forEach( t -> nodeList.add( t.getValue().getNode() ) );
+											else
+												nodeList.add( c.getValue().getNode() );
+										}
+									} );
+
+									nodeList.stream().forEach( viewManager::open );
 								}
 							} )
 							.build(),
@@ -200,10 +210,19 @@ public class TreePanel extends DockNode
 								{
 									ObservableList< TreeItem< TreeNode > > list = tree.getSelectionModel().getSelectedItems();
 
-									for ( TreeItem< TreeNode > n : list )
-									{
-										viewManager.makeIndependentWindow( n.getValue().getNode() );
-									}
+									List< HalcyonNodeInterface > nodeList = new ArrayList< HalcyonNodeInterface >();
+
+									list.stream().forEach( c -> {
+										if ( !c.getValue().equals( tree.getRoot() ) )
+										{
+											if ( c.getValue().getNode() == null )
+												c.getChildren().forEach( t -> nodeList.add( t.getValue().getNode() ) );
+											else
+												nodeList.add( c.getValue().getNode() );
+										}
+									} );
+
+									nodeList.stream().forEach( viewManager::makeIndependentWindow );
 								}
 							} )
 							.build(),
@@ -281,10 +300,20 @@ public class TreePanel extends DockNode
 								public void handle( ActionEvent arg0 )
 								{
 									ObservableList< TreeItem< TreeNode > > list = tree.getSelectionModel().getSelectedItems();
-									for ( TreeItem< TreeNode > n : list )
-									{
-										viewManager.close( n.getValue().getNode() );
-									}
+
+									List< HalcyonNodeInterface > nodeList = new ArrayList< HalcyonNodeInterface >();
+
+									list.stream().forEach( c -> {
+										if ( !c.getValue().equals( tree.getRoot() ) )
+										{
+											if ( c.getValue().getNode() == null )
+												c.getChildren().forEach( t -> nodeList.add( t.getValue().getNode() ) );
+											else
+												nodeList.add( c.getValue().getNode() );
+										}
+									} );
+
+									nodeList.stream().forEach( viewManager::close );
 								}
 							} )
 							.build() )
