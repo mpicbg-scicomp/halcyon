@@ -5,18 +5,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import halcyon.model.node.HalcyonGroupNode;
-import halcyon.model.node.HalcyonNodeListener;
-import halcyon.view.HalcyonPanel;
-import halcyon.view.TreePanel;
-import javafx.collections.ListChangeListener;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 import org.dockfx.DockPos;
@@ -25,17 +13,28 @@ import halcyon.model.collection.HalcyonNodeRepository;
 import halcyon.model.collection.HalcyonNodeRepositoryListener;
 import halcyon.model.collection.ObservableCollection;
 import halcyon.model.collection.ObservableCollectionListener;
-import halcyon.model.node.HalcyonOtherNode;
+import halcyon.model.node.HalcyonGroupNode;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
+import halcyon.model.node.HalcyonOtherNode;
 import halcyon.model.node.HalcyonSwingNode;
+import halcyon.view.HalcyonPanel;
+import halcyon.view.TreePanel;
 import halcyon.view.console.StdOutputCaptureConsole;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Menu;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * ViewManager is a controller class to manage HalcyonNodes and GUI.

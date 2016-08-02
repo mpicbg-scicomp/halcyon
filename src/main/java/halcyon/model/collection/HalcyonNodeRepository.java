@@ -1,9 +1,9 @@
 package halcyon.model.collection;
 
-import halcyon.model.node.HalcyonNodeInterface;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import halcyon.model.node.HalcyonNodeInterface;
 
 /**
  * A modifiable set of {@link halcyon.model.node.HalcyonNode}s.

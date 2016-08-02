@@ -1,5 +1,8 @@
 package halcyon;
 
+import org.dockfx.DockNode;
+import org.dockfx.DockPane;
+
 import halcyon.controller.ViewManager;
 import halcyon.model.collection.HalcyonNodeRepository;
 import halcyon.model.collection.ObservableCollection;
@@ -12,9 +15,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
-import org.dockfx.DockNode;
-import org.dockfx.DockPane;
 
 /**
  * FxFrame support JavaFX based on docking framework.

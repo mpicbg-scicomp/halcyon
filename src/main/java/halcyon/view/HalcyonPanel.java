@@ -1,12 +1,12 @@
 package halcyon.view;
 
+import org.dockfx.DockNode;
+import org.dockfx.demo.DockFX;
+
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonNodeListener;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import org.dockfx.DockNode;
-import org.dockfx.demo.DockFX;
 
 /**
  * HalcyonPanel encapsulates HalcyonNode

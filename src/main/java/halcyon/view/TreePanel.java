@@ -1,5 +1,13 @@
 package halcyon.view;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+
+import org.dockfx.DockNode;
+
 import halcyon.controller.ViewManager;
 import halcyon.demo.DemoHalcyonNodeType;
 import halcyon.model.collection.HalcyonNodeRepository;
@@ -8,14 +16,6 @@ import halcyon.model.node.HalcyonGroupNode;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonNodeType;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -27,9 +27,7 @@ import javafx.scene.control.MenuItemBuilder;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.dockfx.DockNode;
 
 /**
  * TreePanel contains multiple HalcyonNodes for making HalcyonPanel

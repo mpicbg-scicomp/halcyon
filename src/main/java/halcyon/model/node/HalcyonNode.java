@@ -1,7 +1,6 @@
 package halcyon.model.node;
 
 import halcyon.model.property.NodeProperty;
-
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.scene.Node;
 

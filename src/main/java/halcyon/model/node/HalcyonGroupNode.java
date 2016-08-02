@@ -1,12 +1,12 @@
 package halcyon.model.node;
 
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-
-import java.util.List;
 
 /**
  * HalcyonGroupNode contains multiple nodes' panels

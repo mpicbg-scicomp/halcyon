@@ -1,8 +1,9 @@
 package halcyon.demo;
 
+import org.dockfx.DockNode;
+
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import org.dockfx.DockNode;
 
 /**
  * 2nd Demo Toolbar window for demonstrating. Users can make their own ToolBar window and add them {@link halcyon.HalcyonFrame}.

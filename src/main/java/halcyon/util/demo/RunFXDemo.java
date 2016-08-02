@@ -1,10 +1,9 @@
 package halcyon.util.demo;
 
-import halcyon.util.RunnableFX;
-import halcyon.util.RunFX;
-
 import java.util.Arrays;
 
+import halcyon.util.RunFX;
+import halcyon.util.RunnableFX;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

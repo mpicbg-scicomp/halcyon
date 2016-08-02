@@ -1,10 +1,10 @@
 package halcyon.model.node;
 
-import javafx.embed.swing.SwingNode;
-import javafx.scene.Node;
-
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+
+import javafx.embed.swing.SwingNode;
+import javafx.scene.Node;
 
 /**
  * Halcyon Swing Node

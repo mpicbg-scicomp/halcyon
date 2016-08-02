@@ -16,8 +16,8 @@ public class ConsolePanel extends ScrollPane implements TextAppender
 	/**
 	 * The Max lines.
 	 */
-	// It remains more than 1000 lines at some point
-	final int maxLines = 1000;
+	// It remains more than 100_000 characters at some point
+	final int maxCharacters = 100_000;
 	/**
 	 * The text area.
 	 */
@@ -63,10 +63,10 @@ public class ConsolePanel extends ScrollPane implements TextAppender
 
 		if (lTimeNow > mLastCheck + cCheckPeriod)
 		{
-			if (mTextArea.lengthProperty().get() > maxLines)
+			if (mTextArea.lengthProperty().get() > maxCharacters)
 			{
 				mTextArea.deleteText(	0,
-															mTextArea.lengthProperty().get() - maxLines);
+															mTextArea.lengthProperty().get() - maxCharacters);
 			}
 
 			mLastCheck = lTimeNow;

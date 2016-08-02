@@ -2,6 +2,8 @@ package halcyon.model.property;
 
 import java.lang.ref.WeakReference;
 
+import com.sun.javafx.binding.ExpressionHelper;
+
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
@@ -12,8 +14,6 @@ import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WritableObjectValue;
 import javafx.scene.Node;
-
-import com.sun.javafx.binding.ExpressionHelper;
 
 /**
  * NodeProperty for holding JavaFX {@link javafx.scene.Node}.

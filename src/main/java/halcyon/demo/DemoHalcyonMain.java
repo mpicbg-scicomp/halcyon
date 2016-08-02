@@ -1,18 +1,17 @@
 package halcyon.demo;
 
+import java.util.ArrayList;
+
+import org.dockfx.DockNode;
+
 import halcyon.HalcyonFrame;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeType;
 import halcyon.view.TreePanel;
-
-import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import org.dockfx.DockNode;
 
 public class DemoHalcyonMain extends Application
 {

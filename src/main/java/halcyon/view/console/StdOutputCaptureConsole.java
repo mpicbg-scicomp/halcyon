@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import halcyon.view.ConsolePane;
-import halcyon.view.ConsolePanel;
 import org.dockfx.DockNode;
+
+import halcyon.view.ConsolePane;
 
 /**
  * Standard Output and Error capture console
