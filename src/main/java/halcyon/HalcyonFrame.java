@@ -10,10 +10,12 @@ import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -86,6 +88,20 @@ public class HalcyonFrame extends Application
 											int pWindowHeight)
 	{
 		this(pWindowTitle, null, pWindowWidth, pWindowHeight);
+	}
+
+	/**
+	 * Instantiates a new Halcyon frame. the Halcyon window occupies the entire
+	 * screen.
+	 * 
+	 * @param pWindowTitle
+	 *          window title
+	 */
+	public HalcyonFrame(String pWindowTitle)
+	{
+		this(	pWindowTitle,
+					(int)Screen.getPrimary().getVisualBounds().getWidth(),
+					(int)Screen.getPrimary().getVisualBounds().getHeight());
 	}
 
 	/**
