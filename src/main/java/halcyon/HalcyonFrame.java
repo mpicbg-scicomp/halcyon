@@ -100,8 +100,8 @@ public class HalcyonFrame extends Application
 	public HalcyonFrame(String pWindowTitle)
 	{
 		this(	pWindowTitle,
-					(int)Screen.getPrimary().getVisualBounds().getWidth(),
-					(int)Screen.getPrimary().getVisualBounds().getHeight());
+					(int)Screen.getPrimary().getVisualBounds().getWidth() - 50,
+					(int)Screen.getPrimary().getVisualBounds().getHeight() - 30);
 	}
 
 	/**
