@@ -1,5 +1,10 @@
 package halcyon;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.MenuItem;
+
+import org.dockfx.DelayOpenHandler;
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 
@@ -17,6 +22,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 /**
  * FxFrame support JavaFX based on docking framework.
@@ -179,8 +186,37 @@ public class HalcyonFrame extends Application
 		Menu lConsoleMenu = new Menu("Console");
 
 		Menu lViewMenu = new Menu("View");
-		MenuBar lMenuBar = new MenuBar(lViewMenu);
 		lViewMenu.getItems().addAll(lToolbarMenu, lConsoleMenu);
+
+
+		MenuItem lSaveMenuItem = new MenuItem("Save");
+		lSaveMenuItem.setOnAction( new EventHandler< ActionEvent >()
+		{
+			@Override public void handle( ActionEvent event )
+			{
+				if(dirExist(getUserDataDirectory()))
+					lDockPane.storePreference( getUserDataDirectory() + "layout.pref" );
+			}
+		} );
+
+		MenuItem lRestoreMenuItem = new MenuItem("Restore");
+		lRestoreMenuItem.setOnAction( new EventHandler< ActionEvent >()
+		{
+			@Override public void handle( ActionEvent event )
+			{
+				lDockPane.loadPreference( getUserDataDirectory() + "layout.pref", new DelayOpenHandler() {
+                                  @Override
+                                  public DockNode open(String nodeName) {
+                                    return mViewManager.restore( mNodes.getNode(nodeName) );
+                                  }
+                                });
+			}
+		} );
+
+		Menu lFileMenu = new Menu("File");
+		lFileMenu.getItems().addAll( lSaveMenuItem, lRestoreMenuItem );
+
+		MenuBar lMenuBar = new MenuBar(lFileMenu, lViewMenu);
 
 		mViewManager = new ViewManager(	lDockPane,
 																		mTreePanel,
@@ -265,5 +301,22 @@ public class HalcyonFrame extends Application
 	public boolean isVisible()
 	{
 		return mPrimaryStage == null ? false : mPrimaryStage.isShowing();
+	}
+
+	public static String getUserDataDirectory() {
+		return System.getProperty("user.home") + File.separator + ".halcyon" + File.separator + getApplicationVersionString() + File.separator;
+	}
+
+	public static String getApplicationVersionString() {
+		return "1.0";
+	}
+
+	public static boolean dirExist(String dir)
+	{
+		String path = getUserDataDirectory();
+		if(!new File(path).exists())
+			return new File(path).mkdirs();
+		else
+			return true;
 	}
 }
