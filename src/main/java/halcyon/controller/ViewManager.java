@@ -255,6 +255,7 @@ public class ViewManager
 
 		if (node instanceof HalcyonSwingNode)
 		{
+//			System.out.println("Swing");
 			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
 			if (!lHalcyonSwingNode.isDockable())
 			{
@@ -264,6 +265,7 @@ public class ViewManager
 		}
 		else if (node instanceof HalcyonOtherNode)
 		{
+//			System.out.println("Other");
 			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			lHalcyonExternalNode.setVisible(true);
 			return;
@@ -305,6 +307,39 @@ public class ViewManager
 		}
 
 		mPages.add( page );
+	}
+
+	/**
+	 * Restore the HalcyonNode.
+	 * @param node the node
+	 */
+	public DockNode restore(HalcyonNodeInterface node)
+	{
+		DockNode deviceTabsDock = null;
+		// Checking which dock window is docked
+		for (final HalcyonPanel n : mPages )
+		{
+			if (n.isDocked())
+			{
+				deviceTabsDock = n;
+				break;
+			}
+		}
+
+		halcyonGroupNodes.forEach( c -> c.removeNode( node ) );
+
+		final HalcyonPanel page = new HalcyonPanel(node);
+
+		if( deviceTabsDock != null )
+		{
+			page.dock( mDockPane, DockPos.CENTER, deviceTabsDock);
+		}
+		else
+		{
+			page.dock( mDockPane, DockPos.TOP, mStdOutputCaptureConsole);
+		}
+
+		return page;
 	}
 
 	/**
