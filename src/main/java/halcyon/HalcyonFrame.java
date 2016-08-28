@@ -47,6 +47,8 @@ public class HalcyonFrame extends Application
 	{
 		return mViewManager;
 	}
+	
+	
 
 	/**
 	 * Instantiates a new Halcyon frame.
@@ -100,8 +102,8 @@ public class HalcyonFrame extends Application
 	public HalcyonFrame(String pWindowTitle)
 	{
 		this(	pWindowTitle,
-					(int)Screen.getPrimary().getVisualBounds().getWidth(),
-					(int)Screen.getPrimary().getVisualBounds().getHeight());
+					(int)Screen.getPrimary().getVisualBounds().getWidth()-10,
+					(int)Screen.getPrimary().getVisualBounds().getHeight()-10);
 	}
 
 	/**
