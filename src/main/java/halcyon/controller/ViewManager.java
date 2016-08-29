@@ -17,7 +17,6 @@ import halcyon.model.node.HalcyonGroupNode;
 import halcyon.model.node.HalcyonNode;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonOtherNode;
-import halcyon.model.node.HalcyonSwingNode;
 import halcyon.view.HalcyonPanel;
 import halcyon.view.TreePanel;
 import halcyon.view.console.StdOutputCaptureConsole;
@@ -41,7 +40,7 @@ import javafx.stage.WindowEvent;
  */
 public class ViewManager
 {
-	private final List<HalcyonPanel > mPages = new LinkedList<>();
+	private final List<HalcyonPanel> mPages = new LinkedList<>();
 
 	private final HashMap<HalcyonNodeInterface, Stage> mExternalNodeMap = new HashMap<>();
 
@@ -62,13 +61,21 @@ public class ViewManager
 
 	/**
 	 * Instantiates a new ViewManager.
-	 * @param pDockPane the DockPane
-	 * @param pTreePanel the TreePanel
-	 * @param nodes the HalcyonNodes
-	 * @param pConsoles the ConsolePanel collection
-	 * @param pToolbars the ToobalPanel collection
-	 * @param pViewMenu the ViewMenu
-	 * @param pAppIconPath the application icon path
+	 * 
+	 * @param pDockPane
+	 *          the DockPane
+	 * @param pTreePanel
+	 *          the TreePanel
+	 * @param nodes
+	 *          the HalcyonNodes
+	 * @param pConsoles
+	 *          the ConsolePanel collection
+	 * @param pToolbars
+	 *          the ToobalPanel collection
+	 * @param pViewMenu
+	 *          the ViewMenu
+	 * @param pAppIconPath
+	 *          the application icon path
 	 */
 	public ViewManager(	DockPane pDockPane,
 											TreePanel pTreePanel,
@@ -81,26 +88,26 @@ public class ViewManager
 		this.mDockPane = pDockPane;
 		this.mNodes = nodes;
 
-		this.mDockPane.setPrefSize( 800, 600 );
+		this.mDockPane.setPrefSize(800, 600);
 		this.mViewMenu = pViewMenu;
 
 		mTreePanel = pTreePanel;
 		mTreePanel.setPrefSize(200, 300);
-		mTreePanel.setClosable( false );
+		mTreePanel.setClosable(false);
 		mTreePanel.dock(this.mDockPane, DockPos.LEFT);
 
 		mAppIconPath = pAppIconPath;
 
 		mStdOutputCaptureConsole = new StdOutputCaptureConsole();
 		mStdOutputCaptureConsole.setPrefSize(600, 200);
-		mStdOutputCaptureConsole.setClosable( false );
+		mStdOutputCaptureConsole.setClosable(false);
 		pConsoles.add(mStdOutputCaptureConsole);
 
-		mControlNodeMap.put( "Console", new ObservableCollection<>() );
-		mControlNodeMap.put( "Toolbar", new ObservableCollection<>() );
+		mControlNodeMap.put("Console", new ObservableCollection<>());
+		mControlNodeMap.put("Toolbar", new ObservableCollection<>());
 
-		dockNodes( "Console", DockPos.RIGHT, pConsoles );
-		dockNodes( "Toolbar", DockPos.TOP, pToolbars );
+		dockNodes("Console", DockPos.RIGHT, pConsoles);
+		dockNodes("Toolbar", DockPos.TOP, pToolbars);
 
 		SplitPane split = (SplitPane) pDockPane.getChildren().get(0);
 		split.setDividerPositions(0.3);
@@ -110,8 +117,8 @@ public class ViewManager
 			@Override
 			public void itemAdded(DockNode item)
 			{
-				dockNode( "Console", item, DockPos.RIGHT );
-				addViewMenuItem( "Console", item );
+				dockNode("Console", item, DockPos.RIGHT);
+				addViewMenuItem("Console", item);
 			}
 
 			@Override
@@ -126,8 +133,8 @@ public class ViewManager
 			@Override
 			public void itemAdded(DockNode item)
 			{
-				dockNode( "Toolbar", item, DockPos.TOP );
-				addViewMenuItem( "Toolbar", item );
+				dockNode("Toolbar", item, DockPos.TOP);
+				addViewMenuItem("Toolbar", item);
 			}
 
 			@Override
@@ -153,14 +160,17 @@ public class ViewManager
 		});
 	}
 
-	private void dockNode( String pMenu, DockNode item, DockPos pDefaultPosition )
+	private void dockNode(String pMenu,
+												DockNode item,
+												DockPos pDefaultPosition)
 	{
-		if(mControlNodeMap.get(pMenu).getCount() == 0)
-			item.dock( mDockPane, pDefaultPosition, mTreePanel );
+		if (mControlNodeMap.get(pMenu).getCount() == 0)
+			item.dock(mDockPane, pDefaultPosition, mTreePanel);
 		else
-			item.dock( mDockPane, DockPos.CENTER, mControlNodeMap.get(pMenu).get(0) );
+			item.dock(mDockPane, DockPos.CENTER, mControlNodeMap.get(pMenu)
+																													.get(0));
 
-		mControlNodeMap.get( pMenu ).add( item );
+		mControlNodeMap.get(pMenu).add(item);
 	}
 
 	private void dockNodes(	String pMenu,
@@ -169,72 +179,77 @@ public class ViewManager
 	{
 		for (DockNode lDockNode : pControlNodes.getList())
 		{
-			dockNode( pMenu, lDockNode, pPosition );
-			addViewMenuItem( pMenu, lDockNode );
+			dockNode(pMenu, lDockNode, pPosition);
+			addViewMenuItem(pMenu, lDockNode);
 		}
 
-		if(pControlNodes.getCount() > 0)
+		if (pControlNodes.getCount() > 0)
 			pControlNodes.get(0).focus();
 	}
 
 	private void addViewMenuItem(	String pMenuGroupName,
-														DockNode pControlNode)
+																DockNode pControlNode)
 	{
 		mViewMenu.getItems()
-						.stream()
-						.filter(c -> c.getText().equals(pMenuGroupName))
-						.findFirst()
-						.ifPresent(c -> {
-							CheckMenuItem lMenuItem = new CheckMenuItem(pControlNode.getTitle());
+							.stream()
+							.filter(c -> c.getText().equals(pMenuGroupName))
+							.findFirst()
+							.ifPresent(c -> {
+								CheckMenuItem lMenuItem = new CheckMenuItem(pControlNode.getTitle());
 
-							lMenuItem.setSelected( !pControlNode.isClosed() );
-							pControlNode.closedProperty()
-																.addListener(new ChangeListener<Boolean>()
-																{
-																	@Override
-																	public void changed(ObservableValue<? extends Boolean> observable,
-																											Boolean oldValue,
-																											Boolean newValue)
-																	{
-																		if(newValue) mControlNodeMap.get(pMenuGroupName).remove( pControlNode );
-																		lMenuItem.setSelected(!newValue);
-																	}
-																});
+								lMenuItem.setSelected(!pControlNode.isClosed());
+								pControlNode.closedProperty()
+														.addListener(new ChangeListener<Boolean>()
+														{
+															@Override
+															public void changed(ObservableValue<? extends Boolean> observable,
+																									Boolean oldValue,
+																									Boolean newValue)
+															{
+																if (newValue)
+																	mControlNodeMap.get(pMenuGroupName)
+																									.remove(pControlNode);
+																lMenuItem.setSelected(!newValue);
+															}
+														});
 
-							lMenuItem.setOnAction(new EventHandler<ActionEvent>()
-							{
-								@Override
-								public void handle(ActionEvent event)
+								lMenuItem.setOnAction(new EventHandler<ActionEvent>()
 								{
-									if (pControlNode.isClosed())
+									@Override
+									public void handle(ActionEvent event)
 									{
-										DockPos lDefaultPos = DockPos.RIGHT;
+										if (pControlNode.isClosed())
+										{
+											DockPos lDefaultPos = DockPos.RIGHT;
 
-										if(pMenuGroupName.equals( "Console" ))
-											lDefaultPos = DockPos.RIGHT;
-										else if(pMenuGroupName.equals( "Toolbar" ))
-											lDefaultPos = DockPos.TOP;
+											if (pMenuGroupName.equals("Console"))
+												lDefaultPos = DockPos.RIGHT;
+											else if (pMenuGroupName.equals("Toolbar"))
+												lDefaultPos = DockPos.TOP;
 
-										dockNode( pMenuGroupName, pControlNode, lDefaultPos );
+											dockNode(	pMenuGroupName,
+																pControlNode,
+																lDefaultPos);
+										}
+										else if (!pControlNode.isClosed())
+										{
+											pControlNode.close();
+										}
+										// else
+										// {
+										// lMenuItem.setSelected(true);
+										// }
 									}
-									else if(!pControlNode.isClosed())
-									{
-										pControlNode.close();
-									}
-//									else
-//									{
-//										lMenuItem.setSelected(true);
-//									}
-								}
+								});
+
+								((Menu) c).getItems().add(lMenuItem);
 							});
-
-							((Menu)c).getItems().add( lMenuItem );
-						});
 
 	}
 
 	/**
 	 * Gets the Halcyons.
+	 * 
 	 * @return the nodes
 	 */
 	public HalcyonNodeRepository getNodes()
@@ -244,35 +259,28 @@ public class ViewManager
 
 	/**
 	 * Open the HalcyonNode.
-	 * @param node the node
+	 * 
+	 * @param node
+	 *          the node
 	 */
 	public void open(HalcyonNodeInterface node)
 	{
-		if( mExternalNodeMap.containsKey( node ) ) {
-			mExternalNodeMap.get( node ).requestFocus();
+		if (mExternalNodeMap.containsKey(node))
+		{
+			mExternalNodeMap.get(node).requestFocus();
 			return;
 		}
 
-		if (node instanceof HalcyonSwingNode)
+		if (node instanceof HalcyonOtherNode)
 		{
-//			System.out.println("Swing");
-			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
-			if (!lHalcyonSwingNode.isDockable())
-			{
-				lHalcyonSwingNode.setVisible(true);
-				return;
-			}
-		}
-		else if (node instanceof HalcyonOtherNode)
-		{
-//			System.out.println("Other");
+			// System.out.println("Other");
 			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			lHalcyonExternalNode.setVisible(true);
 			return;
 		}
 
 		// If users want to focus the opened dock, then focus and return
-		for (final HalcyonPanel n : mPages )
+		for (final HalcyonPanel n : mPages)
 		{
 			if (n.getNode() == node && n.isDocked())
 			{
@@ -283,7 +291,7 @@ public class ViewManager
 
 		DockNode deviceTabsDock = null;
 		// Checking which dock window is docked
-		for (final HalcyonPanel n : mPages )
+		for (final HalcyonPanel n : mPages)
 		{
 			if (n.isDocked())
 			{
@@ -293,31 +301,33 @@ public class ViewManager
 		}
 
 		// Otherwise, we will create new HalcyonNode
-		halcyonGroupNodes.forEach( c -> c.removeNode( node ) );
+		halcyonGroupNodes.forEach(c -> c.removeNode(node));
 
 		final HalcyonPanel page = new HalcyonPanel(node);
 
-		if( deviceTabsDock != null )
+		if (deviceTabsDock != null)
 		{
-			page.dock( mDockPane, DockPos.CENTER, deviceTabsDock);
+			page.dock(mDockPane, DockPos.CENTER, deviceTabsDock);
 		}
 		else
 		{
-			page.dock( mDockPane, DockPos.TOP, mStdOutputCaptureConsole);
+			page.dock(mDockPane, DockPos.TOP, mStdOutputCaptureConsole);
 		}
 
-		mPages.add( page );
+		mPages.add(page);
 	}
 
 	/**
 	 * Restore the HalcyonNode.
-	 * @param node the node
+	 * 
+	 * @param node
+	 *          the node
 	 */
 	public DockNode restore(HalcyonNodeInterface node)
 	{
 		DockNode deviceTabsDock = null;
 		// Checking which dock window is docked
-		for (final HalcyonPanel n : mPages )
+		for (final HalcyonPanel n : mPages)
 		{
 			if (n.isDocked())
 			{
@@ -326,17 +336,17 @@ public class ViewManager
 			}
 		}
 
-		halcyonGroupNodes.forEach( c -> c.removeNode( node ) );
+		halcyonGroupNodes.forEach(c -> c.removeNode(node));
 
 		final HalcyonPanel page = new HalcyonPanel(node);
 
-		if( deviceTabsDock != null )
+		if (deviceTabsDock != null)
 		{
-			page.dock( mDockPane, DockPos.CENTER, deviceTabsDock);
+			page.dock(mDockPane, DockPos.CENTER, deviceTabsDock);
 		}
 		else
 		{
-			page.dock( mDockPane, DockPos.TOP, mStdOutputCaptureConsole);
+			page.dock(mDockPane, DockPos.TOP, mStdOutputCaptureConsole);
 		}
 
 		return page;
@@ -344,27 +354,20 @@ public class ViewManager
 
 	/**
 	 * Hide the HalcyonNode.
-	 * @param node the node
+	 * 
+	 * @param node
+	 *          the node
 	 */
 	public void hide(HalcyonNodeInterface node)
 	{
-		if (node instanceof HalcyonSwingNode)
-		{
-			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
-			if (!lHalcyonSwingNode.isDockable())
-			{
-				lHalcyonSwingNode.setVisible(false);
-				return;
-			}
-		}
-		else if (node instanceof HalcyonOtherNode)
+		if (node instanceof HalcyonOtherNode)
 		{
 			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			lHalcyonExternalNode.setVisible(false);
 			return;
 		}
 
-		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[ mPages.size()]))
+		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[mPages.size()]))
 		{
 			if (page.getNode() == node)
 			{
@@ -375,20 +378,14 @@ public class ViewManager
 
 	/**
 	 * Close the HalcyonNode.
-	 * @param node the node
+	 * 
+	 * @param node
+	 *          the node
 	 */
 	public void close(HalcyonNodeInterface node)
 	{
-		if (node instanceof HalcyonSwingNode)
-		{
-			HalcyonSwingNode lHalcyonSwingNode = (HalcyonSwingNode) node;
-			if (!lHalcyonSwingNode.isDockable())
-			{
-				lHalcyonSwingNode.close();
-				return;
-			}
-		}
-		else if (node instanceof HalcyonOtherNode)
+
+		if (node instanceof HalcyonOtherNode)
 		{
 			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			// Close() makes the application hangs. Use setVisible(false) instead.
@@ -396,14 +393,14 @@ public class ViewManager
 			lHalcyonExternalNode.setVisible(false);
 			return;
 		}
-		else if ( mExternalNodeMap.containsKey( node ) )
+		else if (mExternalNodeMap.containsKey(node))
 		{
-			mExternalNodeMap.get( node ).close();
-			mExternalNodeMap.remove( node );
+			mExternalNodeMap.get(node).close();
+			mExternalNodeMap.remove(node);
 			return;
 		}
 
-		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[ mPages.size()]))
+		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[mPages.size()]))
 		{
 			if (page.getNode() == node)
 			{
@@ -414,6 +411,7 @@ public class ViewManager
 
 	/**
 	 * Is visible or not.
+	 * 
 	 * @return the boolean
 	 */
 	public boolean isVisible()
@@ -421,82 +419,89 @@ public class ViewManager
 		return mDockPane.isVisible();
 	}
 
-	HashSet<HalcyonGroupNode> halcyonGroupNodes = new HashSet<>(  );
+	HashSet<HalcyonGroupNode> halcyonGroupNodes = new HashSet<>();
 
 	/**
 	 * Make an independent window.
-	 * @param node the node
+	 * 
+	 * @param node
+	 *          the node
 	 */
-	public void makeIndependentWindow( HalcyonNodeInterface node )
+	public void makeIndependentWindow(HalcyonNodeInterface node)
 	{
-		if( node instanceof HalcyonOtherNode) {
-			open( node );
+		if (node instanceof HalcyonOtherNode)
+		{
+			open(node);
 			return;
 		}
 
-		if( node instanceof HalcyonGroupNode )
+		if (node instanceof HalcyonGroupNode)
 		{
-			halcyonGroupNodes.add( (HalcyonGroupNode) node );
+			halcyonGroupNodes.add((HalcyonGroupNode) node);
 		}
 
-		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[ mPages.size()]))
+		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[mPages.size()]))
 		{
 			if (page.getNode() == node)
 			{
 				page.close();
-				mPages.remove( page );
+				mPages.remove(page);
 			}
 		}
 
-		if( !mExternalNodeMap.containsKey( node ) )
+		if (!mExternalNodeMap.containsKey(node))
 		{
 			final Scene scene = mDockPane.getScene();
 
 			BorderPane lBorderPane = new BorderPane();
 			final Node lPanel = node.getPanel();
-			lBorderPane.setCenter( lPanel );
-			Scene lScene = new Scene( lBorderPane );
+			lBorderPane.setCenter(lPanel);
+			Scene lScene = new Scene(lBorderPane);
 
 			Stage lStage = new Stage();
 
-			if(mAppIconPath != null)
-				lStage.getIcons().add( new Image( getClass().getResourceAsStream( mAppIconPath ) ) );
-			lStage.setTitle( node.getName() );
-			lStage.setScene( lScene );
-			lStage.setX( scene.getWindow().getX() );
-			lStage.setY( scene.getWindow().getY() );
+			if (mAppIconPath != null)
+				lStage.getIcons()
+							.add(new Image(getClass().getResourceAsStream(mAppIconPath)));
+			lStage.setTitle(node.getName());
+			lStage.setScene(lScene);
+			lStage.setX(scene.getWindow().getX());
+			lStage.setY(scene.getWindow().getY());
 			lStage.show();
 
-			mExternalNodeMap.put( node, lStage );
+			mExternalNodeMap.put(node, lStage);
 
-			if(node instanceof  HalcyonGroupNode)
+			if (node instanceof HalcyonGroupNode)
 			{
-				((HalcyonGroupNode) node).getNodeList().addListener( new ListChangeListener< Node >()
-				{
-					@Override public void onChanged( Change< ? extends Node > c )
-					{
-						if(c.getList().size() == 0)
-						{
-							lStage.close();
-							mExternalNodeMap.remove( node );
-							halcyonGroupNodes.removeIf( t -> t.equals( node ) );
-						}
-						else
-						{
-							lStage.sizeToScene();
-						}
-					}
-				} );
+				((HalcyonGroupNode) node).getNodeList()
+																	.addListener(new ListChangeListener<Node>()
+																	{
+																		@Override
+																		public void onChanged(Change<? extends Node> c)
+																		{
+																			if (c.getList().size() == 0)
+																			{
+																				lStage.close();
+																				mExternalNodeMap.remove(node);
+																				halcyonGroupNodes.removeIf(t -> t.equals(node));
+																			}
+																			else
+																			{
+																				lStage.sizeToScene();
+																			}
+																		}
+																	});
 			}
 
-			lStage.setOnCloseRequest( new EventHandler< WindowEvent >()
+			lStage.setOnCloseRequest(new EventHandler<WindowEvent>()
 			{
-				@Override public void handle( WindowEvent event )
+				@Override
+				public void handle(WindowEvent event)
 				{
-					mExternalNodeMap.remove( node );
-					halcyonGroupNodes.removeIf( c -> c.equals( node ) );
+					mExternalNodeMap.remove(node);
+					halcyonGroupNodes.removeIf(c -> c.equals(node));
 				}
-			} );
+			});
 		}
 	}
 }
