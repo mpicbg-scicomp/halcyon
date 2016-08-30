@@ -15,7 +15,6 @@ import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -189,6 +188,7 @@ public class HalcyonFrame extends Application
 		lViewMenu.getItems().addAll(lToolbarMenu, lConsoleMenu);
 
 
+		// Save preference menu item
 		MenuItem lSaveMenuItem = new MenuItem("Save");
 		lSaveMenuItem.setOnAction( new EventHandler< ActionEvent >()
 		{
@@ -196,9 +196,13 @@ public class HalcyonFrame extends Application
 			{
 				if(dirExist(getUserDataDirectory()))
 					lDockPane.storePreference( getUserDataDirectory() + "layout.pref" );
+
+				// save the additional preferences for HalcyonOtherNode size/position
+				mViewManager.storeOtherNodePreference( getUserDataDirectory() + "others.pref" );
 			}
 		} );
 
+		// Restore preference menu item
 		MenuItem lRestoreMenuItem = new MenuItem("Restore");
 		lRestoreMenuItem.setOnAction( new EventHandler< ActionEvent >()
 		{
@@ -210,6 +214,9 @@ public class HalcyonFrame extends Application
                                     return mViewManager.restore( mNodes.getNode(nodeName) );
                                   }
                                 });
+
+				// load the additional preferences for HalcyonOtherNode size/position
+				mViewManager.loadOtherNodePreference( getUserDataDirectory() + "others.pref" );
 			}
 		} );
 

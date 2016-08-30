@@ -9,27 +9,20 @@ import javafx.scene.Node;
 public class HalcyonOtherNode extends HalcyonNodeBase	implements
 																											HalcyonNodeInterface
 {
-
-	private Runnable mRunnableShow, mRunnableHide, mRunnableClose;
+	private final Window mWindow;
 
 	/**
 	 * Instantiates a new HalcyonOther node.
 	 * @param name the name
 	 * @param type the type
-	 * @param pRunnableShow the runnable show delegate
-	 * @param pRunnableHide the runnable hide delegate
-	 * @param pRunnableClose the runnable close delegate
+	 * @param pWindow the window contains window-related properties and functions
 	 */
 	public HalcyonOtherNode(String name,
 													HalcyonNodeType type,
-													Runnable pRunnableShow,
-													Runnable pRunnableHide,
-													Runnable pRunnableClose)
+													Window pWindow)
 	{
 		super(name, type);
-		mRunnableShow = pRunnableShow;
-		mRunnableHide = pRunnableHide;
-		mRunnableClose = pRunnableClose;
+		mWindow = pWindow;
 	}
 
 	/**
@@ -48,15 +41,12 @@ public class HalcyonOtherNode extends HalcyonNodeBase	implements
 	 */
 	public void setVisible(boolean pVisible)
 	{
-		if (pVisible)
+		if(null != mWindow)
 		{
-			if (mRunnableShow != null)
-				mRunnableShow.run();
-		}
-		else
-		{
-			if (mRunnableHide != null)
-				mRunnableHide.run();
+			if (pVisible)
+				mWindow.show();
+			else
+				mWindow.hide();
 		}
 	}
 
@@ -65,8 +55,43 @@ public class HalcyonOtherNode extends HalcyonNodeBase	implements
 	 */
 	public void close()
 	{
-		if (mRunnableClose != null)
-			mRunnableClose.run();
+		if(null != mWindow)
+			mWindow.close();
 	}
 
+	/**
+	 * Get the window size as a two dimensional integer array.
+	 * @return the two dimensional integer array
+	 */
+	public Integer[] getSize()
+	{
+		return new Integer[]{ mWindow.getWidth(), mWindow.getHeight() };
+	}
+
+	/**
+	 * Get the window position as a two dimensional integer array.
+	 * @return the two dimensional integer array
+	 */
+	public Integer[] getPosition()
+	{
+		return new Integer[]{ mWindow.getX(), mWindow.getY() };
+	}
+
+	/**
+	 * Sets the window size with specific two dimensional array
+	 * @param size the size of the window
+	 */
+	public void setSize(Integer[] size)
+	{
+		mWindow.setSize( size[0], size[1] );
+	}
+
+	/**
+	 * Sets the window position with specific two dimensional array.
+	 * @param position the position of the window
+	 */
+	public void setPosition(Integer[] position)
+	{
+		mWindow.setPosition( position[0], position[1] );
+	}
 }

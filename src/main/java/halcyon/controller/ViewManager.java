@@ -1,10 +1,19 @@
 package halcyon.controller;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.dockfx.ContentHolder;
+import org.dockfx.DelayOpenHandler;
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 import org.dockfx.DockPos;
@@ -35,6 +44,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import javax.swing.SwingUtilities;
+
 /**
  * ViewManager is a controller class to manage HalcyonNodes and GUI.
  */
@@ -58,6 +69,8 @@ public class ViewManager
 	private final Menu mViewMenu;
 
 	private final String mAppIconPath;
+
+	private final HashSet<HalcyonOtherNode> mOtherNodes = new HashSet<>();
 
 	/**
 	 * Instantiates a new ViewManager.
@@ -276,6 +289,7 @@ public class ViewManager
 			// System.out.println("Other");
 			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			lHalcyonExternalNode.setVisible(true);
+			mOtherNodes.add( lHalcyonExternalNode );
 			return;
 		}
 
@@ -391,6 +405,7 @@ public class ViewManager
 			// Close() makes the application hangs. Use setVisible(false) instead.
 			// lHalcyonExternalNode.close();
 			lHalcyonExternalNode.setVisible(false);
+			mOtherNodes.remove( lHalcyonExternalNode );
 			return;
 		}
 		else if (mExternalNodeMap.containsKey(node))
@@ -502,6 +517,88 @@ public class ViewManager
 					halcyonGroupNodes.removeIf(c -> c.equals(node));
 				}
 			});
+		}
+	}
+
+	private Object loadCollection(String fileName) {
+		XMLDecoder e = null;
+		try {
+			e = new XMLDecoder(
+					new BufferedInputStream(
+							new FileInputStream(fileName)));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+
+		Object collection = e.readObject();
+
+		e.close();
+
+		return collection;
+	}
+
+	private void storeCollection(String fileName, Object collection) {
+		XMLEncoder e = null;
+		try {
+			e = new XMLEncoder(
+					new BufferedOutputStream(
+							new FileOutputStream(fileName)));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+
+		e.writeObject(collection);
+
+		e.close();
+	}
+
+	/**
+	 * Store other nodes preference including size/position.
+	 * @param filePath the file path
+	 */
+	public void storeOtherNodePreference( String filePath )
+	{
+		HashMap<String, ContentHolder > map = new HashMap<>();
+
+		for(HalcyonOtherNode n : mOtherNodes)
+		{
+			// Create ContentHolder and save
+			ContentHolder otherNode = new ContentHolder(n.getName(), ContentHolder.Type.FloatingNode);
+			otherNode.addProperty( "Title", n.getName() );
+			otherNode.addProperty( "Size", n.getSize() );
+			otherNode.addProperty( "Position", n.getPosition() );
+
+			map.put( n.getName(), otherNode );
+		}
+
+		storeCollection( filePath, map );
+	}
+
+	/**
+	 * Load other nodes preference including size/position.
+	 * @param filePath the file path
+	 */
+	public void loadOtherNodePreference( String filePath )
+	{
+		HashMap<String, ContentHolder > map = (HashMap<String, ContentHolder>) loadCollection( filePath );
+
+		for(String key : map.keySet())
+		{
+			// Restore the position and size
+			ContentHolder otherNode = map.get( key );
+			String title = otherNode.getProperties().getProperty( "Title" );
+
+			HalcyonNodeInterface n = mNodes.getNode( title );
+
+			if( null != n && n instanceof HalcyonOtherNode )
+			{
+				HalcyonOtherNode lOtherNode = (HalcyonOtherNode) n;
+				open( lOtherNode );
+				SwingUtilities.invokeLater( () -> {
+					lOtherNode.setSize( (Integer[]) otherNode.getProperties().get( "Size" ) );
+					lOtherNode.setPosition( (Integer[]) otherNode.getProperties().get( "Position") );
+				} );
+			}
 		}
 	}
 }
