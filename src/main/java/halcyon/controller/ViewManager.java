@@ -7,11 +7,14 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import halcyon.demo.DemoHalcyonNodeType;
+import javafx.application.Platform;
 import org.dockfx.ContentHolder;
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
@@ -570,6 +573,35 @@ public class ViewManager
 			map.put( n.getName(), otherNode );
 		}
 
+		for(HalcyonNodeInterface n : mExternalNodeMap.keySet())
+		{
+			if(n instanceof HalcyonGroupNode)
+			{
+				// Create ContentHolder for HalcyonGroupNode
+				ContentHolder groupNode = new ContentHolder( n.getName(), ContentHolder.Type.FloatingNode );
+				groupNode.addProperty( "Stage", mExternalNodeMap.get( n ).getTitle() );
+				groupNode.addProperty( "Grouping", ((HalcyonGroupNode) n).getGrouping());
+				groupNode.addProperty( "Nodes", ((HalcyonGroupNode) n).getNodeNames());
+
+				groupNode.addProperty( "Title", n.getName() );
+				groupNode.addProperty( "Size", new Double[] { mExternalNodeMap.get( n ).getWidth(),
+						mExternalNodeMap.get( n ).getHeight() } );
+				groupNode.addProperty( "Position", new Double[] { mExternalNodeMap.get( n ).getX(),
+						mExternalNodeMap.get( n ).getY() } );
+				map.put( n.getName(), groupNode );
+			}
+			else
+			{
+				// Create ContentHolder for externalNode
+				ContentHolder externalNode = new ContentHolder( n.getName(), ContentHolder.Type.FloatingNode );
+				externalNode.addProperty( "Stage", mExternalNodeMap.get(n).getTitle() );
+				externalNode.addProperty( "Title", n.getName() );
+				externalNode.addProperty( "Size", new Double[] { mExternalNodeMap.get(n).getWidth(), mExternalNodeMap.get(n).getHeight() } );
+				externalNode.addProperty( "Position", new Double[] { mExternalNodeMap.get(n).getX(), mExternalNodeMap.get(n).getY() } );
+				map.put( n.getName(), externalNode );
+			}
+		}
+
 		storeCollection( filePath, map );
 	}
 
@@ -584,19 +616,61 @@ public class ViewManager
 		for(String key : map.keySet())
 		{
 			// Restore the position and size
-			ContentHolder otherNode = map.get( key );
-			String title = otherNode.getProperties().getProperty( "Title" );
+			ContentHolder node = map.get( key );
 
-			HalcyonNodeInterface n = mNodes.getNode( title );
+			String title = node.getProperties().getProperty( "Title" );
 
-			if( null != n && n instanceof HalcyonOtherNode )
+			if(node.getProperties().containsKey( "Stage" ))
 			{
-				HalcyonOtherNode lOtherNode = (HalcyonOtherNode) n;
-				open( lOtherNode );
-				SwingUtilities.invokeLater( () -> {
-					lOtherNode.setSize( (Integer[]) otherNode.getProperties().get( "Size" ) );
-					lOtherNode.setPosition( (Integer[]) otherNode.getProperties().get( "Position") );
-				} );
+				// External Independent Node
+				HalcyonNodeInterface n;
+
+				if(node.getProperties().containsKey( "Grouping" ))
+				{
+					// Handling HalcyonGroupNode
+					HalcyonGroupNode.Grouping lGrouping = (HalcyonGroupNode.Grouping) node.getProperties().get( "Grouping" );
+					HashSet<String> lNodes = (HashSet<String>) node.getProperties().get( "Nodes" );
+
+					List< HalcyonNodeInterface > nodeList = new ArrayList< HalcyonNodeInterface >();
+					for(String nodeName : lNodes)
+						nodeList.add( mNodes.getNode( nodeName ) );
+
+					nodeList.stream().forEach( this::close );
+
+					n = new HalcyonGroupNode( "", DemoHalcyonNodeType.ONE,
+							lGrouping,
+							nodeList );
+				}
+				else
+				{
+					n = mNodes.getNode( title );
+				}
+
+				Double[] size = ( Double[] ) node.getProperties().get( "Size" );
+				Double[] position = ( Double[] ) node.getProperties().get( "Position" );
+
+				makeIndependentWindow( n );
+
+				mExternalNodeMap.get( n ).setWidth( size[0] );
+				mExternalNodeMap.get( n ).setHeight( size[1] );
+
+				mExternalNodeMap.get( n ).setX( position[0] );
+				mExternalNodeMap.get( n ).setY( position[1] );
+			}
+			else
+			{
+				// OtherNode case
+				HalcyonNodeInterface n = mNodes.getNode( title );
+
+				if ( null != n && n instanceof HalcyonOtherNode )
+				{
+					HalcyonOtherNode lOtherNode = ( HalcyonOtherNode ) n;
+					open( lOtherNode );
+					SwingUtilities.invokeLater( () -> {
+						lOtherNode.setSize( ( Integer[] ) node.getProperties().get( "Size" ) );
+						lOtherNode.setPosition( ( Integer[] ) node.getProperties().get( "Position" ) );
+					} );
+				}
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package halcyon.model.node;
 
+import java.util.HashSet;
 import java.util.List;
 
 import javafx.collections.ObservableList;
@@ -17,12 +18,11 @@ public class HalcyonGroupNode extends HalcyonNodeBase implements HalcyonNodeInte
 
 	private final Pane mPane;
 
-	public ObservableList< Node > getNodeList()
-	{
-		return mList;
-	}
-
 	private ObservableList<Node> mList;
+
+	private final Grouping mGrouping;
+
+	private final HashSet<String> mNodeNames = new HashSet<>();
 
 	public HalcyonGroupNode(String name,
 			HalcyonNodeType type, Grouping grouping,
@@ -30,11 +30,13 @@ public class HalcyonGroupNode extends HalcyonNodeBase implements HalcyonNodeInte
 	{
 		super(name, type);
 
-		if(grouping == Grouping.Horizontal)
+		mGrouping = grouping;
+
+		if(mGrouping == Grouping.Horizontal)
 		{
 			mPane = new HBox();
 		}
-		else if(grouping == Grouping.Vertical)
+		else if(mGrouping == Grouping.Vertical)
 		{
 			mPane = new VBox();
 		}
@@ -50,6 +52,7 @@ public class HalcyonGroupNode extends HalcyonNodeBase implements HalcyonNodeInte
 			{
 //				if(node.getPanel() != null)
 				mPane.getChildren().add( node.getPanel() );
+				mNodeNames.add( node.getName() );
 			}
 			mList = mPane.getChildren();
 		}
@@ -63,7 +66,21 @@ public class HalcyonGroupNode extends HalcyonNodeBase implements HalcyonNodeInte
 	public void removeNode( HalcyonNodeInterface node )
 	{
 		mPane.getChildren().removeIf( c -> c.equals( node.getPanel() ) );
-
+		mNodeNames.remove( node.getName() );
 	}
 
+	public ObservableList< Node > getNodeList()
+	{
+		return mList;
+	}
+
+	public Grouping getGrouping()
+	{
+		return mGrouping;
+	}
+
+	public HashSet< String > getNodeNames()
+	{
+		return mNodeNames;
+	}
 }
