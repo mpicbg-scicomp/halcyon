@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.dockfx.ContentHolder;
-import org.dockfx.DelayOpenHandler;
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 import org.dockfx.DockPos;
@@ -70,7 +69,9 @@ public class ViewManager
 
 	private final String mAppIconPath;
 
-	private final HashSet<HalcyonOtherNode> mOtherNodes = new HashSet<>();
+	private final HashSet<HalcyonGroupNode> mHalcyonGroupNodes = new HashSet<>();
+
+	private final HashSet<HalcyonOtherNode> mHalcyonOtherNodes = new HashSet<>();
 
 	/**
 	 * Instantiates a new ViewManager.
@@ -289,7 +290,7 @@ public class ViewManager
 			// System.out.println("Other");
 			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			lHalcyonExternalNode.setVisible(true);
-			mOtherNodes.add( lHalcyonExternalNode );
+			mHalcyonOtherNodes.add( lHalcyonExternalNode );
 			return;
 		}
 
@@ -315,7 +316,7 @@ public class ViewManager
 		}
 
 		// Otherwise, we will create new HalcyonNode
-		halcyonGroupNodes.forEach(c -> c.removeNode(node));
+		mHalcyonGroupNodes.forEach( c -> c.removeNode( node ) );
 
 		final HalcyonPanel page = new HalcyonPanel(node);
 
@@ -350,7 +351,7 @@ public class ViewManager
 			}
 		}
 
-		halcyonGroupNodes.forEach(c -> c.removeNode(node));
+		mHalcyonGroupNodes.forEach( c -> c.removeNode( node ) );
 
 		final HalcyonPanel page = new HalcyonPanel(node);
 
@@ -405,7 +406,7 @@ public class ViewManager
 			// Close() makes the application hangs. Use setVisible(false) instead.
 			// lHalcyonExternalNode.close();
 			lHalcyonExternalNode.setVisible(false);
-			mOtherNodes.remove( lHalcyonExternalNode );
+			mHalcyonOtherNodes.remove( lHalcyonExternalNode );
 			return;
 		}
 		else if (mExternalNodeMap.containsKey(node))
@@ -434,8 +435,6 @@ public class ViewManager
 		return mDockPane.isVisible();
 	}
 
-	HashSet<HalcyonGroupNode> halcyonGroupNodes = new HashSet<>();
-
 	/**
 	 * Make an independent window.
 	 * 
@@ -452,7 +451,7 @@ public class ViewManager
 
 		if (node instanceof HalcyonGroupNode)
 		{
-			halcyonGroupNodes.add((HalcyonGroupNode) node);
+			mHalcyonGroupNodes.add( ( HalcyonGroupNode ) node );
 		}
 
 		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[mPages.size()]))
@@ -498,7 +497,7 @@ public class ViewManager
 																			{
 																				lStage.close();
 																				mExternalNodeMap.remove(node);
-																				halcyonGroupNodes.removeIf(t -> t.equals(node));
+																				mHalcyonGroupNodes.removeIf( t -> t.equals( node ) );
 																			}
 																			else
 																			{
@@ -514,7 +513,7 @@ public class ViewManager
 				public void handle(WindowEvent event)
 				{
 					mExternalNodeMap.remove(node);
-					halcyonGroupNodes.removeIf(c -> c.equals(node));
+					mHalcyonGroupNodes.removeIf( c -> c.equals( node ) );
 				}
 			});
 		}
@@ -560,7 +559,7 @@ public class ViewManager
 	{
 		HashMap<String, ContentHolder > map = new HashMap<>();
 
-		for(HalcyonOtherNode n : mOtherNodes)
+		for(HalcyonOtherNode n : mHalcyonOtherNodes )
 		{
 			// Create ContentHolder and save
 			ContentHolder otherNode = new ContentHolder(n.getName(), ContentHolder.Type.FloatingNode);
