@@ -76,6 +76,8 @@ public class ViewManager
 
 	private final HashSet<HalcyonOtherNode> mHalcyonOtherNodes = new HashSet<>();
 
+	private final HashMap< String, ContentHolder > mHalcyonLastPosition = new HashMap<>();
+
 	/**
 	 * Instantiates a new ViewManager.
 	 * 
@@ -482,8 +484,25 @@ public class ViewManager
 							.add(new Image(getClass().getResourceAsStream(mAppIconPath)));
 			lStage.setTitle(node.getName());
 			lStage.setScene(lScene);
-			lStage.setX(scene.getWindow().getX());
-			lStage.setY(scene.getWindow().getY());
+
+			// Check if the node has the last position/size
+			if ( mHalcyonLastPosition.containsKey( node.getName() ) )
+			{
+				ContentHolder lHolder = mHalcyonLastPosition.get( node.getName() );
+				Double[] size = ( Double[] ) lHolder.getProperties().get( "Size" );
+				Double[] position = ( Double[] ) lHolder.getProperties().get( "Position" );
+
+				lStage.setWidth( size[ 0 ] );
+				lStage.setHeight( size[ 1 ] );
+
+				lStage.setX( position[ 0 ] );
+				lStage.setY( position[ 1 ] );
+			}
+			else
+			{
+				lStage.setX( scene.getWindow().getX() + 200 );
+				lStage.setY( scene.getWindow().getY() );
+			}
 			lStage.show();
 
 			mExternalNodeMap.put(node, lStage);
@@ -515,6 +534,17 @@ public class ViewManager
 				@Override
 				public void handle(WindowEvent event)
 				{
+					if ( !node.getName().equals( "" ) )
+					{
+						// Do not care HalcyonGroupNode
+						ContentHolder lHolder = new ContentHolder( node.getName(), ContentHolder.Type.FloatingNode );
+						lHolder.addProperty( "Size", new Double[] { lStage.getWidth(),
+								lStage.getHeight() } );
+						lHolder.addProperty( "Position", new Double[] { lStage.getX(),
+								lStage.getY() } );
+
+						mHalcyonLastPosition.put( node.getName(), lHolder );
+					}
 					mExternalNodeMap.remove(node);
 					mHalcyonGroupNodes.removeIf( c -> c.equals( node ) );
 				}
