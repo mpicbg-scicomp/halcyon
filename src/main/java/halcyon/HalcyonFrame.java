@@ -2,9 +2,9 @@ package halcyon;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
 
-import org.dockfx.DelayOpenHandler;
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 
@@ -23,6 +23,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * FxFrame support JavaFX based on docking framework.
@@ -46,7 +47,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Gets the ViewManager.
-	 * 
+	 *
 	 * @return the ViewManager
 	 */
 	public ViewManager getViewManager()
@@ -56,7 +57,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Instantiates a new Halcyon frame.
-	 * 
+	 *
 	 * @param pWindowTitle
 	 *          window title
 	 * @param pAppIconPath
@@ -81,7 +82,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Instantiates a new Halcyon frame.
-	 * 
+	 *
 	 * @param pWindowTitle
 	 *          window title
 	 * @param pWindowWidth
@@ -99,7 +100,7 @@ public class HalcyonFrame extends Application
 	/**
 	 * Instantiates a new Halcyon frame. the Halcyon window occupies the entire
 	 * screen.
-	 * 
+	 *
 	 * @param pWindowTitle
 	 *          window title
 	 */
@@ -112,7 +113,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Sets tree panel.
-	 * 
+	 *
 	 * @param pTreePanel
 	 *          the Tree Panel
 	 */
@@ -124,7 +125,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Add a Halcyon node.
-	 * 
+	 *
 	 * @param node
 	 *          the node
 	 */
@@ -135,7 +136,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Add a toolbar.
-	 * 
+	 *
 	 * @param toolbar
 	 *          the toolbar
 	 */
@@ -146,7 +147,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Add a console.
-	 * 
+	 *
 	 * @param console
 	 *          the console
 	 */
@@ -157,7 +158,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Starts JavaFX application.
-	 * 
+	 *
 	 * @param pPrimaryStage
 	 *          the p primary stage
 	 */
@@ -184,18 +185,13 @@ public class HalcyonFrame extends Application
 		Menu lToolbarMenu = new Menu("Toolbar");
 		Menu lConsoleMenu = new Menu("Console");
 
-		Menu lViewMenu = new Menu("View");
-		lViewMenu.getItems().addAll(lToolbarMenu, lConsoleMenu);
-
-
 		// Save preference menu item
 		MenuItem lSaveMenuItem = new MenuItem("Save");
 		lSaveMenuItem.setOnAction( new EventHandler< ActionEvent >()
 		{
 			@Override public void handle( ActionEvent event )
 			{
-				if ( dirExist( getUserDataDirectory( mWindowtitle ) ) )
-					lDockPane.storePreference( getUserDataDirectory( mWindowtitle ) + "layout.pref" );
+				lDockPane.storePreference( getUserDataDirectory( mWindowtitle ) + "layout.pref" );
 
 				// save the additional preferences for HalcyonOtherNode size/position
 				mViewManager.storeOtherNodePreference( getUserDataDirectory( mWindowtitle ) + "others.pref" );
@@ -216,10 +212,44 @@ public class HalcyonFrame extends Application
 			}
 		} );
 
-		Menu lFileMenu = new Menu("File");
-		lFileMenu.getItems().addAll( lSaveMenuItem, lRestoreMenuItem );
+		// Check the folder for Auto save/load layout file
+		dirExist( getUserDataDirectory( mWindowtitle ) );
 
-		MenuBar lMenuBar = new MenuBar(lFileMenu, lViewMenu);
+		String lAutoLayoutFile = getUserDataDirectory( mWindowtitle ) + ".auto";
+		CheckMenuItem lAutoLayoutMenuItem = new CheckMenuItem( "Auto" );
+
+		lAutoLayoutMenuItem.setOnAction( event -> {
+			if ( lAutoLayoutMenuItem.isSelected() )
+			{
+				// create auto file
+				try
+				{
+					new File( lAutoLayoutFile ).createNewFile();
+				}
+				catch ( IOException e )
+				{
+					System.err.println( e.toString() );
+					//e.printStackTrace();
+				}
+
+				mPrimaryStage.setOnCloseRequest( closeEvent -> lSaveMenuItem.fire() );
+			}
+			else
+			{
+				// delete the auto file
+				new File( lAutoLayoutFile ).delete();
+
+				mPrimaryStage.setOnCloseRequest( null );
+			}
+		} );
+
+		Menu lLayoutMenu = new Menu( "Layout" );
+		lLayoutMenu.getItems().addAll( lSaveMenuItem, lRestoreMenuItem, lAutoLayoutMenuItem );
+
+		Menu lViewMenu = new Menu( "View" );
+		lViewMenu.getItems().addAll( lToolbarMenu, lConsoleMenu, lLayoutMenu );
+
+		MenuBar lMenuBar = new MenuBar( lViewMenu );
 
 		mViewManager = new ViewManager(	lDockPane,
 																		mTreePanel,
@@ -242,6 +272,20 @@ public class HalcyonFrame extends Application
 		mPrimaryStage.show();
 
 		// System.out.println(lScene.getWindow());
+
+		// According to the file, enable the AutoLayoutMenuItem
+		if ( new File( lAutoLayoutFile ).exists() )
+		{
+			lAutoLayoutMenuItem.setSelected( true );
+
+			lRestoreMenuItem.fire();
+
+			mPrimaryStage.setOnCloseRequest( closeEvent -> lSaveMenuItem.fire() );
+		}
+		else
+		{
+			lAutoLayoutMenuItem.setSelected( false );
+		}
 
 		// test the look and feel with both Caspian and Modena
 		Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
@@ -298,7 +342,7 @@ public class HalcyonFrame extends Application
 
 	/**
 	 * Is visible boolean.
-	 * 
+	 *
 	 * @return the boolean
 	 */
 	public boolean isVisible()
