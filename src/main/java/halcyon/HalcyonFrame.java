@@ -194,11 +194,11 @@ public class HalcyonFrame extends Application
 		{
 			@Override public void handle( ActionEvent event )
 			{
-				if(dirExist(getUserDataDirectory()))
-					lDockPane.storePreference( getUserDataDirectory() + "layout.pref" );
+				if ( dirExist( getUserDataDirectory( mWindowtitle ) ) )
+					lDockPane.storePreference( getUserDataDirectory( mWindowtitle ) + "layout.pref" );
 
 				// save the additional preferences for HalcyonOtherNode size/position
-				mViewManager.storeOtherNodePreference( getUserDataDirectory() + "others.pref" );
+				mViewManager.storeOtherNodePreference( getUserDataDirectory( mWindowtitle ) + "others.pref" );
 			}
 		} );
 
@@ -208,15 +208,11 @@ public class HalcyonFrame extends Application
 		{
 			@Override public void handle( ActionEvent event )
 			{
-				lDockPane.loadPreference( getUserDataDirectory() + "layout.pref", new DelayOpenHandler() {
-                                  @Override
-                                  public DockNode open(String nodeName) {
-                                    return mViewManager.restore( mNodes.getNode(nodeName) );
-                                  }
-                                });
+				lDockPane.loadPreference( getUserDataDirectory( mWindowtitle ) + "layout.pref",
+						nodeName -> mViewManager.restore( mNodes.getNode( nodeName ) ) );
 
 				// load the additional preferences for HalcyonOtherNode size/position
-				mViewManager.loadOtherNodePreference( getUserDataDirectory() + "others.pref" );
+				mViewManager.loadOtherNodePreference( getUserDataDirectory( mWindowtitle ) + "others.pref" );
 			}
 		} );
 
@@ -310,8 +306,12 @@ public class HalcyonFrame extends Application
 		return mPrimaryStage == null ? false : mPrimaryStage.isShowing();
 	}
 
-	public static String getUserDataDirectory() {
-		return System.getProperty("user.home") + File.separator + ".halcyon" + File.separator + getApplicationVersionString() + File.separator;
+	public static String getUserDataDirectory( String appTitle )
+	{
+		if ( appTitle != null && !appTitle.isEmpty() )
+			return System.getProperty( "user.home" ) + File.separator + "." + appTitle + File.separator + getApplicationVersionString() + File.separator;
+		else
+			return System.getProperty( "user.home" ) + File.separator + ".halcyon" + File.separator + getApplicationVersionString() + File.separator;
 	}
 
 	public static String getApplicationVersionString() {
@@ -320,10 +320,6 @@ public class HalcyonFrame extends Application
 
 	public static boolean dirExist(String dir)
 	{
-		String path = getUserDataDirectory();
-		if(!new File(path).exists())
-			return new File(path).mkdirs();
-		else
-			return true;
+		return new File( dir ).exists() || new File( dir ).mkdirs();
 	}
 }
