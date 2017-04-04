@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import halcyon.demo.DemoHalcyonNodeType;
+import halcyon.model.node.*;
 import javafx.application.Platform;
 import org.dockfx.ContentHolder;
 import org.dockfx.DockNode;
@@ -24,10 +25,6 @@ import halcyon.model.collection.HalcyonNodeRepository;
 import halcyon.model.collection.HalcyonNodeRepositoryListener;
 import halcyon.model.collection.ObservableCollection;
 import halcyon.model.collection.ObservableCollectionListener;
-import halcyon.model.node.HalcyonGroupNode;
-import halcyon.model.node.HalcyonNode;
-import halcyon.model.node.HalcyonNodeInterface;
-import halcyon.model.node.HalcyonOtherNode;
 import halcyon.view.HalcyonPanel;
 import halcyon.view.TreePanel;
 import halcyon.view.console.StdOutputCaptureConsole;
@@ -80,7 +77,7 @@ public class ViewManager
 
 	/**
 	 * Instantiates a new ViewManager.
-	 * 
+	 *
 	 * @param pDockPane
 	 *          the DockPane
 	 * @param pTreePanel
@@ -268,7 +265,7 @@ public class ViewManager
 
 	/**
 	 * Gets the Halcyons.
-	 * 
+	 *
 	 * @return the nodes
 	 */
 	public HalcyonNodeRepository getNodes()
@@ -278,7 +275,7 @@ public class ViewManager
 
 	/**
 	 * Open the HalcyonNode.
-	 * 
+	 *
 	 * @param node
 	 *          the node
 	 */
@@ -290,7 +287,7 @@ public class ViewManager
 			return;
 		}
 
-		if (node instanceof HalcyonOtherNode)
+		if (node instanceof HalcyonOtherNode & !(node instanceof  HalcyonOtherNodeWithPanel))
 		{
 			// System.out.println("Other");
 			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
@@ -299,6 +296,14 @@ public class ViewManager
 			return;
 		}
 
+        if (node instanceof HalcyonOtherNodeWithPanel)
+        {
+            // System.out.println("Other");
+            HalcyonOtherNodeWithPanel lHalcyonExternalNode = (HalcyonOtherNodeWithPanel) node;
+            lHalcyonExternalNode.setVisible(true);
+            mHalcyonOtherNodes.add( lHalcyonExternalNode );
+
+        }
 		// If users want to focus the opened dock, then focus and return
 		for (final HalcyonPanel n : mPages)
 		{
@@ -339,7 +344,7 @@ public class ViewManager
 
 	/**
 	 * Restore the HalcyonNode.
-	 * 
+	 *
 	 * @param node
 	 *          the node
 	 */
@@ -374,7 +379,7 @@ public class ViewManager
 
 	/**
 	 * Hide the HalcyonNode.
-	 * 
+	 *
 	 * @param node
 	 *          the node
 	 */
@@ -398,14 +403,14 @@ public class ViewManager
 
 	/**
 	 * Close the HalcyonNode.
-	 * 
+	 *
 	 * @param node
 	 *          the node
 	 */
 	public void close(HalcyonNodeInterface node)
 	{
 
-		if (node instanceof HalcyonOtherNode)
+		if (node instanceof HalcyonOtherNode & !(node instanceof HalcyonOtherNodeWithPanel))
 		{
 			HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
 			// Close() makes the application hangs. Use setVisible(false) instead.
@@ -418,21 +423,33 @@ public class ViewManager
 		{
 			mExternalNodeMap.get(node).close();
 			mExternalNodeMap.remove(node);
-			return;
+//            System.out.println("external map contains key!");
+            return;
 		}
 
+        if (node instanceof HalcyonOtherNodeWithPanel)
+        {
+            HalcyonOtherNode lHalcyonExternalNode = (HalcyonOtherNode) node;
+            // Close() makes the application hangs. Use setVisible(false) instead.
+            // lHalcyonExternalNode.close();
+            lHalcyonExternalNode.setVisible(false);
+            mHalcyonOtherNodes.remove( lHalcyonExternalNode );
+            System.out.println("closing other node with panel");
+        }
 		for (final HalcyonPanel page : mPages.toArray(new HalcyonPanel[mPages.size()]))
 		{
 			if (page.getNode() == node)
 			{
 				page.close();
-			}
+                System.out.println("closing panel");
+            }
 		}
+
 	}
 
 	/**
 	 * Is visible or not.
-	 * 
+	 *
 	 * @return the boolean
 	 */
 	public boolean isVisible()
@@ -442,7 +459,7 @@ public class ViewManager
 
 	/**
 	 * Make an independent window.
-	 * 
+	 *
 	 * @param node
 	 *          the node
 	 */
