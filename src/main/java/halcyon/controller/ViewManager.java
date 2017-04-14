@@ -645,63 +645,70 @@ public class ViewManager
 
 		for(String key : map.keySet())
 		{
-			// Restore the position and size
-			ContentHolder node = map.get( key );
-
-			String title = node.getProperties().getProperty( "Title" );
-
-			if(node.getProperties().containsKey( "Stage" ))
-			{
-				// External Independent Node
-				HalcyonNodeInterface n;
-
-				if(node.getProperties().containsKey( "Grouping" ))
-				{
-					// Handling HalcyonGroupNode
-					HalcyonGroupNode.Grouping lGrouping = (HalcyonGroupNode.Grouping) node.getProperties().get( "Grouping" );
-					HashSet<String> lNodes = (HashSet<String>) node.getProperties().get( "Nodes" );
-
-					List< HalcyonNodeInterface > nodeList = new ArrayList< HalcyonNodeInterface >();
-					for(String nodeName : lNodes)
-						nodeList.add( mNodes.getNode( nodeName ) );
-
-					nodeList.stream().forEach( this::close );
-
-					n = new HalcyonGroupNode( "", DemoHalcyonNodeType.ONE,
-							lGrouping,
-							nodeList );
-				}
-				else
-				{
-					n = mNodes.getNode( title );
-				}
-
-				Double[] size = ( Double[] ) node.getProperties().get( "Size" );
-				Double[] position = ( Double[] ) node.getProperties().get( "Position" );
-
-				makeIndependentWindow( n );
-
-				mExternalNodeMap.get( n ).setWidth( size[0] );
-				mExternalNodeMap.get( n ).setHeight( size[1] );
-
-				mExternalNodeMap.get( n ).setX( position[0] );
-				mExternalNodeMap.get( n ).setY( position[1] );
-			}
-			else
-			{
-				// OtherNode case
-				HalcyonNodeInterface n = mNodes.getNode( title );
-
-				if ( null != n && n instanceof HalcyonOtherNode )
-				{
-					HalcyonOtherNode lOtherNode = ( HalcyonOtherNode ) n;
-					open( lOtherNode );
-					SwingUtilities.invokeLater( () -> {
-						lOtherNode.setSize( ( Integer[] ) node.getProperties().get( "Size" ) );
-						lOtherNode.setPosition( ( Integer[] ) node.getProperties().get( "Position" ) );
-					} );
-				}
-			}
+        restoreEntry(map, key);     
 		}
+
 	}
+
+  protected void restoreEntry(HashMap<String, ContentHolder> map,
+                              String key)
+  {
+    // Restore the position and size
+    ContentHolder node = map.get( key );
+
+    String title = node.getProperties().getProperty( "Title" );
+
+    if(node.getProperties().containsKey( "Stage" ))
+    {
+    	// External Independent Node
+    	HalcyonNodeInterface n;
+
+    	if(node.getProperties().containsKey( "Grouping" ))
+    	{
+    		// Handling HalcyonGroupNode
+    		HalcyonGroupNode.Grouping lGrouping = (HalcyonGroupNode.Grouping) node.getProperties().get( "Grouping" );
+    		HashSet<String> lNodes = (HashSet<String>) node.getProperties().get( "Nodes" );
+
+    		List< HalcyonNodeInterface > nodeList = new ArrayList< HalcyonNodeInterface >();
+    		for(String nodeName : lNodes)
+    			nodeList.add( mNodes.getNode( nodeName ) );
+
+    		nodeList.stream().forEach( this::close );
+
+    		n = new HalcyonGroupNode( "", DemoHalcyonNodeType.ONE,
+    				lGrouping,
+    				nodeList );
+    	}
+    	else
+    	{
+    		n = mNodes.getNode( title );
+    	}
+
+    	Double[] size = ( Double[] ) node.getProperties().get( "Size" );
+    	Double[] position = ( Double[] ) node.getProperties().get( "Position" );
+
+    	makeIndependentWindow( n );
+
+    	mExternalNodeMap.get( n ).setWidth( size[0] );
+    	mExternalNodeMap.get( n ).setHeight( size[1] );
+
+    	mExternalNodeMap.get( n ).setX( position[0] );
+    	mExternalNodeMap.get( n ).setY( position[1] );
+    }
+    else
+    {
+    	// OtherNode case
+    	HalcyonNodeInterface n = mNodes.getNode( title );
+
+    	if ( null != n && n instanceof HalcyonOtherNode )
+    	{
+    		HalcyonOtherNode lOtherNode = ( HalcyonOtherNode ) n;
+    		open( lOtherNode );
+    		SwingUtilities.invokeLater( () -> {
+    			lOtherNode.setSize( ( Integer[] ) node.getProperties().get( "Size" ) );
+    			lOtherNode.setPosition( ( Integer[] ) node.getProperties().get( "Position" ) );
+    		} );
+    	}
+    }
+  }
 }
