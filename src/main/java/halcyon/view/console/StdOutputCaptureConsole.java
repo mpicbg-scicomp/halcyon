@@ -25,10 +25,10 @@ public class StdOutputCaptureConsole extends DockNode
 
 		consolePane = (ConsolePane) getContents();
 
-		System.setOut(new PrintStream(new StreamAppender(	"StdOut",
+		System.setOut(new PrintStream(new StreamAppender(	" ",
 																											consolePane.getConsolePanel(),
 																											System.out)));
-		System.setErr(new PrintStream(new StreamAppender(	"StdErr",
+		System.setErr(new PrintStream(new StreamAppender(	"!",
 																											consolePane.getConsolePanel(),
 																											System.err)));
 	}
@@ -55,7 +55,7 @@ public class StdOutputCaptureConsole extends DockNode
 		{
 			this.prefix = prefix;
 			buffer = new StringBuilder(128);
-			buffer.append("[").append(prefix).append("] ");
+			buffer.append(prefix);
 			this.old = old;
 			this.textAppender = consumer;
 		}
@@ -75,7 +75,7 @@ public class StdOutputCaptureConsole extends DockNode
 			{
 				textAppender.appendText(buffer.toString());
 				buffer.delete(0, buffer.length());
-				buffer.append("[").append(prefix).append("] ");
+				buffer.append(prefix);
 			}
 			old.print(c);
 		}
