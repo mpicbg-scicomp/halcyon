@@ -1,9 +1,7 @@
 package halcyon;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.MenuItem;
+import java.io.File;
+import java.io.IOException;
 
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
@@ -15,15 +13,16 @@ import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * FxFrame support JavaFX based on docking framework.
@@ -372,7 +371,8 @@ public class HalcyonFrame extends Application
   {
     if (appTitle != null && !appTitle.isEmpty())
       return System.getProperty("user.home") + File.separator
-             + "."
+             + ".halcyon"
+             + File.separator
              + appTitle
              + File.separator
              + getApplicationVersionString()
