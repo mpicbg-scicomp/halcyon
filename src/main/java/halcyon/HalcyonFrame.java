@@ -265,7 +265,7 @@ public class HalcyonFrame extends Application
                                 lConsoleMenu,
                                 lLayoutMenu);
 
-    MenuBar lMenuBar = new MenuBar(lViewMenu);
+	  MenuBar lMenuBar = new MenuBar( lToolbarMenu, lConsoleMenu, lLayoutMenu );
 
     mViewManager = new ViewManager(lDockPane,
                                    mTreePanel,
