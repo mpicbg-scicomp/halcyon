@@ -266,8 +266,8 @@ public class TreePanel extends DockNode
                                                             .build(),
 
                                              MenuItemBuilder.create()
-                                                            .text("open (V) grouped panel")
-                                                            .onAction(new EventHandler<ActionEvent>()
+													 .text( "open vertically grouped panel" )
+													 .onAction(new EventHandler<ActionEvent>()
                                                             {
                                                               @Override
                                                               public void handle(ActionEvent arg0)
@@ -310,8 +310,8 @@ public class TreePanel extends DockNode
                                                             .build(),
 
                                              MenuItemBuilder.create()
-                                                            .text("open (H) grouped panel")
-                                                            .onAction(new EventHandler<ActionEvent>()
+													 .text( "open horizontally grouped panel" )
+													 .onAction(new EventHandler<ActionEvent>()
                                                             {
                                                               @Override
                                                               public void handle(ActionEvent arg0)
