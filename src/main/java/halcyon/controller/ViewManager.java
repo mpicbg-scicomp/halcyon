@@ -369,6 +369,8 @@ public class ViewManager
 			page.dock(mDockPane, DockPos.TOP, mStdOutputCaptureConsole);
 		}
 
+		mPages.add(page);
+
 		return page;
 	}
 
