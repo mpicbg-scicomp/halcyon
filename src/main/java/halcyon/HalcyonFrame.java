@@ -178,6 +178,9 @@ public class HalcyonFrame extends Application
 
   }
 
+  double initX;
+  double initY;
+
   private void internalStart(Stage pPrimaryStage)
   {
     mPrimaryStage = pPrimaryStage;
@@ -255,17 +258,37 @@ public class HalcyonFrame extends Application
       }
     });
 
+	// Reset menu item
+	MenuItem lResetMenuItem = new MenuItem("Reset");
+	lResetMenuItem.setOnAction(new EventHandler<ActionEvent>()
+	{
+	  @Override
+	  public void handle(ActionEvent event)
+	  {
+        // Reset the layout of the view
+        mPrimaryStage.sizeToScene();
+        mPrimaryStage.setX( initX );
+        mPrimaryStage.setY( initY );
+
+        for(int i = 0; i < mNodes.getNodeCount(); i++)
+        {
+          mViewManager.close( mNodes.getNode( i ) );
+        }
+	  }
+	});
+
     Menu lLayoutMenu = new Menu("Layout");
     lLayoutMenu.getItems().addAll(lSaveMenuItem,
                                   lRestoreMenuItem,
-                                  lAutoLayoutMenuItem);
+                                  lAutoLayoutMenuItem,
+			                      lResetMenuItem);
 
     Menu lViewMenu = new Menu("View");
     lViewMenu.getItems().addAll(lToolbarMenu,
                                 lConsoleMenu,
                                 lLayoutMenu);
 
-	  MenuBar lMenuBar = new MenuBar( lToolbarMenu, lConsoleMenu, lLayoutMenu );
+    MenuBar lMenuBar = new MenuBar( lToolbarMenu, lConsoleMenu, lLayoutMenu );
 
     mViewManager = new ViewManager(lDockPane,
                                    mTreePanel,
@@ -288,6 +311,8 @@ public class HalcyonFrame extends Application
 
     mPrimaryStage.show();
 
+    initX = mPrimaryStage.getX();
+    initY = mPrimaryStage.getY();
     // System.out.println(lScene.getWindow());
 
     // According to the file, enable the AutoLayoutMenuItem
