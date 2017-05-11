@@ -626,6 +626,10 @@ public class ViewManager
       otherNode.addProperty("Size", n.getSize());
       otherNode.addProperty("Position", n.getPosition());
 
+      System.out.println( "HalcyonOtherNode : " + n.getName() );
+      System.out.println( n.getSize()[0] + ", " +  n.getSize()[1]);
+      System.out.println( n.getPosition()[0] + ", " + n.getPosition()[1] );
+
       map.put(n.getName(), otherNode);
     }
 
@@ -651,6 +655,11 @@ public class ViewManager
         groupNode.addProperty("Position", new Double[]
         { mExternalNodeMap.get(n).getX(),
           mExternalNodeMap.get(n).getY() });
+
+        System.out.println("HalcyonGroupNode : " + n.getName() );
+        System.out.println( mExternalNodeMap.get(n).getWidth() + ", " + mExternalNodeMap.get(n).getHeight() );
+        System.out.println( mExternalNodeMap.get(n).getX() + ", " + mExternalNodeMap.get(n).getY() );
+
         map.put(n.getName(), groupNode);
       }
       else
@@ -668,6 +677,11 @@ public class ViewManager
         externalNode.addProperty("Position", new Double[]
         { mExternalNodeMap.get(n).getX(),
           mExternalNodeMap.get(n).getY() });
+
+        System.out.println("HalcyonExternalNode : " + n.getName() );
+        System.out.println( mExternalNodeMap.get(n).getWidth() + ", " + mExternalNodeMap.get(n).getHeight() );
+        System.out.println( mExternalNodeMap.get(n).getX() + ", " + mExternalNodeMap.get(n).getY() );
+
         map.put(n.getName(), externalNode);
       }
     }
@@ -744,6 +758,10 @@ public class ViewManager
 
       mExternalNodeMap.get(n).setX(position[0]);
       mExternalNodeMap.get(n).setY(position[1]);
+
+      System.out.println("HalcyonExternalNode : " + n.getName() );
+      System.out.println( mExternalNodeMap.get(n).getWidth() + ", " + mExternalNodeMap.get(n).getHeight() );
+      System.out.println( mExternalNodeMap.get(n).getX() + ", " + mExternalNodeMap.get(n).getY() );
     }
     else
     {
