@@ -541,6 +541,8 @@ public class ViewManager
                                      }
                                    }
                                  });
+
+        lStage.setTitle( ((HalcyonGroupNode) node).getTitle() );
       }
 
       lStage.setOnCloseRequest(new EventHandler<WindowEvent>()
