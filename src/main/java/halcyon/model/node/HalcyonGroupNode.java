@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -17,6 +18,8 @@ public class HalcyonGroupNode extends HalcyonNodeBase implements HalcyonNodeInte
 	public enum Grouping { Vertical, Horizontal }
 
 	private final Pane mPane;
+
+	private final ScrollPane mScrollPane;
 
 	private ObservableList<Node> mList;
 
@@ -35,15 +38,20 @@ public class HalcyonGroupNode extends HalcyonNodeBase implements HalcyonNodeInte
 		if(mGrouping == Grouping.Horizontal)
 		{
 			mPane = new HBox();
+			mScrollPane = new ScrollPane();
+			mScrollPane.setContent(mPane);
 		}
 		else if(mGrouping == Grouping.Vertical)
 		{
 			mPane = new VBox();
+			mScrollPane = new ScrollPane();
+			mScrollPane.setContent(mPane);
 		}
 		else
 		{
 			System.err.println( "Grouping method is not specified." );
 			mPane = null;
+			mScrollPane = null;
 		}
 
 		if(mPane != null)
@@ -60,7 +68,7 @@ public class HalcyonGroupNode extends HalcyonNodeBase implements HalcyonNodeInte
 
 	@Override public Node getPanel()
 	{
-		return mPane;
+		return mScrollPane;
 	}
 
 	public void removeNode( HalcyonNodeInterface node )
