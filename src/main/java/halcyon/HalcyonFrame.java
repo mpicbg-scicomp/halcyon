@@ -2,15 +2,6 @@ package halcyon;
 
 import java.io.File;
 import java.io.IOException;
-
-import org.dockfx.DockNode;
-import org.dockfx.DockPane;
-
-import halcyon.controller.ViewManager;
-import halcyon.model.collection.HalcyonNodeRepository;
-import halcyon.model.collection.ObservableCollection;
-import halcyon.model.node.HalcyonNodeInterface;
-import halcyon.view.TreePanel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -23,6 +14,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import halcyon.controller.ViewManager;
+import halcyon.model.collection.HalcyonNodeRepository;
+import halcyon.model.collection.ObservableCollection;
+import halcyon.model.node.HalcyonNodeInterface;
+import halcyon.view.TreePanel;
+
+import org.dockfx.DockNode;
+import org.dockfx.DockPane;
 
 /**
  * FxFrame support JavaFX based on docking framework.
@@ -258,37 +258,39 @@ public class HalcyonFrame extends Application
       }
     });
 
-	// Reset menu item
-	MenuItem lResetMenuItem = new MenuItem("Reset");
-	lResetMenuItem.setOnAction(new EventHandler<ActionEvent>()
-	{
-	  @Override
-	  public void handle(ActionEvent event)
-	  {
+    // Reset menu item
+    MenuItem lResetMenuItem = new MenuItem("Reset");
+    lResetMenuItem.setOnAction(new EventHandler<ActionEvent>()
+    {
+      @Override
+      public void handle(ActionEvent event)
+      {
         // Reset the layout of the view
         mPrimaryStage.sizeToScene();
-        mPrimaryStage.setX( initX );
-        mPrimaryStage.setY( initY );
+        mPrimaryStage.setX(initX);
+        mPrimaryStage.setY(initY);
 
-        for(int i = 0; i < mNodes.getNodeCount(); i++)
+        for (int i = 0; i < mNodes.getNodeCount(); i++)
         {
-          mViewManager.close( mNodes.getNode( i ) );
+          mViewManager.close(mNodes.getNode(i));
         }
-	  }
-	});
+      }
+    });
 
     Menu lLayoutMenu = new Menu("Layout");
     lLayoutMenu.getItems().addAll(lSaveMenuItem,
                                   lRestoreMenuItem,
                                   lAutoLayoutMenuItem,
-			                      lResetMenuItem);
+                                  lResetMenuItem);
 
     Menu lViewMenu = new Menu("View");
     lViewMenu.getItems().addAll(lToolbarMenu,
                                 lConsoleMenu,
                                 lLayoutMenu);
 
-    MenuBar lMenuBar = new MenuBar( lToolbarMenu, lConsoleMenu, lLayoutMenu );
+    MenuBar lMenuBar = new MenuBar(lToolbarMenu,
+                                   lConsoleMenu,
+                                   lLayoutMenu);
 
     mViewManager = new ViewManager(lDockPane,
                                    mTreePanel,

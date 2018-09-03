@@ -5,17 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-
-import org.dockfx.DockNode;
-
-import halcyon.controller.ViewManager;
-import halcyon.demo.DemoHalcyonNodeType;
-import halcyon.model.collection.HalcyonNodeRepository;
-import halcyon.model.collection.HalcyonNodeRepositoryListener;
-import halcyon.model.node.HalcyonGroupNode;
-import halcyon.model.node.HalcyonNode;
-import halcyon.model.node.HalcyonNodeInterface;
-import halcyon.model.node.HalcyonNodeType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -28,6 +17,17 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.VBox;
+
+import halcyon.controller.ViewManager;
+import halcyon.demo.DemoHalcyonNodeType;
+import halcyon.model.collection.HalcyonNodeRepository;
+import halcyon.model.collection.HalcyonNodeRepositoryListener;
+import halcyon.model.node.HalcyonGroupNode;
+import halcyon.model.node.HalcyonNode;
+import halcyon.model.node.HalcyonNodeInterface;
+import halcyon.model.node.HalcyonNodeType;
+
+import org.dockfx.DockNode;
 
 /**
  * TreePanel contains multiple HalcyonNodes for making HalcyonPanel
@@ -266,8 +266,8 @@ public class TreePanel extends DockNode
                                                             .build(),
 
                                              MenuItemBuilder.create()
-													 .text( "open vertically grouped panel" )
-													 .onAction(new EventHandler<ActionEvent>()
+                                                            .text("open vertically grouped panel")
+                                                            .onAction(new EventHandler<ActionEvent>()
                                                             {
                                                               @Override
                                                               public void handle(ActionEvent arg0)
@@ -310,8 +310,8 @@ public class TreePanel extends DockNode
                                                             .build(),
 
                                              MenuItemBuilder.create()
-													 .text( "open horizontally grouped panel" )
-													 .onAction(new EventHandler<ActionEvent>()
+                                                            .text("open horizontally grouped panel")
+                                                            .onAction(new EventHandler<ActionEvent>()
                                                             {
                                                               @Override
                                                               public void handle(ActionEvent arg0)
@@ -353,48 +353,48 @@ public class TreePanel extends DockNode
                                                             })
                                                             .build(),
                                              MenuItemBuilder.create()
-                                                      .text( "open tab grouped panel" )
-                                                      .onAction(new EventHandler<ActionEvent>()
-                                                      {
-                                                        @Override
-                                                        public void handle(ActionEvent arg0)
-                                                        {
-                                                          ObservableList<TreeItem<TreeNode>> list =
-                                                                  tree.getSelectionModel()
-                                                                          .getSelectedItems();
+                                                            .text("open tab grouped panel")
+                                                            .onAction(new EventHandler<ActionEvent>()
+                                                            {
+                                                              @Override
+                                                              public void handle(ActionEvent arg0)
+                                                              {
+                                                                ObservableList<TreeItem<TreeNode>> list =
+                                                                                                        tree.getSelectionModel()
+                                                                                                            .getSelectedItems();
 
-                                                          List<HalcyonNodeInterface> nodeList =
-                                                                  new ArrayList<HalcyonNodeInterface>();
+                                                                List<HalcyonNodeInterface> nodeList =
+                                                                                                    new ArrayList<HalcyonNodeInterface>();
 
-                                                          list.stream()
-                                                                  .forEach(c -> {
-                                                                    if (!c.getValue()
+                                                                list.stream()
+                                                                    .forEach(c -> {
+                                                                      if (!c.getValue()
                                                                             .equals(tree.getRoot()))
-                                                                    {
-                                                                      if (c.getValue()
-                                                                              .getNode() == null)
-                                                                        c.getChildren()
-                                                                                .forEach(t -> nodeList.add(t.getValue()
-                                                                                        .getNode()));
-                                                                      else
-                                                                        nodeList.add(c.getValue()
-                                                                                .getNode());
-                                                                    }
-                                                                  });
+                                                                      {
+                                                                        if (c.getValue()
+                                                                             .getNode() == null)
+                                                                          c.getChildren()
+                                                                           .forEach(t -> nodeList.add(t.getValue()
+                                                                                                       .getNode()));
+                                                                        else
+                                                                          nodeList.add(c.getValue()
+                                                                                        .getNode());
+                                                                      }
+                                                                    });
 
-                                                          nodeList.stream()
-                                                                  .forEach(viewManager::close);
+                                                                nodeList.stream()
+                                                                        .forEach(viewManager::close);
 
-                                                          HalcyonGroupNode lHalcyonGroupNode =
-                                                                  new HalcyonGroupNode("",
-                                                                          DemoHalcyonNodeType.ONE,
-                                                                          HalcyonGroupNode.Grouping.Tab,
-                                                                          nodeList);
+                                                                HalcyonGroupNode lHalcyonGroupNode =
+                                                                                                   new HalcyonGroupNode("",
+                                                                                                                        DemoHalcyonNodeType.ONE,
+                                                                                                                        HalcyonGroupNode.Grouping.Tab,
+                                                                                                                        nodeList);
 
-                                                          viewManager.makeIndependentWindow(lHalcyonGroupNode);
-                                                        }
-                                                      })
-                                                      .build(),
+                                                                viewManager.makeIndependentWindow(lHalcyonGroupNode);
+                                                              }
+                                                            })
+                                                            .build(),
 
                                              MenuItemBuilder.create()
                                                             .text("close")

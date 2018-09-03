@@ -8,19 +8,21 @@ import javafx.stage.Stage;
  */
 public interface RunnableFX
 {
-	/**
-	 * Initiates RunnableFX application.
-	 */
-	public void init();
+  /**
+   * Initiates RunnableFX application.
+   */
+  public void init();
 
-	/**
-	 * Starts the RunnableFX application.
-	 * @param stage the stage
-	 */
-	public void start(Stage stage);
+  /**
+   * Starts the RunnableFX application.
+   * 
+   * @param stage
+   *          the stage
+   */
+  public void start(Stage stage);
 
-	/**
-	 * Stops the RunnableFX application.
-	 */
-	public void stop();
+  /**
+   * Stops the RunnableFX application.
+   */
+  public void stop();
 }

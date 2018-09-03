@@ -5,8 +5,8 @@ package halcyon.model.node;
  */
 public interface HalcyonNodeListener
 {
-	/**
-	 * Called when the observed Halcyon node has changed.
-	 */
-	public void nodeChanged();
+  /**
+   * Called when the observed Halcyon node has changed.
+   */
+  public void nodeChanged();
 }

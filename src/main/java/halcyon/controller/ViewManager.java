@@ -12,26 +12,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.SwingUtilities;
-
-import org.dockfx.ContentHolder;
-import org.dockfx.DockNode;
-import org.dockfx.DockPane;
-import org.dockfx.DockPos;
-
-import halcyon.demo.DemoHalcyonNodeType;
-import halcyon.model.collection.HalcyonNodeRepository;
-import halcyon.model.collection.HalcyonNodeRepositoryListener;
-import halcyon.model.collection.ObservableCollection;
-import halcyon.model.collection.ObservableCollectionListener;
-import halcyon.model.node.HalcyonGroupNode;
-import halcyon.model.node.HalcyonNode;
-import halcyon.model.node.HalcyonNodeInterface;
-import halcyon.model.node.HalcyonOtherNode;
-import halcyon.view.HalcyonPanel;
-import halcyon.view.TreePanel;
-import halcyon.view.console.StdOutputCaptureConsole;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -46,6 +26,26 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import javax.swing.SwingUtilities;
+
+import halcyon.demo.DemoHalcyonNodeType;
+import halcyon.model.collection.HalcyonNodeRepository;
+import halcyon.model.collection.HalcyonNodeRepositoryListener;
+import halcyon.model.collection.ObservableCollection;
+import halcyon.model.collection.ObservableCollectionListener;
+import halcyon.model.node.HalcyonGroupNode;
+import halcyon.model.node.HalcyonNode;
+import halcyon.model.node.HalcyonNodeInterface;
+import halcyon.model.node.HalcyonOtherNode;
+import halcyon.view.HalcyonPanel;
+import halcyon.view.TreePanel;
+import halcyon.view.console.StdOutputCaptureConsole;
+
+import org.dockfx.ContentHolder;
+import org.dockfx.DockNode;
+import org.dockfx.DockPane;
+import org.dockfx.DockPos;
 
 /**
  * ViewManager is a controller class to manage HalcyonNodes and GUI.
@@ -542,7 +542,7 @@ public class ViewManager
                                    }
                                  });
 
-        lStage.setTitle( ((HalcyonGroupNode) node).getTitle() );
+        lStage.setTitle(((HalcyonGroupNode) node).getTitle());
       }
 
       lStage.setOnCloseRequest(new EventHandler<WindowEvent>()
@@ -634,31 +634,33 @@ public class ViewManager
     for (HalcyonNodeInterface n : mExternalNodeMap.keySet())
     {
       ContentHolder halcyonNode =
-              new ContentHolder(n.getName(),
-                      ContentHolder.Type.FloatingNode);
+                                new ContentHolder(n.getName(),
+                                                  ContentHolder.Type.FloatingNode);
 
-      if( mExternalNodeMap.get(n).isIconified() )
+      if (mExternalNodeMap.get(n).isIconified())
       {
-        mExternalNodeMap.get( n ).hide();
-        mExternalNodeMap.get( n ).setIconified( false );
+        mExternalNodeMap.get(n).hide();
+        mExternalNodeMap.get(n).setIconified(false);
       }
 
       halcyonNode.addProperty("Stage",
-              mExternalNodeMap.get(n).getTitle());
+                              mExternalNodeMap.get(n).getTitle());
 
       if (n instanceof HalcyonGroupNode)
       {
-        halcyonNode.addProperty( "Grouping",
-                ( ( HalcyonGroupNode ) n ).getGrouping() );
-        halcyonNode.addProperty( "Nodes",
-                ( ( HalcyonGroupNode ) n ).getNodeNames() );
+        halcyonNode.addProperty("Grouping",
+                                ((HalcyonGroupNode) n).getGrouping());
+        halcyonNode.addProperty("Nodes",
+                                ((HalcyonGroupNode) n).getNodeNames());
       }
 
       halcyonNode.addProperty("Title", n.getName());
       halcyonNode.addProperty("Size", new Double[]
-              { mExternalNodeMap.get(n).getWidth(), mExternalNodeMap.get(n).getHeight() });
+      { mExternalNodeMap.get(n).getWidth(),
+        mExternalNodeMap.get(n).getHeight() });
       halcyonNode.addProperty("Position", new Double[]
-                { mExternalNodeMap.get(n).getX(), mExternalNodeMap.get(n).getY() });
+      { mExternalNodeMap.get(n).getX(),
+        mExternalNodeMap.get(n).getY() });
 
       map.put(n.getName(), halcyonNode);
     }
@@ -739,12 +741,12 @@ public class ViewManager
 
       mExternalNodeMap.get(n).setX(position[0]);
       mExternalNodeMap.get(n).setY(position[1]);
-//
-//      System.out.println("HalcyonExternalNode : " + n.getName());
-//      System.out.println(mExternalNodeMap.get(n).getWidth() + ", "
-//                         + mExternalNodeMap.get(n).getHeight());
-//      System.out.println(mExternalNodeMap.get(n).getX() + ", "
-//                         + mExternalNodeMap.get(n).getY());
+      //
+      // System.out.println("HalcyonExternalNode : " + n.getName());
+      // System.out.println(mExternalNodeMap.get(n).getWidth() + ", "
+      // + mExternalNodeMap.get(n).getHeight());
+      // System.out.println(mExternalNodeMap.get(n).getX() + ", "
+      // + mExternalNodeMap.get(n).getY());
     }
     else
     {

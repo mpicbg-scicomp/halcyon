@@ -4,11 +4,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
-
-import halcyon.view.console.TextAppender;
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+
+import halcyon.view.console.TextAppender;
 
 /**
  * ConsolePane for Standard Output and Standard Error messages.

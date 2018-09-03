@@ -5,9 +5,11 @@ package halcyon.view.console;
  */
 public interface TextAppender
 {
-	/**
-	 * Append text.
-	 * @param text the text
-	 */
-	public void appendText(String text);
+  /**
+   * Append text.
+   * 
+   * @param text
+   *          the text
+   */
+  public void appendText(String text);
 }
