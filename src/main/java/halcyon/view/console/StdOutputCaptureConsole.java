@@ -1,8 +1,8 @@
 package halcyon.view.console;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 import halcyon.view.ConsolePane;
 
@@ -13,78 +13,71 @@ import org.dockfx.DockNode;
  */
 public class StdOutputCaptureConsole extends DockNode
 {
-  private final ConsolePane consolePane;
+	private final ConsolePane consolePane;
 
-  /**
-   * Instantiates a new Standard output/error capture console.
-   */
-  public StdOutputCaptureConsole()
-  {
-    super(new ConsolePane());
-    setTitle("Console");
+	/**
+	 * Instantiates a new Standard output/error capture console.
+	 */
+	public StdOutputCaptureConsole()
+	{
+		super( new ConsolePane() );
+		setTitle( "Console" );
 
-    consolePane = (ConsolePane) getContents();
+		consolePane = ( ConsolePane ) getContents();
 
-    System.setOut(new PrintStream(new StreamAppender(" ",
-                                                     consolePane.getConsolePanel(),
-                                                     System.out)));
-    System.setErr(new PrintStream(new StreamAppender("!",
-                                                     consolePane.getConsolePanel(),
-                                                     System.err)));
-  }
+		try
+		{
+			System.setOut( new StreamAppender( "INFO", consolePane, System.out ) );
+			System.setErr( new StreamAppender( "WARN", consolePane, System.err ) );
+		}
+		catch ( UnsupportedEncodingException e )
+		{
+			e.printStackTrace();
+		}
+	}
 
-  /**
-   * The Stream appender for output stream.
-   */
-  public class StreamAppender extends OutputStream
-  {
-    private StringBuilder buffer;
-    private String prefix;
-    private TextAppender textAppender;
-    private PrintStream old;
+	/**
+	 * The Stream appender for output stream.
+	 */
+	public class StreamAppender extends PrintStream
+	{
+		final private StringBuilder buffer;
+		final private String prefix;
+		final private TextAppender textAppender;
 
-    /**
-     * Instantiates a new Stream appender.
-     * 
-     * @param prefix
-     *          the prefix
-     * @param consumer
-     *          the consumer
-     * @param old
-     *          the old
-     */
-    public StreamAppender(String prefix,
-                          TextAppender consumer,
-                          PrintStream old)
-    {
-      this.prefix = prefix;
-      buffer = new StringBuilder(128);
-      buffer.append(prefix);
-      this.old = old;
-      this.textAppender = consumer;
-    }
+		StreamAppender( String prefix, TextAppender consumer, PrintStream old ) throws UnsupportedEncodingException
+		{
+			super( old, true, "UTF-8" );
 
-    /**
-     * Write b.
-     * 
-     * @param b
-     *          the b
-     * @throws IOException
-     *           the io exception
-     */
-    @Override
-    public void write(int b) throws IOException
-    {
-      char c = (char) b;
-      String value = Character.toString(c);
-      buffer.append(value);
-      if (value.equals("\n"))
-      {
-        textAppender.appendText(buffer.toString());
-        buffer.delete(0, buffer.length());
-        buffer.append(prefix);
-      }
-      old.print(c);
-    }
-  }
+			this.prefix = prefix;
+			this.buffer = new StringBuilder( 128 );
+			buffer.append( "[" ).append( prefix ).append( "] " );
+			this.textAppender = consumer;
+		}
+
+		@Override
+		public void write( byte buf[], int off, int len )
+		{
+			try
+			{
+				String string = new String( buf, off, len );
+				buffer.append( string );
+
+				if ( string.endsWith( System.lineSeparator() ) )
+				{
+					String outString = buffer.toString();
+					textAppender.appendText( outString );
+
+					buffer.delete( 0, buffer.length() );
+					buffer.append( "[" ).append( prefix ).append( "] " );
+				}
+
+				out.write( buf, off, len );
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+			}
+		}
+	}
 }

@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
@@ -21,6 +24,7 @@ import halcyon.model.collection.ObservableCollection;
 import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.view.TreePanel;
 
+import javafx.stage.WindowEvent;
 import org.dockfx.DockNode;
 import org.dockfx.DockPane;
 
@@ -44,7 +48,7 @@ public class HalcyonFrame extends Application
 
   private ViewManager mViewManager;
 
-  private Stage mPrimaryStage;
+  protected Stage mPrimaryStage;
 
   /**
    * Gets the ViewManager.
@@ -178,171 +182,215 @@ public class HalcyonFrame extends Application
 
   }
 
-  double initX;
-  double initY;
+  protected double initX;
+  protected double initY;
 
-  private void internalStart(Stage pPrimaryStage)
+  protected BorderPane createHalcyonFrame(Stage pPrimaryStage)
   {
-    mPrimaryStage = pPrimaryStage;
+	  mPrimaryStage = pPrimaryStage;
 
-    String lLayoutFile = getUserDataDirectory(mWindowtitle)
-                         + "layout.pref";
-    String lOtherLayoutFile = getUserDataDirectory(mWindowtitle)
-                              + "others.pref";
+	  String lLayoutFile = getUserDataDirectory(mWindowtitle)
+			  + "layout.pref";
+	  String lOtherLayoutFile = getUserDataDirectory(mWindowtitle)
+			  + "others.pref";
 
-    // create a dock pane that will manage our dock mNodes and handle the layout
-    DockPane lDockPane = new DockPane();
+	  // create a dock pane that will manage our dock mNodes and handle the layout
+	  DockPane lDockPane = new DockPane();
 
-    Menu lToolbarMenu = new Menu("Toolbar");
-    Menu lConsoleMenu = new Menu("Console");
+	  Menu lToolbarMenu = new Menu("Toolbar");
+	  Menu lConsoleMenu = new Menu("Console");
 
-    // Save preference menu item
-    MenuItem lSaveMenuItem = new MenuItem("Save");
-    lSaveMenuItem.setOnAction(new EventHandler<ActionEvent>()
-    {
-      @Override
-      public void handle(ActionEvent event)
-      {
+	  // Save preference menu item
+	  MenuItem lSaveMenuItem = new MenuItem("Save");
+	  lSaveMenuItem.setOnAction(new EventHandler<ActionEvent>()
+	  {
+		  @Override
+		  public void handle(ActionEvent event)
+		  {
+			  lDockPane.storePreference(lLayoutFile);
 
-        lDockPane.storePreference(lLayoutFile);
+			  // save the additional preferences for HalcyonOtherNode size/position
+			  mViewManager.storeOtherNodePreference(lOtherLayoutFile);
+		  }
+	  });
 
-        // save the additional preferences for HalcyonOtherNode size/position
-        mViewManager.storeOtherNodePreference(lOtherLayoutFile);
-      }
-    });
+	  // Restore preference menu item
+	  MenuItem lRestoreMenuItem = new MenuItem("Restore");
+	  lRestoreMenuItem.setOnAction(new EventHandler<ActionEvent>()
+	  {
+		  @Override
+		  public void handle(ActionEvent event)
+		  {
+			  lDockPane.loadPreference(lLayoutFile,
+					  nodeName -> mViewManager.restore(mNodes.getNode(nodeName)));
 
-    // Restore preference menu item
-    MenuItem lRestoreMenuItem = new MenuItem("Restore");
-    lRestoreMenuItem.setOnAction(new EventHandler<ActionEvent>()
-    {
-      @Override
-      public void handle(ActionEvent event)
-      {
-        lDockPane.loadPreference(lLayoutFile,
-                                 nodeName -> mViewManager.restore(mNodes.getNode(nodeName)));
+			  // load the additional preferences for HalcyonOtherNode size/position
+			  mViewManager.loadOtherNodePreference(lOtherLayoutFile);
+		  }
+	  });
 
-        // load the additional preferences for HalcyonOtherNode size/position
-        mViewManager.loadOtherNodePreference(lOtherLayoutFile);
-      }
-    });
+	  // Check the folder for Auto save/load layout file
+	  dirExist(getUserDataDirectory(mWindowtitle));
 
-    // Check the folder for Auto save/load layout file
-    dirExist(getUserDataDirectory(mWindowtitle));
+	  String lAutoLayoutFile = getUserDataDirectory(mWindowtitle)
+			  + ".auto";
+	  CheckMenuItem lAutoLayoutMenuItem = new CheckMenuItem("Auto");
 
-    String lAutoLayoutFile = getUserDataDirectory(mWindowtitle)
-                             + ".auto";
-    CheckMenuItem lAutoLayoutMenuItem = new CheckMenuItem("Auto");
+	  lAutoLayoutMenuItem.setOnAction(event -> {
+		  if (lAutoLayoutMenuItem.isSelected())
+		  {
+			  // create auto file
+			  try
+			  {
+				  new File(lAutoLayoutFile).createNewFile();
+			  }
+			  catch (IOException e)
+			  {
+				  System.err.println(e.toString());
+				  // e.printStackTrace();
+			  }
 
-    lAutoLayoutMenuItem.setOnAction(event -> {
-      if (lAutoLayoutMenuItem.isSelected())
-      {
-        // create auto file
-        try
-        {
-          new File(lAutoLayoutFile).createNewFile();
-        }
-        catch (IOException e)
-        {
-          System.err.println(e.toString());
-          // e.printStackTrace();
-        }
+			  mPrimaryStage.setOnCloseRequest(closeEvent -> {
+				  lSaveMenuItem.fire();
+				  callFrameClosed( closeEvent );
+			  });
+		  }
+		  else
+		  {
+			  // delete the auto file
+			  new File(lAutoLayoutFile).delete();
 
-        mPrimaryStage.setOnCloseRequest(closeEvent -> lSaveMenuItem.fire());
-      }
-      else
-      {
-        // delete the auto file
-        new File(lAutoLayoutFile).delete();
+			  mPrimaryStage.setOnCloseRequest(closeEvent -> {
+				  callFrameClosed( closeEvent );
+			  });
+		  }
+	  });
 
-        mPrimaryStage.setOnCloseRequest(null);
-      }
-    });
+	  // Reset menu item
+	  MenuItem lResetMenuItem = new MenuItem("Reset");
+	  lResetMenuItem.setOnAction(new EventHandler<ActionEvent>()
+	  {
+		  @Override
+		  public void handle(ActionEvent event)
+		  {
+			  // Reset the layout of the view
+			  mPrimaryStage.sizeToScene();
+			  mPrimaryStage.setX(initX);
+			  mPrimaryStage.setY(initY);
 
-    // Reset menu item
-    MenuItem lResetMenuItem = new MenuItem("Reset");
-    lResetMenuItem.setOnAction(new EventHandler<ActionEvent>()
-    {
-      @Override
-      public void handle(ActionEvent event)
-      {
-        // Reset the layout of the view
-        mPrimaryStage.sizeToScene();
-        mPrimaryStage.setX(initX);
-        mPrimaryStage.setY(initY);
+			  for (int i = 0; i < mNodes.getNodeCount(); i++)
+			  {
+				  mViewManager.close(mNodes.getNode(i));
+			  }
+		  }
+	  });
 
-        for (int i = 0; i < mNodes.getNodeCount(); i++)
-        {
-          mViewManager.close(mNodes.getNode(i));
-        }
-      }
-    });
+	  mPrimaryStage.showingProperty().addListener( new ChangeListener< Boolean >()
+	  {
+		  @Override public void changed( ObservableValue< ? extends Boolean > observable, Boolean oldValue, Boolean newValue )
+		  {
+			  if(newValue) {
+				  initX = pPrimaryStage.getX();
+				  initY = pPrimaryStage.getY();
 
-    Menu lLayoutMenu = new Menu("Layout");
-    lLayoutMenu.getItems().addAll(lSaveMenuItem,
-                                  lRestoreMenuItem,
-                                  lAutoLayoutMenuItem,
-                                  lResetMenuItem);
+				  // According to the file, enable the AutoLayoutMenuItem
+				  if (new File(lAutoLayoutFile).exists())
+				  {
+					  lAutoLayoutMenuItem.setSelected(true);
 
-    Menu lViewMenu = new Menu("View");
-    lViewMenu.getItems().addAll(lToolbarMenu,
-                                lConsoleMenu,
-                                lLayoutMenu);
+					  lRestoreMenuItem.fire();
 
-    MenuBar lMenuBar = new MenuBar(lToolbarMenu,
-                                   lConsoleMenu,
-                                   lLayoutMenu);
+					  mPrimaryStage.setOnCloseRequest(closeEvent -> {
+						  lSaveMenuItem.fire();
+						  callFrameClosed( closeEvent );
+					  });
+				  }
+				  else
+				  {
+					  lAutoLayoutMenuItem.setSelected(false);
+				  }
 
-    mViewManager = new ViewManager(lDockPane,
-                                   mTreePanel,
-                                   mNodes,
-                                   mConsoleDockNodes,
-                                   mToolBarDockNodes,
-                                   lViewMenu,
-                                   mAppIconPath);
+				  observable.removeListener( this );
+			  }
+		  }
+	  } );
 
-    mTreePanel.setViewManager(mViewManager);
+	  Menu lLayoutMenu = new Menu("Layout");
+	  lLayoutMenu.getItems().addAll(lSaveMenuItem,
+			  lRestoreMenuItem,
+			  lAutoLayoutMenuItem,
+			  lResetMenuItem);
 
-    BorderPane lBorderPane = new BorderPane();
-    lBorderPane.setTop(lMenuBar);
-    lBorderPane.setCenter(lDockPane);
-    Scene lScene =
-                 new Scene(lBorderPane, mWindowWidth, mWindowHeight);
+	  Menu lViewMenu = new Menu("View");
+	  lViewMenu.getItems().addAll(lToolbarMenu,
+			  lConsoleMenu,
+			  lLayoutMenu);
 
-    mPrimaryStage.setScene(lScene);
-    mPrimaryStage.sizeToScene();
+	  MenuBar lMenuBar = new MenuBar(lToolbarMenu,
+			  lConsoleMenu,
+			  lLayoutMenu);
 
-    mPrimaryStage.show();
+	  mViewManager = new ViewManager(lDockPane,
+			  mTreePanel,
+			  mNodes,
+			  mConsoleDockNodes,
+			  mToolBarDockNodes,
+			  lViewMenu,
+			  mAppIconPath);
 
-    initX = mPrimaryStage.getX();
-    initY = mPrimaryStage.getY();
-    // System.out.println(lScene.getWindow());
+	  mTreePanel.setViewManager(mViewManager);
 
-    // According to the file, enable the AutoLayoutMenuItem
-    if (new File(lAutoLayoutFile).exists())
-    {
-      lAutoLayoutMenuItem.setSelected(true);
+	  BorderPane lBorderPane = new BorderPane();
+	  lBorderPane.setTop(lMenuBar);
+	  lBorderPane.setCenter(lDockPane);
 
-      lRestoreMenuItem.fire();
+	  return lBorderPane;
+  }
 
-      mPrimaryStage.setOnCloseRequest(closeEvent -> lSaveMenuItem.fire());
-    }
-    else
-    {
-      lAutoLayoutMenuItem.setSelected(false);
-    }
+  protected void callFrameClosed( WindowEvent closeEvent ) {
+  	System.exit(0);
+  	closeEvent.consume();
+  	//mPrimaryStage.hide();
+  }
 
-    // test the look and feel with both Caspian and Modena
-    Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+  public void hide() {
+	  if(null != mPrimaryStage)
+	  	mPrimaryStage.hide();
+  }
 
-    // initialize the default styles for the dock pane and undocked nodes using
-    // the DockFX
-    // library's internal Default.css stylesheet
-    // unlike other custom control libraries this allows the user to override
-    // them globally
-    // using the style manager just as they can with internal JavaFX controls
-    // this must be called after the primary stage is shown
-    // https://bugs.openjdk.java.net/browse/JDK-8132900
-    DockPane.initializeDefaultUserAgentStylesheet();
+  public void show() {
+  	if(null != mPrimaryStage)
+  		mPrimaryStage.show();
+  }
+
+  protected void internalStart(Stage pPrimaryStage)
+  {
+    BorderPane lBorderPane = createHalcyonFrame( pPrimaryStage );
+    show(lBorderPane);
+  }
+
+  protected void show(BorderPane borderPane) {
+	  Scene lScene = new Scene(borderPane, mWindowWidth, mWindowHeight);
+
+	  mPrimaryStage.setScene(lScene);
+	  mPrimaryStage.setTitle(mWindowtitle);
+	  mPrimaryStage.sizeToScene();
+	  mPrimaryStage.show();
+
+	  // System.out.println(lScene.getWindow());
+
+	  // test the look and feel with both Caspian and Modena
+	  Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+
+	  // initialize the default styles for the dock pane and undocked nodes using
+	  // the DockFX
+	  // library's internal Default.css stylesheet
+	  // unlike other custom control libraries this allows the user to override
+	  // them globally
+	  // using the style manager just as they can with internal JavaFX controls
+	  // this must be called after the primary stage is shown
+	  // https://bugs.openjdk.java.net/browse/JDK-8132900
+	  DockPane.initializeDefaultUserAgentStylesheet();
   }
 
   /**
