@@ -438,27 +438,16 @@ public class TreePanel extends DockNode
     removeNoChildNode();
   }
 
-  private void removeNoChildNode()
+  public void removeNoChildNode()
   {
-    final List<TreeItem> lRemoveItemList = new ArrayList<>();
-
     tree.getRoot().getChildren().forEach(c -> {
-      if (c.getChildren().size() == 0)
-      {
-        lRemoveItemList.add(c);
-        subNodes.remove(c.getValue().getName());
-      }
-      else if (c.getChildren().size() == 1) {
+      if (c.getChildren().size() == 1) {
       	  TreeNode n = c.getChildren().get( 0 ).getValue();
 		  c.getValue().setName( n.getName() );
 		  c.getValue().setNode( n.getNode() );
 		  c.getChildren().remove( 0 );
 	  }
     });
-
-    tree.getRoot()
-        .getChildren()
-        .removeIf(c -> lRemoveItemList.contains(c));
   }
 
   private class TreeNode
