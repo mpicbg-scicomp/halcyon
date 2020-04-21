@@ -17,7 +17,7 @@
         <dependency>
             <groupId>org.dockfx</groupId>
             <artifactId>DockFX</artifactId>
-            <version>0.1.7</version>
+            <version>0.1.12</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
