@@ -67,8 +67,6 @@ public class ViewManager
 
   private final TreePanel mTreePanel;
 
-  private final StdOutputCaptureConsole mStdOutputCaptureConsole;
-
   private final Menu mViewMenu;
 
   private final String mAppIconPath;
@@ -121,16 +119,11 @@ public class ViewManager
 
     mAppIconPath = pAppIconPath;
 
-    mStdOutputCaptureConsole = new StdOutputCaptureConsole();
-    mStdOutputCaptureConsole.setPrefSize(600, 200);
-    mStdOutputCaptureConsole.setClosable(false);
-    pConsoles.add(mStdOutputCaptureConsole);
-
     mControlNodeMap.put("Console", new ObservableCollection<>());
     mControlNodeMap.put("Toolbar", new ObservableCollection<>());
 
-    dockNodes("Console", DockPos.RIGHT, pConsoles);
-    dockNodes("Toolbar", DockPos.TOP, pToolbars);
+    dockNodes("Console", DockPos.RIGHT, pConsoles, false);
+    dockNodes("Toolbar", DockPos.TOP, pToolbars, true);
 
     SplitPane split = (SplitPane) pDockPane.getChildren().get(0);
     split.setDividerPositions(0.3);
@@ -199,12 +192,13 @@ public class ViewManager
 
   private void dockNodes(String pMenu,
                          DockPos pPosition,
-                         ObservableCollection<DockNode> pControlNodes)
+                         ObservableCollection<DockNode> pControlNodes, boolean visible)
   {
     for (DockNode lDockNode : pControlNodes.getList())
     {
-      dockNode(pMenu, lDockNode, pPosition);
-      addViewMenuItem(pMenu, lDockNode);
+      	dockNode(pMenu, lDockNode, pPosition);
+      	if(!visible) lDockNode.close();
+      	addViewMenuItem(pMenu, lDockNode);
     }
 
     if (pControlNodes.getCount() > 0)
@@ -335,10 +329,6 @@ public class ViewManager
     {
       page.dock(mDockPane, DockPos.CENTER, deviceTabsDock);
     }
-    else
-    {
-      page.dock(mDockPane, DockPos.TOP, mStdOutputCaptureConsole);
-    }
 
     mPages.add(page);
   }
@@ -372,10 +362,6 @@ public class ViewManager
     if (deviceTabsDock != null)
     {
       page.dock(mDockPane, DockPos.CENTER, deviceTabsDock);
-    }
-    else
-    {
-      page.dock(mDockPane, DockPos.TOP, mStdOutputCaptureConsole);
     }
 
     mPages.add(page);
