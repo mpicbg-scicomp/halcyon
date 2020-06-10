@@ -328,7 +328,9 @@ public class ViewManager
     if (deviceTabsDock != null)
     {
       page.dock(mDockPane, DockPos.CENTER, deviceTabsDock);
-    }
+    } else {
+      page.dock(mDockPane, DockPos.RIGHT, mTreePanel.getParent());
+	}
 
     mPages.add(page);
   }
@@ -362,7 +364,9 @@ public class ViewManager
     if (deviceTabsDock != null)
     {
       page.dock(mDockPane, DockPos.CENTER, deviceTabsDock);
-    }
+    } else {
+	  page.dock(mDockPane, DockPos.RIGHT, mTreePanel.getParent());
+	}
 
     mPages.add(page);
 
