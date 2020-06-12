@@ -215,7 +215,7 @@ public class HalcyonFrame extends Application
 		DockPane lDockPane = new DockPane();
 
 		Menu lToolbarMenu = new Menu( "Toolbar" );
-		Menu lConsoleMenu = new Menu( "Console" );
+//		Menu lConsoleMenu = new Menu( "Console" );
 
 		// Save preference menu item
 		MenuItem lSaveMenuItem = new MenuItem( "Save" );
@@ -341,11 +341,11 @@ public class HalcyonFrame extends Application
 
 		Menu lViewMenu = new Menu( "View" );
 		lViewMenu.getItems().addAll( lToolbarMenu,
-				lConsoleMenu,
+//				lConsoleMenu,
 				lLayoutMenu );
 
 		MenuBar lMenuBar = new MenuBar( lToolbarMenu,
-				lConsoleMenu,
+//				lConsoleMenu,
 				lLayoutMenu );
 
 		mViewManager = new ViewManager( lDockPane,

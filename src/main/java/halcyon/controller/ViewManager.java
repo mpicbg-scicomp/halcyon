@@ -40,7 +40,6 @@ import halcyon.model.node.HalcyonNodeInterface;
 import halcyon.model.node.HalcyonOtherNode;
 import halcyon.view.HalcyonPanel;
 import halcyon.view.TreePanel;
-import halcyon.view.console.StdOutputCaptureConsole;
 
 import org.dockfx.ContentHolder;
 import org.dockfx.DockNode;
