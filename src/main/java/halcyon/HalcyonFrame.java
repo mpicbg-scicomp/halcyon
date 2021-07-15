@@ -217,7 +217,7 @@ public class HalcyonFrame extends Application
 				FileWriter writer = new FileWriter(lLayoutFile);
 
 				while ((line = reader.readLine()) != null) {
-					writer.write(line);
+					writer.write(line.replaceAll("\n", System.getProperty("line.separator")));
 				}
 				 writer.close();
 
