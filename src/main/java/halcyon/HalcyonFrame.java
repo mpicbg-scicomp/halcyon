@@ -214,13 +214,30 @@ public class HalcyonFrame extends Application
 				 BufferedReader reader = new BufferedReader(streamReader)) {
 
 				String line;
-				FileWriter writer = new FileWriter(lLayoutFile);
+
+				BufferedWriter out = new BufferedWriter(
+						new OutputStreamWriter(
+							new FileOutputStream(lLayoutFile), "UTF-8"
+						)
+				);
 
 				while ((line = reader.readLine()) != null) {
-					writer.write(line.replaceAll("\n", System.getProperty("line.separator")));
+					out.write(line);
+					out.newLine();
 				}
-				 writer.close();
+				out.flush();
+				out.close();
 
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		String lAutoLayoutFile = getUserDataDirectory( mWindowtitle )
+				+ ".auto";
+		if (!new File(lAutoLayoutFile).exists()) {
+			try {
+				new File( lAutoLayoutFile ).createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
