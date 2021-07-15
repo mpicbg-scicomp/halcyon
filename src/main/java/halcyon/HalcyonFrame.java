@@ -1,7 +1,7 @@
 package halcyon;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import halcyon.model.node.HalcyonNodeType;
@@ -201,6 +201,31 @@ public class HalcyonFrame extends Application
 
 	protected double initX;
 	protected double initY;
+
+	protected void checkLayoutPref(InputStream is) {
+		String lLayoutFile = getUserDataDirectory( mWindowtitle )
+				+ "layout.pref";
+
+		if (!new File(lLayoutFile).exists()) {
+			dirExist( getUserDataDirectory( mWindowtitle ) );
+
+			try (InputStreamReader streamReader =
+						 new InputStreamReader(is, StandardCharsets.UTF_8);
+				 BufferedReader reader = new BufferedReader(streamReader)) {
+
+				String line;
+				FileWriter writer = new FileWriter(lLayoutFile);
+
+				while ((line = reader.readLine()) != null) {
+					writer.write(line);
+				}
+				 writer.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	protected BorderPane createHalcyonFrame( Stage pPrimaryStage )
 	{
