@@ -429,17 +429,18 @@ public class HalcyonFrame extends Application
 	protected void internalStart( Stage pPrimaryStage )
 	{
 		BorderPane lBorderPane = createHalcyonFrame( pPrimaryStage );
-		show( lBorderPane );
+		show( lBorderPane, true );
 	}
 
-	protected void show( BorderPane borderPane )
+	protected void show( BorderPane borderPane, boolean show )
 	{
 		Scene lScene = new Scene( borderPane, mWindowWidth, mWindowHeight );
 
 		mPrimaryStage.setScene( lScene );
 		mPrimaryStage.setTitle( mWindowtitle );
 		mPrimaryStage.sizeToScene();
-		mPrimaryStage.show();
+		if(show)
+			mPrimaryStage.show();
 
 		// System.out.println(lScene.getWindow());
 
