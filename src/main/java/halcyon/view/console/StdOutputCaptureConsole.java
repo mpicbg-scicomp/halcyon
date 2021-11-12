@@ -20,7 +20,7 @@ public class StdOutputCaptureConsole extends DockNode
 	 */
 	public StdOutputCaptureConsole()
 	{
-		super( new ConsolePane() );
+		super( new ConsolePane(null) );
 		setTitle( "Console" );
 
 		consolePane = ( ConsolePane ) getContents();

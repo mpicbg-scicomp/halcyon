@@ -6,8 +6,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.w3c.dom.Document;
@@ -37,7 +39,7 @@ public class ConsolePane extends BorderPane implements TextAppender
 
 	private WebEngine engine;
 
-	public ConsolePane()
+	public ConsolePane(javafx.scene.Node helpNode)
 	{
 		WebView web = new WebView();
 		engine = web.getEngine();
@@ -100,7 +102,13 @@ public class ConsolePane extends BorderPane implements TextAppender
 			this.clear();
 		} );
 
-		setTop( lClearButton );
+		if(helpNode != null) {
+			HBox topHbox = new HBox(5, lClearButton, helpNode);
+			topHbox.setAlignment( Pos.CENTER_LEFT );
+			setTop( topHbox );
+		} else {
+			setTop( lClearButton );
+		}
 		setCenter( web );
 	}
 
