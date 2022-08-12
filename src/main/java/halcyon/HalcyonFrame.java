@@ -512,7 +512,7 @@ public class HalcyonFrame extends Application
 			return System.getProperty( "user.home" ) + File.separator
 					+ ".halcyon"
 					+ File.separator
-					+ appTitle
+					+ appTitle.replaceAll("[^\\x00-\\x7F]", "")
 					+ File.separator
 					+ getApplicationVersionString()
 					+ File.separator;
