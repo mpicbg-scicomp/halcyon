@@ -203,8 +203,26 @@ public class HalcyonFrame extends Application
 	protected double initY;
 
 	protected void checkLayoutPref(InputStream is) {
+		checkPreferenceFile(is, "layout.pref");
+
+		String lAutoLayoutFile = getUserDataDirectory( mWindowtitle )
+				+ ".auto";
+		if (!new File(lAutoLayoutFile).exists()) {
+			try {
+				new File( lAutoLayoutFile ).createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	protected void checkOthersPref(InputStream is) {
+		checkPreferenceFile(is, "others.pref");
+	}
+
+	private void checkPreferenceFile(InputStream is, String fileName) {
 		String lLayoutFile = getUserDataDirectory( mWindowtitle )
-				+ "layout.pref";
+				+ fileName;
 
 		if (!new File(lLayoutFile).exists()) {
 			dirExist( getUserDataDirectory( mWindowtitle ) );
@@ -217,7 +235,7 @@ public class HalcyonFrame extends Application
 
 				BufferedWriter out = new BufferedWriter(
 						new OutputStreamWriter(
-							new FileOutputStream(lLayoutFile), "UTF-8"
+								new FileOutputStream(lLayoutFile), "UTF-8"
 						)
 				);
 
@@ -228,16 +246,6 @@ public class HalcyonFrame extends Application
 				out.flush();
 				out.close();
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		String lAutoLayoutFile = getUserDataDirectory( mWindowtitle )
-				+ ".auto";
-		if (!new File(lAutoLayoutFile).exists()) {
-			try {
-				new File( lAutoLayoutFile ).createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
